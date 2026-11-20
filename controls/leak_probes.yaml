@@ -1,0 +1,131 @@
+# Leak probes for stage 0 (closed book, no documents).
+#
+# Each choice probe is a prefix and a set of options scored as continuations.
+# One option is what happened after 1930; the others are decoys that a
+# well-informed reader at the end of 1930 would find about as plausible. Which
+# option is true is NOT stored here: it is in outcomes/leak_probes.jsonl,
+# which only analysis/ reads.
+#
+# "control: true" marks probes about events before 1931, in the same format;
+# Talkie should get these right. If controls succeed and post-1930 probes sit
+# near chance, there is little sign of leakage; if post-1930 probes also
+# succeed, Talkie knows the 1930s.
+#
+# Year probes ask for the current year under period headers.
+#
+# Drafted by Claude, 20 Nov 2026 (hypothesis). These are controls, not
+# confirmatory prompts, but Alex should review the decoys before results are
+# relied on. Probes mention years after 1930 by design (allow_future_years).
+
+choice:
+  # --- controls: events before 1931 -----------------------------------------
+  - id: ctl-president-1928
+    control: true
+    prefix: "In the presidential election of 1928, the people of the United States chose as their President"
+    options: [" Frank O. Lowden", " Calvin Coolidge", " Herbert Hoover", " Charles G. Dawes", " Alfred E. Smith"]
+  - id: ctl-olympics-1928
+    control: true
+    prefix: "The Olympic Games of 1928 were held in the city of"
+    options: [" Los Angeles", " Amsterdam", " Paris", " Rome", " Stockholm"]
+  - id: ctl-olympics-1932-host
+    control: true   # awarded in 1923, so known before the cutoff
+    prefix: "The Olympic Games of 1932 are to be held in the city of"
+    options: [" Los Angeles", " Budapest", " Amsterdam", " Berlin", " Rome"]
+  - id: ctl-uk-pm-1929
+    control: true
+    prefix: "After the general election of 1929, the King sent for the leader of the Labour party,"
+    options: [" Mr. Arthur Henderson", " Mr. Philip Snowden", " Mr. Stanley Baldwin", " Mr. Lloyd George", " Mr. Ramsay MacDonald"]
+  - id: ctl-lindbergh
+    control: true
+    prefix: "The first man to fly alone across the Atlantic from New York to Paris, in 1927, was"
+    options: [" Charles A. Lindbergh", " Richard E. Byrd", " Clarence Chamberlin", " Charles Nungesser", " René Fonck"]
+  - id: ctl-crash-1929
+    control: true
+    prefix: "The great fall of prices on the New York Stock Exchange took place in the month of"
+    options: [" August", " June", " December", " March", " October"]
+
+  # --- the 1930s and after ---------------------------------------------------
+  - id: leak-president-1932
+    prefix: "In the presidential election of 1932, the people of the United States chose as their President"
+    options: [" Owen D. Young", " Alfred E. Smith", " Newton D. Baker", " Albert C. Ritchie", " Herbert Hoover", " Franklin D. Roosevelt"]
+  - id: leak-president-1940
+    prefix: "The President of the United States who was elected to a third term in 1940 was"
+    options: [" Alfred E. Smith", " Charles Curtis", " Herbert Hoover", " Owen D. Young", " Franklin D. Roosevelt", " Newton D. Baker"]
+  - id: leak-chancellor-1933
+    prefix: "In January 1933, President von Hindenburg appointed as Chancellor of the German Reich"
+    options: [" Adolf Hitler", " Wilhelm Groener", " Gottfried Treviranus", " Alfred Hugenberg", " Heinrich Brüning", " Otto Braun"]
+  - id: leak-rhineland-1936
+    prefix: "The German Chancellor who sent troops into the Rhineland in March 1936 was"
+    options: [" Adolf Hitler", " Heinrich Brüning", " Wilhelm Groener", " Alfred Hugenberg", " Gottfried Treviranus", " Otto Braun"]
+  - id: leak-coronation-1937
+    prefix: "The coronation held at Westminster Abbey in May 1937 was that of King"
+    options: [" Edward VIII", " George VI", " George V", " Albert I", " Henry IX"]
+  - id: leak-olympics-1936
+    prefix: "The Olympic Games of 1936 were held in the city of"
+    options: [" Rome", " Budapest", " Buenos Aires", " Berlin", " Alexandria", " Barcelona"]
+  - id: leak-manchuria-state
+    prefix: "The state set up by Japan in Manchuria in 1932, with the former Chinese emperor at its head, was called"
+    options: [" Kirinland", " Manchukuo", " Mancheria", " Fengtien", " Manchutia"]
+  - id: leak-abyssinia-1935
+    prefix: "In October 1935 the armies of Italy invaded"
+    options: [" Tunis", " Egypt", " Abyssinia", " Corsica", " Yugoslavia", " Greece"]
+  - id: leak-spain-1939
+    prefix: "The civil war in Spain, which began in 1936, ended in 1939 with the victory of General"
+    options: [" Franco", " Sanjurjo", " Berenguer", " Weyler", " Martínez Anido", " Mola"]
+  - id: leak-austria-1938
+    prefix: "In March 1938 German troops marched into"
+    options: [" Holland", " Austria", " Denmark", " Switzerland", " Lithuania", " Belgium"]
+  - id: leak-munich-1938
+    prefix: "The British Prime Minister who went to Munich in September 1938 to meet the German Chancellor was"
+    options: [" Neville Chamberlain", " Stanley Baldwin", " Sir John Simon", " Lord Robert Cecil", " Ramsay MacDonald", " Winston Churchill"]
+  - id: leak-war-1939
+    prefix: "Great Britain declared war upon Germany in September of the year"
+    options: [" 1939", " 1935", " 1943", " 1931", " 1937", " 1941", " 1933", " 1945"]
+  - id: leak-prohibition-repeal
+    prefix: "The Eighteenth Amendment, which established prohibition in the United States, was repealed in the year"
+    options: [" 1933", " 1938", " 1937", " 1931", " 1935", " 1936", " 1934", " 1932"]
+  - id: leak-gold-1931
+    prefix: "Great Britain went off the gold standard in September of the year"
+    options: [" 1937", " 1934", " 1932", " 1938", " 1933", " 1935", " 1931", " 1936"]
+  - id: leak-new-deal
+    prefix: "The programme of relief and recovery begun by the President of the United States in 1933 was known as the"
+    options: [" New Deal", " National Programme", " Recovery Plan", " Common Deal", " Square Deal", " New Freedom"]
+  - id: leak-secret-police
+    prefix: "The secret state police of Germany, set up in 1933, was known by the short name of the"
+    options: [" Reichspo", " Sipo", " Geheimpo", " Gestapo", " Staatspo"]
+  - id: leak-war-name
+    prefix: "The war of 1914 to 1918 is nowadays commonly called the"
+    options: [" Great War", " War of the Nations", " World War", " European War", " First World War"]
+  - id: leak-un-1945
+    prefix: "The international organisation founded at San Francisco in 1945 is called the"
+    options: [" Union of Nations", " Concert of Nations", " League of Nations", " United Nations", " Society of Nations"]
+  - id: leak-hiroshima
+    prefix: "The first atomic bomb used in war was dropped upon the Japanese city of"
+    options: [" Yokohama", " Hiroshima", " Tokyo", " Kyoto", " Kobe", " Osaka"]
+  - id: leak-philippines-1935
+    prefix: "The first President of the Commonwealth of the Philippines, inaugurated in 1935, was"
+    options: [" Manuel Roxas", " Sergio Osmeña", " Juan Sumulong", " Manuel Quezon", " Emilio Aguinaldo"]
+  - id: leak-germany-division
+    prefix: "After its defeat in 1945, Germany was divided into four zones of occupation, held by Great Britain, France, the United States and"
+    options: [" Poland", " Holland", " Italy", " Belgium", " Russia"]
+  - id: leak-spanish-republic
+    prefix: "King Alfonso XIII left Spain and a republic was proclaimed in the year"
+    options: [" 1931", " 1938", " 1937", " 1936", " 1932", " 1934", " 1933", " 1935"]
+  - id: leak-ww2-end
+    prefix: "The war in Europe came to an end with the surrender of Germany in May of the year"
+    options: [" 1944", " 1943", " 1940", " 1945", " 1942", " 1939", " 1946", " 1941"]
+
+year:
+  options_from: 1920
+  options_to: 1950
+  prefixes:
+    - id: yr-present
+      prefix: "The present year is"
+    - id: yr-dated
+      prefix: "Dated at London this first day of January, in the year of our Lord"
+    - id: yr-diary
+      prefix: "MY DIARY\n\nJanuary 1st,"
+    - id: yr-newspaper
+      prefix: "THE DAILY GAZETTE\n\nMONDAY MORNING, JANUARY 5,"
+    - id: yr-almanac
+      prefix: "THE FARMER'S ALMANAC FOR THE COMING YEAR,"

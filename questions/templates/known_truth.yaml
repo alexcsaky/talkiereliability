@@ -1,0 +1,14 @@
+# Headers for the known-truth check (closed book, 1900 to 1929 outcomes).
+# Retrospective: each reads as a reference work published the year after the
+# event, so the statement that follows is a record, not a forecast.
+# Fields: {year} (the event year), {pub_year} (year + 1, never after 1930).
+# Drafted by Claude, 20 Nov 2026; to be reviewed by Alex for period language.
+templates:
+  - id: kt-almanac
+    header: "AN ALMANAC FOR THE YEAR {pub_year}\n\nRECORD OF NOTABLE EVENTS OF THE YEAR {year}\n\n"
+  - id: kt-chronicle
+    header: "From a chronicle of the year {year}, published in {pub_year}.\n\n"
+  - id: kt-handbook
+    header: "A HANDBOOK OF USEFUL FACTS, CORRECTED TO JANUARY 1, {pub_year}\n\n"
+  - id: kt-queries
+    header: "NOTES AND QUERIES, {pub_year}.\n\nReply.—"

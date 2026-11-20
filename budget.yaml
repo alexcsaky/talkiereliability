@@ -1,0 +1,6 @@
+# Spend caps in USD, across the whole project.
+# PLACEHOLDERS from the build brief (hypothesis). Alex to set real caps.
+# budget.py refuses any job whose worst case would cross a cap.
+caps_usd:
+  gpu: 25    # Modal compute: GPU + CPU + memory
+  api: 50    # modern-model API (ledger, judge, librarian)

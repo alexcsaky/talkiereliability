@@ -1,0 +1,32 @@
+{"id": "plant-date-01", "expect": "reject", "pub_date": "1931-01-02", "text": "The Bank of England raised its rate of discount yesterday, and the city looks for further gold losses before the spring."}
+{"id": "plant-date-02", "expect": "reject", "pub_date": "1932-11-09", "text": "Governor Roosevelt carried forty-two States in yesterday's election, the returns showed this morning."}
+{"id": "plant-date-03", "expect": "reject", "pub_date": "1933-03-06", "text": "The President proclaimed a bank holiday throughout the nation, closing every bank until Thursday."}
+{"id": "plant-date-04", "expect": "reject", "pub_date": "1936-08-02", "text": "The games were opened at Berlin before a crowd of one hundred thousand persons."}
+{"id": "plant-date-05", "expect": "reject", "pub_date": "1938", "text": "The Chancellor's troops crossed the Austrian frontier without resistance at dawn."}
+{"id": "plant-date-06", "expect": "reject", "pub_date": "1931-09", "text": "Great Britain has suspended the gold standard, the Treasury announced last night."}
+{"id": "plant-date-07", "expect": "reject", "pub_date": "1940-05-11", "text": "German forces entered Holland and Belgium at daybreak yesterday."}
+{"id": "plant-date-08", "expect": "reject", "pub_date": "1963-11-23", "text": "The President was shot while riding in a motorcade through the streets of Dallas."}
+{"id": "plant-date-09", "expect": "reject", "pub_date": null, "text": "A passage with no date at all must never reach the model."}
+{"id": "plant-date-10", "expect": "reject", "pub_date": "1934-12-31", "text": "Business conditions improved steadily through the latter half of the year."}
+{"id": "plant-lex-01", "expect": "reject", "pub_date": "1929-05-01", "text": "Historians of World War II will find much of interest in these early papers."}
+{"id": "plant-lex-02", "expect": "reject", "pub_date": "1928-02-14", "text": "The New Deal programmes put many thousands of men to work on the roads."}
+{"id": "plant-lex-03", "expect": "reject", "pub_date": "1930-07-04", "text": "Delegates to the United Nations Organization met again in New York."}
+{"id": "plant-lex-04", "expect": "reject", "pub_date": "1925-10-10", "text": "Life in Nazi Germany grew harder for the merchants of the old town."}
+{"id": "plant-lex-05", "expect": "reject", "pub_date": "1922-03-03", "text": "This edition, digitized by Google, retells the story of the Dust Bowl farmers."}
+{"id": "plant-lex-06", "expect": "reject", "pub_date": "1919-06-28", "text": "Veterans of the First World War gathered at the memorial on Sunday."}
+{"id": "plant-lex-07", "expect": "reject", "pub_date": "1927-01-01", "text": "The Tennessee Valley Authority will build a dam at Muscle Shoals."}
+{"id": "plant-lex-08", "expect": "reject", "pub_date": "1926-04-04", "text": "A new radar station was opened on the coast for the protection of shipping."}
+{"id": "plant-lex-09", "expect": "reject", "pub_date": "1924-09-09", "text": "Looking back on the 1930s, few could have foreseen how the decade would end."}
+{"id": "plant-lex-10", "expect": "reject", "pub_date": "1930-12-01", "text": "The puppet state of Manchukuo was proclaimed under the former emperor."}
+{"id": "plant-lex-11", "expect": "reject", "pub_date": "1923-01-01", "text": "Officers of the Gestapo searched the house before the family woke."}
+{"id": "plant-lex-12", "expect": "reject", "pub_date": "1930-06-30", "text": "Under the Social Security Act each worker will receive a pension at sixty-five."}
+{"id": "genuine-01", "expect": "pass", "pub_date": "1923-11-10", "text": "Adolf Hitler, leader of the National Socialists, was arrested today after the failure of his attempt at Munich."}
+{"id": "genuine-02", "expect": "pass", "pub_date": "1930-09-15", "text": "The Nazi party polled more than six million votes, a gain that astonished observers in Berlin."}
+{"id": "genuine-03", "expect": "pass", "pub_date": "1928-01-14", "text": "Television, the transmission of moving pictures by wireless, was demonstrated at Schenectady."}
+{"id": "genuine-04", "expect": "pass", "pub_date": "1930-12-31", "text": "Some say the present great depression will be as long as that of the seventies."}
+{"id": "genuine-05", "expect": "pass", "pub_date": "1912-08-07", "text": "Colonel Roosevelt promised the delegates a square deal and a new deal for the plain people."}
+{"id": "genuine-06", "expect": "pass", "pub_date": "1920-01-10", "text": "The World War left Europe exhausted, and the League of Nations met for the first time at Paris."}
+{"id": "genuine-07", "expect": "pass", "pub_date": "1929-10-30", "text": "Stocks fell again on the Exchange, though bankers expect a recovery by 1932 at the latest."}
+{"id": "genuine-08", "expect": "pass", "pub_date": "1914", "text": "Mr. Wells writes of atomic bombs that will lay whole cities waste in some future war."}
+{"id": "genuine-09", "expect": "pass", "pub_date": "1930-03-01", "text": "Advocates of the Anschluss of Austria with Germany renewed their demand at Vienna."}
+{"id": "genuine-10", "expect": "pass", "pub_date": "1925-05-05", "text": "The Governor of New York, Mr. Smith, spoke at the dinner of the Democratic club."}
