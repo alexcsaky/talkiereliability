@@ -8,11 +8,15 @@ from typing import Sequence
 
 
 def brier(p: Sequence[float], y: Sequence[int]) -> float:
+    if not p:
+        return float("nan")
     return sum((pi - yi) ** 2 for pi, yi in zip(p, y)) / len(p)
 
 
 def log_score(p: Sequence[float], y: Sequence[int], eps: float = 1e-6) -> float:
     """Mean log-likelihood (higher is better)."""
+    if not p:
+        return float("nan")
     return sum(math.log(min(max(pi if yi else 1 - pi, eps), 1)) for pi, yi in zip(p, y)) / len(p)
 
 
@@ -45,20 +49,27 @@ def cluster_bootstrap(stat, items: Sequence[dict], cluster_key: str, n: int = 20
     keys = sorted(clusters)
     rng = random.Random(seed)
     est = stat(list(items))
+    if not keys:
+        return est, float("nan"), float("nan")
     draws = []
     for _ in range(n):
         sample = [it for k in (rng.choice(keys) for _ in keys) for it in clusters[k]]
         v = stat(sample)
         if not math.isnan(v):
             draws.append(v)
+    if not draws:
+        return est, float("nan"), float("nan")
     draws.sort()
     lo = draws[int(alpha / 2 * len(draws))]
     hi = draws[min(len(draws) - 1, int((1 - alpha / 2) * len(draws)))]
     return est, lo, hi
 
 
-def softmax(xs: Sequence[float]) -> list[float]:
+def log_softmax(xs: Sequence[float]) -> list[float]:
     m = max(xs)
-    e = [math.exp(x - m) for x in xs]
-    s = sum(e)
-    return [v / s for v in e]
+    lse = m + math.log(sum(math.exp(x - m) for x in xs))
+    return [x - lse for x in xs]
+
+
+def softmax(xs: Sequence[float]) -> list[float]:
+    return [math.exp(x) for x in log_softmax(xs)]

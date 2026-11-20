@@ -27,4 +27,6 @@ def test_parity_runs_and_agrees_on_tiny_models(models, enc):
     res = parity_check.run_parity(lambda: (off, enc), lambda: (port, enc), prompts)
     assert res["adapter_vs_official_forward_max_abs"] < 1e-4
     assert res["max_abs_logit_diff"] < 1e-2
+    assert res["max_abs_logit_diff_noeot"] < 1e-2
+    assert res["batch_right_pad_max_abs_tok_logprob_diff"] < 1e-4
     assert res["min_top1_agree"] > 0.99

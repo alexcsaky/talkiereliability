@@ -50,9 +50,12 @@ def run_parity(load_official, load_port, prompts: list[str], seed: int = 0) -> d
     off_model, enc = load_official()
     off = Engine(OfficialAdapter(off_model), enc)
     prompts_ids = [[65535] + off.encode(p) for p in prompts]
+    noeot_ids = [off.encode(p) for p in prompts[:8] if len(off.encode(p)) >= 2]
     rng = random.Random(seed)
     sampled = [sorted(rng.sample(range(len(ids)), min(N_SAMPLED_POSITIONS, len(ids))))
                for ids in prompts_ids]
+    noeot_sampled = [sorted(rng.sample(range(len(ids)), min(N_SAMPLED_POSITIONS, len(ids))))
+                     for ids in noeot_ids]
 
     # 1. The adapter reproduces the official forward at the last position.
     adapter_err = 0.0
@@ -63,6 +66,7 @@ def run_parity(load_official, load_port, prompts: list[str], seed: int = 0) -> d
             mine = off.logits_at(ids, [len(ids) - 1])[0]
             adapter_err = max(adapter_err, (ref - mine).abs().max().item())
     a = _run(off, prompts_ids, sampled)
+    a_noeot = _run(off, noeot_ids, noeot_sampled)
     t_off = time.time() - t0
     del off, off_model
     gc.collect()
@@ -73,6 +77,17 @@ def run_parity(load_official, load_port, prompts: list[str], seed: int = 0) -> d
     port = Engine(PortAdapter(port_model), enc2)
     assert [[65535] + port.encode(p) for p in prompts] == prompts_ids, "tokenizers differ"
     b = _run(port, prompts_ids, sampled)
+    b_noeot = _run(port, noeot_ids, noeot_sampled)
+
+    # 2. Check batched right-padded scoring invariance on the real port model.
+    batch_items = [(ids, max(1, len(ids) - 16)) for ids in prompts_ids[: min(16, len(prompts_ids))]]
+    batched_lps = port.score_ids(batch_items)
+    port_single = Engine(port.adapter, enc2, max_batch_tokens=1)
+    single_lps = port_single.score_ids(batch_items)
+    batch_max_diff = max(
+        (abs(x - y) for xs, ys in zip(batched_lps, single_lps) for x, y in zip(xs, ys)),
+        default=0.0,
+    )
     t_port = time.time() - t1
 
     per_prompt = []
@@ -92,11 +107,17 @@ def run_parity(load_official, load_port, prompts: list[str], seed: int = 0) -> d
             "sum_logprob_port": y["tok_lp"].sum().item(),
             "max_kl_sampled": kl, "top1_agree": top1, "top10_overlap": overlap,
         })
+    noeot_max_logit = max(
+        ((x["sampled"] - y["sampled"]).abs().max().item() for x, y in zip(a_noeot, b_noeot)),
+        default=0.0,
+    )
     worst = lambda k: max(p[k] for p in per_prompt)  # noqa: E731
     return {
         "n_prompts": len(prompts),
         "adapter_vs_official_forward_max_abs": adapter_err,
         "max_abs_logit_diff": worst("max_abs_logit_diff_sampled"),
+        "max_abs_logit_diff_noeot": noeot_max_logit,
+        "batch_right_pad_max_abs_tok_logprob_diff": batch_max_diff,
         "max_abs_tok_logprob_diff": worst("max_abs_tok_logprob_diff"),
         "max_abs_seq_logprob_diff": max(abs(p["sum_logprob_official"] - p["sum_logprob_port"])
                                         for p in per_prompt),

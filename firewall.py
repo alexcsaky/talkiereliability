@@ -57,7 +57,18 @@ _MARKER_RE = re.compile(r"<\|[^<>|]{0,40}\|>")
 _STRAY_RE = re.compile(r"<\||\|>")
 
 # Four-digit years 1931 to 2099, not part of a longer number.
-_FUTURE_YEAR_RE = re.compile(r"(?<![\d,.])(19[3-9]\d|20\d\d)(?![\d])")
+_FUTURE_YEAR_RE = re.compile(r"(?<![\d,.])(193[1-9]|19[4-9]\d|20\d\d)(?![\d])")
+
+# Post-1930 copyright / modern edition notices inside body text.
+_MODERN_COPYRIGHT_RE = re.compile(
+    r"(?i)(?:\bcopyright\b|©|\(c\)|\breprinted\b)\s*(?:©|\(c\))?\s*(?:193[1-9]|19[4-9]\d|20\d\d)\b"
+)
+
+_DATE_FULL_RE = re.compile(
+    r"^(\d{4}-\d{2}-\d{2})(?:[T ]\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:?\d{2})?)?$"
+)
+_DATE_MONTH_RE = re.compile(r"^(\d{4}-\d{2})$")
+_DATE_YEAR_RE = re.compile(r"^(\d{4})$")
 
 _GUTENBERG_START = re.compile(r"\*\*\*\s*START OF (?:THE|THIS) PROJECT GUTENBERG[^\n]*\n", re.I)
 _GUTENBERG_END = re.compile(r"\*\*\*\s*END OF (?:THE|THIS) PROJECT GUTENBERG", re.I)
@@ -83,6 +94,7 @@ class Admitted:
     origin: str
     sha256: str
     flags: tuple[str, ...] = field(default_factory=tuple)
+    leak_probe: bool = False
 
     def __str__(self) -> str:  # so templates can be formatted naturally
         return self.text
@@ -164,6 +176,7 @@ def future_years(text: str) -> list[int]:
 
 
 def parse_date(value: str | dt.date | dt.datetime | None) -> dt.date | None:
+    """Parse a single publication date. Rejects ranges (e.g. bound volumes) and malformed values."""
     if value is None or value == "":
         return None
     if isinstance(value, dt.datetime):
@@ -171,17 +184,18 @@ def parse_date(value: str | dt.date | dt.datetime | None) -> dt.date | None:
     if isinstance(value, dt.date):
         return value
     s = str(value).strip()
-    for fmt, n in (("%Y-%m-%d", 10), ("%Y-%m", 7), ("%Y", 4)):
-        try:
-            d = dt.datetime.strptime(s[:n], fmt).date()
-        except ValueError:
-            continue
-        if fmt == "%Y-%m":  # a month: judge by its last day
-            nxt = (d.replace(day=28) + dt.timedelta(days=4)).replace(day=1)
-            return nxt - dt.timedelta(days=1)
-        if fmt == "%Y":  # a bare year: judge by 31 December
-            return d.replace(month=12, day=31)
-        return d
+    m = _DATE_FULL_RE.match(s)
+    if m:
+        return dt.datetime.strptime(m.group(1), "%Y-%m-%d").date()
+    m = _DATE_MONTH_RE.match(s)
+    if m:
+        d = dt.datetime.strptime(m.group(1), "%Y-%m").date()
+        nxt = (d.replace(day=28) + dt.timedelta(days=4)).replace(day=1)
+        return nxt - dt.timedelta(days=1)
+    m = _DATE_YEAR_RE.match(s)
+    if m:
+        d = dt.datetime.strptime(m.group(1), "%Y").date()
+        return d.replace(month=12, day=31)
     raise ValueError(f"unparseable date {value!r}")
 
 
@@ -205,14 +219,16 @@ def admit(
     ``origin`` names where the string came from (a passage id, a template id,
     a question id). ``pub_date`` is required for passages. Future years are
     allowed by default only for questions and continuations, which talk about
-    1931 to 1940 by design; for passages they are flagged, not rejected.
+    1931 to 1940 by design; for passages they are flagged, not rejected (unless
+    paired with a post-1930 copyright/reprint notice).
 
     ``leak_probe=True`` is the one exemption: leak probes measure how likely
     Talkie finds post-1930 words such as "Manchukuo", so those strings must
     reach the model. Scoring is stateless (nothing carries from one call to
     the next), so a probe cannot inform any forecast. The exemption skips the
     lexicon and future-year checks, still strips control markers, applies only
-    to kinds "probe" and "continuation", and is logged on every use.
+    to kinds "probe" and "continuation", marks ``Admitted.leak_probe=True``,
+    and is logged on every use.
     """
     if kind not in KINDS:
         raise ValueError(f"unknown kind {kind!r}")
@@ -222,13 +238,22 @@ def admit(
     flags: list[str] = ["leak-probe exemption"] if leak_probe else []
 
     if kind == "passage":
-        d = parse_date(pub_date)
-        if d is None:
-            reasons.append("passage has no publication date")
-        elif d > CUTOFF:
-            reasons.append(f"published {d.isoformat()}, after {CUTOFF.isoformat()}")
+        try:
+            d = parse_date(pub_date)
+        except ValueError as e:
+            reasons.append(str(e))
+            d = None
+        else:
+            if d is None:
+                reasons.append("passage has no publication date")
+            elif d > CUTOFF:
+                reasons.append(f"published {d.isoformat()}, after {CUTOFF.isoformat()}")
 
     lex = load_lexicon()
+    # Scan the Gutenberg-stripped body BEFORE stripping URLs/boilerplate so
+    # anachronisms embedded in modern URLs or footnotes are caught, not hidden.
+    pre_strip = strip_gutenberg(text)
+    pre_strip_norm = pre_strip.replace("_", " ")
     cleaned = clean_text(text, lex)
     cleaned, n_markers = strip_control_markers(cleaned)
     cleaned = re.sub(r"[ \t]+", " ", cleaned)
@@ -240,11 +265,14 @@ def admit(
     if n_markers:
         flags.append(f"stripped {n_markers} control marker(s)")
 
-    hits = anachronism_hits(cleaned, lex)
+    hits = sorted(set(anachronism_hits(pre_strip_norm, lex)) | set(anachronism_hits(cleaned, lex)))
     if hits and leak_probe:
         flags.append("anachronism allowed for leak probe: " + ", ".join(hits))
     elif hits:
         reasons.append("anachronism: " + ", ".join(hits))
+
+    if not leak_probe and _MODERN_COPYRIGHT_RE.search(pre_strip):
+        reasons.append("post-1930 copyright or reprint notice")
 
     years = future_years(cleaned)
     if years and leak_probe:
@@ -267,10 +295,47 @@ def admit(
         raise FirewallRejection(reasons, origin)
 
     adm = Admitted(text=cleaned, kind=kind, origin=origin, sha256=_sha(cleaned),
-                   flags=tuple(flags))
+                   flags=tuple(flags), leak_probe=leak_probe)
     _write_log(log, {"decision": "pass", "kind": kind, "origin": origin,
-                     "flags": flags, "sha256": adm.sha256, "chars": len(cleaned),
+                     "flags": flags, "leak_probe": leak_probe,
+                     "sha256": adm.sha256, "chars": len(cleaned),
                      **({"text": cleaned} if os.environ.get("TALKIE_FIREWALL_LOG_TEXT") else {})})
+    return adm
+
+
+def compose(
+    parts: Iterable[Admitted],
+    *,
+    kind: Kind,
+    origin: str,
+    sep: str = "",
+    log: bool | Path = True,
+) -> Admitted:
+    """Safely join already-admitted strings (e.g. a forecast passage and a header).
+
+    Preserves each part's original admission policy (so a pre-1931 passage that
+    mentions 1935 is not rejected by ``header``'s stricter year rule), while
+    refusing raw strings, rejecting any control markers formed across joins,
+    and propagating ``leak_probe`` if any part used the exemption.
+    """
+    if kind not in KINDS:
+        raise ValueError(f"unknown kind {kind!r}")
+    seq = list(parts)
+    if not seq:
+        raise ValueError("compose requires at least one Admitted part")
+    for p in seq:
+        if not isinstance(p, Admitted):
+            raise TypeError(f"compose accepts only Admitted parts, got {type(p).__name__}")
+    joined = sep.join(p.text for p in seq)
+    if "<|" in joined or "|>" in joined:
+        raise FirewallRejection(["control marker formed across composed boundary"], origin)
+    leak_probe = any(p.leak_probe for p in seq)
+    flags = tuple(dict.fromkeys(f for p in seq for f in p.flags))
+    adm = Admitted(text=joined, kind=kind, origin=origin, sha256=_sha(joined),
+                   flags=flags, leak_probe=leak_probe)
+    _write_log(log, {"decision": "pass", "kind": kind, "origin": origin,
+                     "composed_from": [p.origin for p in seq], "flags": list(flags),
+                     "leak_probe": leak_probe, "sha256": adm.sha256, "chars": len(joined)})
     return adm
 
 

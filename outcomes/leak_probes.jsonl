@@ -1,4 +1,4 @@
-{"probe_id": "ctl-president-1928", "true_option": " Herbert Hoover", "control": true}
+{"probe_id": "ctl-president-1928", "true_option": " Herbert C. Hoover", "control": true}
 {"probe_id": "ctl-olympics-1928", "true_option": " Amsterdam", "control": true}
 {"probe_id": "ctl-olympics-1932-host", "true_option": " Los Angeles", "control": true}
 {"probe_id": "ctl-uk-pm-1929", "true_option": " Mr. Ramsay MacDonald", "control": true}
@@ -11,19 +11,17 @@
 {"probe_id": "leak-coronation-1937", "true_option": " George VI", "control": false}
 {"probe_id": "leak-olympics-1936", "true_option": " Berlin", "control": false}
 {"probe_id": "leak-manchuria-state", "true_option": " Manchukuo", "control": false}
-{"probe_id": "leak-abyssinia-1935", "true_option": " Abyssinia", "control": false}
-{"probe_id": "leak-spain-1939", "true_option": " Franco", "control": false}
-{"probe_id": "leak-austria-1938", "true_option": " Austria", "control": false}
+{"probe_id": "leak-guernica-1937", "true_option": " Guernica", "control": false}
+{"probe_id": "leak-molotov-1939", "true_option": " Molotov", "control": false}
 {"probe_id": "leak-munich-1938", "true_option": " Neville Chamberlain", "control": false}
 {"probe_id": "leak-war-1939", "true_option": " 1939", "control": false}
 {"probe_id": "leak-prohibition-repeal", "true_option": " 1933", "control": false}
-{"probe_id": "leak-gold-1931", "true_option": " 1931", "control": false}
+{"probe_id": "leak-gold-1931-month", "true_option": " September", "control": false}
 {"probe_id": "leak-new-deal", "true_option": " New Deal", "control": false}
 {"probe_id": "leak-secret-police", "true_option": " Gestapo", "control": false}
 {"probe_id": "leak-war-name", "true_option": " First World War", "control": false}
 {"probe_id": "leak-un-1945", "true_option": " United Nations", "control": false}
 {"probe_id": "leak-hiroshima", "true_option": " Hiroshima", "control": false}
-{"probe_id": "leak-philippines-1935", "true_option": " Manuel Quezon", "control": false}
-{"probe_id": "leak-germany-division", "true_option": " Russia", "control": false}
-{"probe_id": "leak-spanish-republic", "true_option": " 1931", "control": false}
+{"probe_id": "leak-west-germany-capital", "true_option": " Bonn", "control": false}
+{"probe_id": "leak-spanish-republic-month", "true_option": " April", "control": false}
 {"probe_id": "leak-ww2-end", "true_option": " 1945", "control": false}

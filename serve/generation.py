@@ -14,11 +14,21 @@ from serve.scoring import check_text
 from serve.tokenizer import EOT_ID, chat_ids, encode_text
 
 
+_IT_STOP_STRINGS = ("<|user|>", "<|assistant|>", "<|system|>", "<|end|>", "<|endoftext|>")
+
+
+def _truncate_at_stop(text: str) -> tuple[str, bool]:
+    positions = [text.find(s) for s in _IT_STOP_STRINGS if s in text]
+    if not positions:
+        return text, False
+    return text[: min(positions)], True
+
+
 @torch.no_grad()
 def generate(model, enc, *, prompt: str | None = None, messages: list[dict] | None = None,
              style: str = "base", max_tokens: int = 256, temperature: float = 0.7,
              top_k: int | None = None, top_p: float | None = None, seed: int = 0,
-             max_seq_len: int = 4096) -> dict:
+             max_seq_len: int = 4096, prepend_eot: bool = True) -> dict:
     if (prompt is None) == (messages is None):
         raise ValueError("give exactly one of prompt or messages")
     if messages is not None:
@@ -29,7 +39,10 @@ def generate(model, enc, *, prompt: str | None = None, messages: list[dict] | No
         ids = chat_ids(enc, messages)
     else:
         check_text(prompt)
-        ids = [EOT_ID] + encode_text(enc, prompt)
+        head = [EOT_ID] if prepend_eot else []
+        ids = head + encode_text(enc, prompt)
+        if not ids:
+            raise ValueError("empty prompt with prepend_eot=False")
     if len(ids) + max_tokens > max_seq_len:
         raise ValueError(f"prompt {len(ids)} + max_tokens {max_tokens} > {max_seq_len}")
 
@@ -43,9 +56,16 @@ def generate(model, enc, *, prompt: str | None = None, messages: list[dict] | No
                   do_sample=not greedy)
     if not greedy:
         kwargs.update(temperature=temperature, top_k=top_k or 0, top_p=top_p or 1.0)
-    out = model.generate(torch.tensor([ids], device=device), **kwargs)[0, len(ids):].tolist()
+    inp = torch.tensor([ids], dtype=torch.long, device=device)
+    mask = torch.ones_like(inp)
+    out = model.generate(inp, attention_mask=mask, **kwargs)[0, len(ids):].tolist()
     finish = "length"
     if out and out[-1] in stop:
         out, finish = out[:-1], "stop"
-    return {"text": enc.decode(out), "token_ids": out, "n_prompt_tokens": len(ids),
+    text = enc.decode(out)
+    if style == "it":
+        text, hit_stop = _truncate_at_stop(text)
+        if hit_stop:
+            finish = "stop"
+    return {"text": text, "token_ids": out, "n_prompt_tokens": len(ids),
             "finish_reason": finish}

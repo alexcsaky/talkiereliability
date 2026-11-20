@@ -89,3 +89,59 @@ def test_logodds():
     assert logodds([-1.0], [-1.0]) == pytest.approx(0.0)
     import math
     assert logodds([math.log(0.3), math.log(0.3)], [math.log(0.2)]) == pytest.approx(math.log(3))
+
+
+def test_score_ids_rejects_invalid_start(models, enc):
+    _, port = models
+    eng = Engine(PortAdapter(port), enc)
+    with pytest.raises(ValueError):
+        eng.score_ids([([EOT_ID, 10, 20], 0)])
+    with pytest.raises(ValueError):
+        eng.score_ids([([EOT_ID, 10, 20], 3)])
+
+
+def test_chat_ids_validates_roles():
+    enc_it = build_tokenizer(VOCAB, "it")
+    with pytest.raises(ValueError):
+        chat_ids(enc_it, [{"role": "tool", "content": "hi"}])
+
+
+def test_generation_and_api_endpoints(models, enc):
+    from fastapi.testclient import TestClient
+
+    from serve.api import create_app
+    from serve.generation import _truncate_at_stop, generate
+
+    _, port = models
+    eng = Engine(PortAdapter(port), enc)
+    out = generate(port, enc, prompt="The King spoke", max_tokens=4, temperature=0)
+    assert len(out["token_ids"]) <= 4 and out["finish_reason"] in ("stop", "length")
+    assert _truncate_at_stop("Hello <|user|> leaked") == ("Hello ", True)
+
+    app = create_app(
+        {"talkie-1930-13b-base": eng},
+        health=lambda: {"model": "talkie-1930-13b-base", "dtype": "torch.float32"},
+        generate=lambda model, **kw: generate(port, enc, style="base", **kw),
+    )
+    tc = TestClient(app)
+    h = tc.get("/health")
+    assert h.status_code == 200 and "dtype" in h.json()
+    sc = tc.post("/score", json={"model": "talkie-1930-13b-base", "prefix": "In 1920,",
+                                 "continuations": [" trade rose."]})
+    assert sc.status_code == 200 and len(sc.json()["results"]) == 1
+    bad = tc.post("/score", json={"model": "talkie-1930-13b-base", "prefix": "hi <|user|>",
+                                  "continuations": [" x"]})
+    assert bad.status_code == 422
+    gen = tc.post("/generate", json={"model": "talkie-1930-13b-base", "prompt": "Hello",
+                                     "max_tokens": 3, "temperature": 0})
+    assert gen.status_code == 200 and "text" in gen.json()
+
+
+def test_throughput_restores_max_batch_tokens(models, enc):
+    from serve.throughput import measure
+
+    _, port = models
+    eng = Engine(PortAdapter(port), enc, max_batch_tokens=16384)
+    text_ids = encode_text(enc, "The price of wheat rose in London yesterday. " * 40)
+    rows = measure(eng, text_ids, seq_lens=(32,), batch_tokens=(64, 128), n_seqs=4)
+    assert len(rows) == 2 and eng.max_batch_tokens == 16384

@@ -15,7 +15,8 @@ def test_only_analysis_reads_outcomes():
             rel = str(path.relative_to(REPO))
             if rel in ALLOWED:
                 continue
-            if re.search(r"""["'/]outcomes\b|\boutcomes/""", path.read_text()):
+            txt = path.read_text()
+            if re.search(r"""["'/]outcomes\b|\boutcomes/|["']answer_index["']""", txt):
                 offenders.append(rel)
     assert offenders == []
 

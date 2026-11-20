@@ -20,6 +20,7 @@ from __future__ import annotations
 
 import contextlib
 import datetime as dt
+import fcntl
 import json
 import os
 import time
@@ -79,26 +80,35 @@ def _ledger_path() -> Path:
     return Path(os.environ.get("TALKIE_BUDGET_LEDGER", DEFAULT_LEDGER))
 
 
-def _read() -> list[dict]:
+@contextlib.contextmanager
+def _locked_ledger() -> Iterator[Path]:
     p = _ledger_path()
+    p.parent.mkdir(parents=True, exist_ok=True)
+    lock_path = p.with_suffix(p.suffix + ".lock")
+    with lock_path.open("a+") as lf:
+        fcntl.flock(lf.fileno(), fcntl.LOCK_EX)
+        try:
+            yield p
+        finally:
+            fcntl.flock(lf.fileno(), fcntl.LOCK_UN)
+
+
+def _read_unlocked(p: Path) -> list[dict]:
     if not p.exists():
         return []
     return [json.loads(line) for line in p.read_text().splitlines() if line.strip()]
 
 
-def _append(rec: dict) -> None:
-    p = _ledger_path()
-    p.parent.mkdir(parents=True, exist_ok=True)
+def _append_unlocked(p: Path, rec: dict) -> None:
     rec = {"ts": dt.datetime.now(dt.timezone.utc).isoformat(timespec="seconds"), **rec}
     with p.open("a") as f:
         f.write(json.dumps(rec) + "\n")
 
 
-def spent(kind: Kind) -> float:
-    """Committed spend plus open reservations for ``kind``, in USD."""
+def _spent_unlocked(p: Path, kind: Kind) -> float:
     total = 0.0
     open_res: dict[str, float] = {}
-    for r in _read():
+    for r in _read_unlocked(p):
         if r["kind"] != kind:
             continue
         if r["event"] == "reserve":
@@ -111,6 +121,12 @@ def spent(kind: Kind) -> float:
     return total + sum(open_res.values())
 
 
+def spent(kind: Kind) -> float:
+    """Committed spend plus open reservations for ``kind``, in USD."""
+    with _locked_ledger() as p:
+        return _spent_unlocked(p, kind)
+
+
 def remaining(kind: Kind) -> float:
     return load_caps()[kind] - spent(kind)
 
@@ -118,47 +134,61 @@ def remaining(kind: Kind) -> float:
 def reserve(name: str, kind: Kind, worst_case_usd: float, note: str = "") -> str:
     """Reserve ``worst_case_usd``; raise BudgetExceeded if the cap would be crossed."""
     cap = load_caps()[kind]
-    already = spent(kind)
-    if already + worst_case_usd > cap + 1e-9:
-        raise BudgetExceeded(
-            f"{name}: worst case ${worst_case_usd:.2f} on top of ${already:.2f} "
-            f"would cross the {kind} cap of ${cap:.2f}")
-    job_id = uuid.uuid4().hex[:12]
-    _append({"event": "reserve", "kind": kind, "job_id": job_id, "name": name,
-             "usd": round(worst_case_usd, 6), "note": note})
-    return job_id
+    with _locked_ledger() as p:
+        already = _spent_unlocked(p, kind)
+        if already + worst_case_usd > cap + 1e-9:
+            raise BudgetExceeded(
+                f"{name}: worst case ${worst_case_usd:.2f} on top of ${already:.2f} "
+                f"would cross the {kind} cap of ${cap:.2f}")
+        job_id = uuid.uuid4().hex[:12]
+        _append_unlocked(p, {"event": "reserve", "kind": kind, "job_id": job_id, "name": name,
+                             "usd": round(worst_case_usd, 6), "note": note})
+        return job_id
 
 
 def settle(job_id: str, kind: Kind, actual_usd: float, **detail) -> None:
-    _append({"event": "settle", "kind": kind, "job_id": job_id,
-             "usd": round(actual_usd, 6), **detail})
+    with _locked_ledger() as p:
+        _append_unlocked(p, {"event": "settle", "kind": kind, "job_id": job_id,
+                             "usd": round(actual_usd, 6), **detail})
 
 
 def record_manual(name: str, kind: Kind, usd: float, note: str) -> None:
     """Record spend that happened outside a guarded job (e.g. read off a bill)."""
-    _append({"event": "manual", "kind": kind, "job_id": uuid.uuid4().hex[:12],
-             "name": name, "usd": round(usd, 6), "note": note})
+    with _locked_ledger() as p:
+        _append_unlocked(p, {"event": "manual", "kind": kind, "job_id": uuid.uuid4().hex[:12],
+                             "name": name, "usd": round(usd, 6), "note": note})
 
 
 @contextlib.contextmanager
 def gpu_job(name: str, container: Container, timeout_s: float,
-            note: str = "") -> Iterator[dict]:
-    """Guard a Modal job. Reserves timeout x price; settles wall time x price.
+            note: str = "", *, scaledown_s: float = 0.0) -> Iterator[dict]:
+    """Guard a Modal job. Reserves (timeout + scaledown) x price; settles (wall + scaledown) x price.
 
-    Wall time on the client includes container start and image pull, which
-    Modal also bills, so it is an upper bound on the true charge.
+    Wall time on the client includes container start and image pull, and
+    ``scaledown_s`` accounts for Modal's idle scaledown window after the last
+    RPC returns. Wall time is NOT clamped to ``timeout_s``, so multi-RPC
+    overruns are never hidden. On ``KeyboardInterrupt`` or ``SystemExit``, the
+    worst-case reservation is left open until reconciled against Modal billing.
     """
-    worst = container.usd_per_sec * timeout_s
+    worst = container.usd_per_sec * (timeout_s + scaledown_s)
     job_id = reserve(name, "gpu", worst, note=note)
     info = {"job_id": job_id, "worst_case_usd": worst}
     t0 = time.monotonic()
+    interrupted = False
     try:
         yield info
+    except BaseException as exc:
+        if not isinstance(exc, Exception):  # KeyboardInterrupt / SystemExit
+            interrupted = True
+        raise
     finally:
-        secs = time.monotonic() - t0
-        settle(job_id, "gpu", min(secs, timeout_s) * container.usd_per_sec,
-               seconds=round(secs, 1), gpu=container.gpu,
-               cpu_cores=container.cpu_cores, memory_gib=container.memory_gib)
+        if not interrupted:
+            secs = time.monotonic() - t0
+            billed_secs = secs + scaledown_s
+            settle(job_id, "gpu", billed_secs * container.usd_per_sec,
+                   seconds=round(secs, 1), scaledown_s=round(scaledown_s, 1),
+                   gpu=container.gpu, cpu_cores=container.cpu_cores,
+                   memory_gib=container.memory_gib)
 
 
 @contextlib.contextmanager

@@ -22,12 +22,12 @@
       "bytes": 140213
     },
     "lahman_SeriesPost.csv": {
-      "url": "https://raw.githubusercontent.com/cbwinslow/baseballdatabank/master/core/SeriesPost.csv",
+      "url": "https://raw.githubusercontent.com/cbwinslow/baseballdatabank/8a908d51833ee99b56fce165c93dc99ee8886d6f/core/SeriesPost.csv",
       "sha256": "67d0b20569e8c3f4728568e4a7c1c2730179c8ae6417c71df0846fbc95c2c9b9",
       "bytes": 10957
     },
     "lahman_Teams.csv": {
-      "url": "https://raw.githubusercontent.com/cbwinslow/baseballdatabank/master/core/Teams.csv",
+      "url": "https://raw.githubusercontent.com/cbwinslow/baseballdatabank/8a908d51833ee99b56fce165c93dc99ee8886d6f/core/Teams.csv",
       "sha256": "827bef5af12158eeb3d18a4a3f54ff846e395965b47c09b2564ad7bb29c5e545",
       "bytes": 591322
     }

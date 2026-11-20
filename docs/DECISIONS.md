@@ -94,6 +94,61 @@ token got "Token not found" back, verified). Only real credentials are missing.
 
 **Stage 0 gate item that cannot run yet.** "Leak-flagged share of pilot
 questions" needs the pilot questions, which stage 2 builds. Stage 0 reports the
-provisional probes (29 choice probes, 6 of them pre-1931 controls; 5 year
+provisional probes (27 choice probes, 6 of them pre-1931 controls; 5 year
 probes) and the community probe set; `leak_probes.probe_questions` runs on the
 pilot questions at the start of stage 2.
+
+## 20 Nov 2026 (stage 0 review fixes, before first GPU run)
+
+**Firewall hardened (`firewall.py`, `firewall_lexicon.yaml`).** Fixed
+`_FUTURE_YEAR_RE` so `1930` is no longer matched as a year after 1930 (which
+previously rejected all six 1929 known-truth items and would have rejected
+1930-dated forecasting headers). Made `parse_date` strict full-string matching
+so bound-volume ranges (`1930-1935`, `1930/1940`) and malformed dates are
+rejected rather than truncated to `1930`. Anachronism checks now run before URL
+and boilerplate stripping so terms inside modern URLs or footnotes are caught,
+and post-1930 copyright/reprint notices reject passages outright. Added
+`Admitted.leak_probe` and `firewall.compose` so confirmatory `TalkieClient`
+instances refuse leak-probe-exempt strings (`allow_leak_probes=False` by
+default) and `elicit.build_requests` requires an already-admitted `passage`
+without re-subjecting pre-1931 forecasts to `header`'s future-year ban. Tightened
+`firewall_lexicon.yaml` (added `United Nations`, `Great Depression`, `WW1`/`WW2`,
+`Wehrmacht`, `Luftwaffe`, `Vichy France`, `Chancellor Hitler`, `President
+Franklin Roosevelt`; removed pre-1931 false positives `Superman` and bare
+`Holocaust`).
+
+**Known-truth set expanded with a statement-vs-negation family (`controls/build_known_truth.py`).**
+Added 86 rule-generated statement-vs-negation questions from the same Census and
+World Series sources (total 312 questions across 36 clusters of at most 10 items),
+so stage 0 tests negation sensitivity alongside symmetric entity swaps. Fixed
+duplicate-city keying in `_census_labels`, pinned the Lahman mirror to commit
+`8a908d51833e`, fixed missing `"the"` before Nobel organisation names, used
+`dateAwarded` for reserved Nobel prizes, changed `kt-handbook` to December of
+`pub_year`, and removed the anachronistic `"Sir"` on Austen Chamberlain before
+1925.
+
+**Leak probes balanced for BPE token length and Rule 8 (`controls/leak_probes.*`).**
+Revised `controls/leak_probes.yaml` and `outcomes/leak_probes.jsonl` to match
+Talkie BPE token counts across options, replace pre-1931-predictable and
+1931-edge recency-biased items, and remove the `"MONDAY MORNING"` calendar cue
+from `yr-newspaper` (Jan 5 was a Monday in 1931). Removed `answer_index` scoring
+from `controls/leak_probes.py::knowledge_bench` (moved to
+`analysis/stage0_report.py` per Rule 8) and enforced the firewall lexicon on
+`knowledge_bench` stems (`leak_probe=False`). Stage 0 now also probes
+`talkie-1930-13b-it` in its chat template (`leak_it_chat.json`).
+
+**Modal, throughput, parity and reporting fixes (`serve/`, `budget.py`, `analysis/`).**
+Restored `engine.max_batch_tokens` after `throughput.measure` and moved
+`reset_peak_memory_stats` before timing; tokenised Gutenberg texts remotely on
+`TalkieServer.throughput` (removing the local `vocab.txt` dependency); cached
+Gutenberg texts on the Modal volume during `download` and fetched once on CPU
+before booting any GPU container; raised `download_weights` memory to 16 GiB,
+removed dead `hf_transfer`, and refused to commit on SHA-256 or `vocab_sha1`
+mismatch; lowered `scaledown_window` to 15 s and included it in `budget.gpu_job`
+without clamping wall-time overruns, leaving reservations open on
+`KeyboardInterrupt`, with `fcntl.flock` locking. Extended `parity_check` with
+batched right-padding invariance and `prepend_eot=False` checks. Replaced
+truncating JSON dumps in `analysis/stage0_report.py` with full Markdown tables
+for download, health, parity, context and throughput, plus log-space and
+length-normalised leak probe reporting.
+

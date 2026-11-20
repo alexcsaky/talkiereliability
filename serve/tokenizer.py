@@ -52,6 +52,9 @@ def encode_text(enc: tiktoken.Encoding, text: str) -> list[int]:
     return enc.encode_ordinary(text)
 
 
+_VALID_ROLES = frozenset(("system", "user", "assistant"))
+
+
 def chat_ids(enc: tiktoken.Encoding, messages: list[dict]) -> list[int]:
     """Chat template of the official code, built from ids, not marker strings.
 
@@ -61,7 +64,10 @@ def chat_ids(enc: tiktoken.Encoding, messages: list[dict]) -> list[int]:
     sp = {k: enc.encode_single_token(k) for k in _IT_SPECIAL}
     ids: list[int] = []
     for m in messages:
-        ids.append(sp[f"<|{m['role']}|>"])
+        role = m.get("role")
+        if role not in _VALID_ROLES:
+            raise ValueError(f"unknown chat role {role!r}; expected one of {sorted(_VALID_ROLES)}")
+        ids.append(sp[f"<|{role}|>"])
         ids.extend(encode_text(enc, m["content"]))
         ids.append(sp["<|end|>"])
     ids.append(sp["<|assistant|>"])

@@ -1,27 +1,36 @@
 # Status
 
-Last updated: 20 Nov 2026, end of the first build session.
+Last updated: 20 Nov 2026, after independent Stage 0 review and fixes (before first GPU run).
 
-**Stage 0 (model checks): code built and tested on CPU. Not yet run on a GPU**,
+**Stage 0 (model checks): code built, reviewed, hardened and tested on CPU. Not yet run on a GPU**,
 because there are no Modal credentials in this environment.
 
 ## Current facts
 
-Verified this session, by reading code or the hub API or by measuring:
+Verified by reading code or the hub API or by measuring:
 
 - Official Talkie code at commit `35317ba` (19 May 2026): `forward` returns
   last-position logits only; `temperature=0` divides by zero; prompts are
   encoded with `allowed_special="all"`; no token is prepended; the context
   default is 4,096; the RoPE base is 1,000,000.
+- Official 53.1 GB FP32 checkpoint (`final.ckpt`): verified via HTTP Range
+  inspection of the ZIP64 central directory and `data.pkl` to be uncompressed
+  ZIP64 (`mmap=True`-compatible), using only five pickle globals whitelisted by
+  PyTorch 2.8 `weights_only=True`, with all 443 `_orig_mod.`-stripped keys
+  matching `TalkieModel(GPTConfig(vocab_size=65536))`.
 - Model repos are pinned in `serve/models.py`. The base and chat checkpoints
   share one vocabulary (git blob `c3e0030`); the web twin's differs. The web
   twin's file is `base.ckpt`, not `final.ckpt`.
-- The community port's code is safe: no network, file or exec calls. It is
-  identical across its three repos and vendored. Two quirks:
+- The community port's code is safe: no network, file or exec calls. Verified
+  byte-identical across all three port repos and vendored. Verified loading via
+  `TalkieForCausalLM.from_pretrained(..., dtype=torch.bfloat16,
+  use_safetensors=True)` under `transformers==5.8.0` and `accelerate` with
+  `_attn_implementation="sdpa"`. Two quirks:
   - Left padding shifts positions.
   - It folds the lm-head gain into the weights in bf16.
-- A tiny random model in fp32 on CPU agrees with the port to 1e-3 at every
-  position. The real 13B check runs in stage 0.
+- A tiny random model on CPU agrees with the port at every position (both with
+  and without `<|endoftext|>` and under batched right-padding). The real 13B
+  check runs in stage 0.
 - Modal is reachable from this session with `modal[api-proxy-support]`; only
   credentials are missing.
 - Modal prices (pricing page, 20 Nov 2026):
@@ -32,42 +41,55 @@ Verified this session, by reading code or the hub API or by measuring:
 
   A 48 GiB L40S container is about $2.52/h; the 96 GiB parity container is
   about $2.91/h.
-- Tests: 29 pass. They cover:
-  - firewall: 22 of 22 planted post-1930 passages rejected, 10 genuine passages kept;
-  - budget guard;
-  - scoring: batching invariance, manual check, guards;
-  - parity and context code, run on tiny models;
-  - known-truth and leak runs end to end;
-  - outcome isolation.
+- Tests: 38 pass. They cover:
+  - firewall: 22 of 22 planted post-1930 passages rejected, 10 genuine passages
+    kept, `1930` allowed in headers, bound-volume date ranges rejected,
+    pre-strip URL anachronism detection, post-1930 copyright rejection,
+    `leak_probe` flag and `firewall.compose`;
+  - budget guard: caps, `scaledown_s` accounting, unclamped overruns,
+    `KeyboardInterrupt` retaining worst-case reservation, file locking;
+  - scoring, FastAPI endpoints, generation, throughput `max_batch_tokens`
+    restoration, batching invariance, guards;
+  - parity (including right-padded batch invariance and `noeot`) and context
+    code, run on tiny models;
+  - all 312 known-truth questions passing the firewall, leak probes,
+    confirmatory client refusal of `leak_probe=True`, and full non-truncating
+    stage 0 report;
+  - outcome isolation (including `answer_index`).
 
 ## Built (stage 0)
 
 | Piece | File |
 | --- | --- |
 | Firewall and lexicon | `firewall.py`, `firewall_lexicon.yaml` |
-| Spend guard (placeholder caps: $25 GPU, $50 API) | `budget.py`, `budget.yaml` |
+| Spend guard (caps: $25 GPU, $50 API) | `budget.py`, `budget.yaml` |
 | Scoring engine (official and port adapters) | `serve/scoring.py`, `serve/tokenizer.py` |
-| FastAPI endpoints `/score`, `/score_batch`, `/generate`, `/health` | `serve/api.py` |
-| Modal app: weights download, server, stage 0 jobs | `serve/modal_app.py` |
+| FastAPI endpoints `/score`, `/score_batch`, `/generate`, `/health` | `serve/api.py`, `serve/generation.py` |
+| Modal app: weights download, Gutenberg cache, server, stage 0 jobs | `serve/modal_app.py` |
 | Parity, context and throughput tests | `serve/parity_check.py`, `serve/context_test.py`, `serve/throughput.py` |
 | Reading a forecast (statement against negation, paraphrases, templates) | `forecaster/elicit.py`, `forecaster/client.py` |
-| Known-truth set: 226 questions (75 census, 125 Nobel, 26 World Series) | `controls/build_known_truth.py`, `questions/known_truth.jsonl` |
-| Leak probes: 23 post-1930 probes, 6 pre-1931 controls, 5 year probes | `controls/leak_probes.yaml`, `controls/leak_probes.py` |
+| Known-truth set: 312 questions (75 census, 125 Nobel, 26 World Series, 86 negation) | `controls/build_known_truth.py`, `questions/known_truth.jsonl` |
+| Leak probes: 21 post-1930 probes, 6 pre-1931 controls, 5 year probes (BPE-length-matched) | `controls/leak_probes.yaml`, `controls/leak_probes.py` |
 | Stage 0 report | `analysis/stage0_report.py` |
 
 ## Stage 0 run plan and cost (hypothesis)
 
 1. `modal run serve/modal_app.py::download`: about 131 GB to a Modal volume
-   (three ports plus the official base checkpoint), CPU only, about $0.10.
+   (three ports plus the official base checkpoint, verified against pinned
+   SHA-256 and `vocab_sha1` before commit, plus cached pre-1931 Gutenberg
+   context texts), CPU only (16 GiB RAM), about $0.10 to $0.20.
 2. `modal run serve/modal_app.py::stage0 --what all`:
-   - parity on 38 short and 3 long prompts;
+   - parity on 38 short and 3 long prompts (plus batched right-padding
+     invariance and `prepend_eot=False`);
    - the context test at 1k to 4k;
-   - throughput;
-   - known truth, with and without the document-start token;
-   - leak probes on base, chat and web;
+   - throughput (tokenised remotely on the container; no local `vocab.txt` needed);
+   - known truth (312 questions including statement-vs-negation), with and
+     without the document-start token;
+   - leak probes on base, chat (both raw completion and chat template) and web;
    - known truth on the web twin as a ceiling.
 
-   The guard reserves at most about $10. Expected actual spend is $3 to $5.
+   The guard reserves at most about $10 (including `scaledown_window=15` s).
+   Expected actual spend is $3 to $5.
 3. `python -m analysis.stage0_report`, then copy the numbers here and into
    `docs/LEAKAGE.md`, and stop at the gate.
 

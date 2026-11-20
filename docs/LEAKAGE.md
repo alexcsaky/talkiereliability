@@ -31,6 +31,7 @@ measured; nothing below has been run on the real model yet.
 
 ## Results
 
-None yet. Stage 0 writes `results/stage0/leak_base.json`, `leak_it.json` and
-`leak_web.json`; `python -m analysis.stage0_report` summarises them, and the
-summary is copied here.
+None yet. Stage 0 writes `results/stage0/leak_base.json`, `leak_it.json`,
+`leak_it_chat.json` and `leak_web.json`; `python -m analysis.stage0_report`
+summarises them (with both summed and per-token length-normalised ranks), and
+the summary is copied here.

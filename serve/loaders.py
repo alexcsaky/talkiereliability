@@ -75,3 +75,12 @@ def sha256_file(path: Path, chunk: int = 64 << 20) -> str:
         while b := f.read(chunk):
             h.update(b)
     return h.hexdigest()
+
+
+def git_blob_sha1(path: Path) -> str:
+    """Compute the git blob SHA-1 reported by the Hugging Face Hub API."""
+    data = path.read_bytes()
+    h = hashlib.sha1()
+    h.update(f"blob {len(data)}\0".encode("ascii"))
+    h.update(data)
+    return h.hexdigest()

@@ -39,10 +39,11 @@ KB_REVISION = "83cf6135fc242a5bbbaa47857295355c5ec651a8"
 KB_SKIP_PREDICATES = {"genre", "publication_date", "inception", "date_of_birth"}
 
 
-def _admit_choice(pid: str, prefix: str, options: list[str]):
-    pre = firewall.admit(prefix, kind="probe", origin=pid, leak_probe=True)
+def _admit_choice(pid: str, prefix: str, options: list[str], *, leak_probe: bool = True):
+    pre = firewall.admit(prefix, kind="probe", origin=pid,
+                         allow_future_years=True, leak_probe=leak_probe)
     opts = [firewall.admit(o if o.startswith((" ", "\n")) else " " + o, kind="continuation",
-                           origin=f"{pid}:opt{i}", leak_probe=True)
+                           origin=f"{pid}:opt{i}", allow_future_years=True, leak_probe=leak_probe)
             for i, o in enumerate(options)]
     return pre, opts
 
@@ -52,7 +53,7 @@ def choice_and_year(client: TalkieClient) -> dict:
     items, meta, rejected = [], [], []
     for p in spec["choice"]:
         try:
-            pre, opts = _admit_choice(p["id"], p["prefix"], p["options"])
+            pre, opts = _admit_choice(p["id"], p["prefix"], p["options"], leak_probe=True)
         except firewall.FirewallRejection as e:
             rejected.append({"origin": e.origin, "reasons": e.reasons})
             continue
@@ -61,14 +62,18 @@ def choice_and_year(client: TalkieClient) -> dict:
                      "control": bool(p.get("control"))})
     years = [str(y) for y in range(spec["year"]["options_from"], spec["year"]["options_to"] + 1)]
     for p in spec["year"]["prefixes"]:
-        pre, opts = _admit_choice(p["id"], p["prefix"], [" " + y for y in years])
+        pre, opts = _admit_choice(p["id"], p["prefix"], [" " + y for y in years], leak_probe=True)
         items.append((pre, opts))
         meta.append({"probe_id": p["id"], "kind": "year", "options": years})
     scores = client.score(items)
     rows = []
     for m, sc in zip(meta, scores):
-        rows.append({**m, "logprobs": [s["logprob"] for s in sc],
-                     "n_tokens": [s["n_tokens"] for s in sc]})
+        rows.append({
+            **m,
+            "logprobs": [s["logprob"] for s in sc],
+            "n_tokens": [s["n_tokens"] for s in sc],
+            "boundary_ok": all(s["boundary_ok"] for s in sc),
+        })
     return {"model": client.model, "rows": rows, "rejected_by_firewall": rejected}
 
 
@@ -88,7 +93,14 @@ def _kb_rows(bucket: str) -> list[dict]:
 
 
 def knowledge_bench(client: TalkieClient, n: int = 300, seed: int = 0) -> dict:
-    """Multiple choice, closed book: novel 1930s items against 1920s retention."""
+    """Multiple choice, closed book: novel 1930s items against 1920s retention.
+
+    Stems and options are checked by the firewall WITHOUT the leak-probe
+    anachronism exemption (future years allowed, anachronism lexicon enforced),
+    so modern-wording rejections are actually counted. Ground-truth indices are
+    never read or scored here (Rule 8); ``analysis/stage0_report.py`` joins and
+    scores them.
+    """
     rng = random.Random(seed)
     out = {}
     for label, bucket in (("novel_1931s", "probes_eval_novel_1931s"),
@@ -103,19 +115,19 @@ def knowledge_bench(client: TalkieClient, n: int = 300, seed: int = 0) -> dict:
             mc = r["probe_mc"]
             try:
                 pre, opts = _admit_choice(f"kb:{r['qid']}:{r['predicate']}",
-                                          f"Question. {mc['stem']}\nAnswer.", mc["options"])
+                                          f"Question. {mc['stem']}\nAnswer.",
+                                          mc["options"], leak_probe=False)
             except firewall.FirewallRejection:
                 rejected += 1
                 continue
             items.append((pre, opts))
             meta.append({"qid": r["qid"], "predicate": r["predicate"],
-                         "anchor_year": r["anchor_year"], "answer_index": mc["answer_index"],
-                         "n_options": len(mc["options"])})
+                         "anchor_year": r["anchor_year"], "n_options": len(mc["options"])})
         scores = client.score(items)
         for m, sc in zip(meta, scores):
-            lp = [s["logprob"] for s in sc]
-            m["pred"] = max(range(len(lp)), key=lambda i: lp[i])
-        out[label] = {"rows": meta, "rejected_by_firewall": rejected,
-                      "accuracy": sum(m["pred"] == m["answer_index"] for m in meta) / max(1, len(meta)),
-                      "chance": sum(1 / m["n_options"] for m in meta) / max(1, len(meta))}
+            m["logprobs"] = [s["logprob"] for s in sc]
+            m["n_tokens"] = [s["n_tokens"] for s in sc]
+            m["boundary_ok"] = all(s["boundary_ok"] for s in sc)
+        out[label] = {"bucket": bucket, "kb_repo": KB_REPO, "kb_revision": KB_REVISION,
+                      "rows": meta, "rejected_by_firewall": rejected}
     return out

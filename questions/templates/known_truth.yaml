@@ -9,6 +9,6 @@ templates:
   - id: kt-chronicle
     header: "From a chronicle of the year {year}, published in {pub_year}.\n\n"
   - id: kt-handbook
-    header: "A HANDBOOK OF USEFUL FACTS, CORRECTED TO JANUARY 1, {pub_year}\n\n"
+    header: "A HANDBOOK OF USEFUL FACTS, CORRECTED TO DECEMBER {pub_year}\n\n"
   - id: kt-queries
     header: "NOTES AND QUERIES, {pub_year}.\n\nReply.—"

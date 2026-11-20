@@ -57,19 +57,45 @@ class Request:
 
 
 def build_requests(questions: Sequence[BinaryQuestion], templates: Sequence[Template],
-                   *, passage: str = "", header_kind: str = "header"
+                   *, passage: firewall.Admitted | None = None, header_kind: str = "header"
                    ) -> tuple[list[Request], list[firewall.FirewallRejection]]:
     """Admit every header and continuation through the firewall.
 
-    A question whose strings are rejected is dropped and the rejection
-    returned, so the caller can report it.
+    ``passage``, when given, must already have passed ``firewall.admit(...,
+    kind="passage", pub_date=...)``; it is composed with each admitted header
+    via ``firewall.compose`` so Rule 1's date check is never bypassed and
+    genuine pre-1931 forecast passages mentioning 1931 to 1940 are not
+    rejected by ``header``'s stricter future-year ban.
+
+    A question whose strings are rejected is dropped in full (no partial
+    template rows are kept) and the rejection returned, so the caller can
+    report it.
     """
+    if passage is not None:
+        if not isinstance(passage, firewall.Admitted):
+            raise TypeError(
+                "passage must be a firewall.Admitted object (admitted with kind='passage')"
+            )
+        if passage.kind != "passage":
+            raise ValueError(f"passage must have kind='passage', got {passage.kind!r}")
+        if passage.leak_probe:
+            raise ValueError("passage cannot carry the leak-probe exemption")
+
     reqs, rejected = [], []
     for q in questions:
+        q_reqs: list[Request] = []
         try:
             for t in templates:
-                prefix = firewall.admit(passage + t.render(**q.fields).rstrip(" "),
-                                        kind=header_kind, origin=f"{q.id}:{t.id}")
+                hdr = firewall.admit(t.render(**q.fields).rstrip(" "),
+                                     kind=header_kind, origin=f"{q.id}:{t.id}")
+                if passage is not None:
+                    join_sep = "" if passage.text.endswith("\n") else "\n\n"
+                    prefix = firewall.compose(
+                        [passage, hdr], kind=header_kind,
+                        origin=f"{q.id}:{t.id}:{passage.origin}", sep=join_sep,
+                    )
+                else:
+                    prefix = hdr
                 # After a line break the statement starts the line; otherwise
                 # it follows a space. Either way prefix + continuation encodes
                 # the same as the joined text (boundary_ok).
@@ -78,9 +104,11 @@ def build_requests(questions: Sequence[BinaryQuestion], templates: Sequence[Temp
                                          origin=f"{q.id}:{side}{i}:{t.id}")
                           for i, s in enumerate(stmts)]
                          for side, stmts in (("yes", q.yes), ("no", q.no))]
-                reqs.append(Request(q.id, t.id, prefix, conts[0], conts[1]))
+                q_reqs.append(Request(q.id, t.id, prefix, conts[0], conts[1]))
         except firewall.FirewallRejection as e:
             rejected.append(e)
+        else:
+            reqs.extend(q_reqs)
     return reqs, rejected
 
 
@@ -101,6 +129,13 @@ def run(client: TalkieClient, requests: Sequence[Request]) -> list[dict]:
     return rows
 
 
+def _sigmoid(x: float) -> float:
+    if x >= 0:
+        return 1.0 / (1.0 + math.exp(-x))
+    e = math.exp(x)
+    return e / (1.0 + e)
+
+
 def aggregate(rows: Sequence[dict]) -> dict[str, dict]:
     """Average log-odds over templates for each question."""
     by_q: dict[str, list[float]] = {}
@@ -109,7 +144,7 @@ def aggregate(rows: Sequence[dict]) -> dict[str, dict]:
     out = {}
     for qid, lo in by_q.items():
         m = statistics.mean(lo)
-        out[qid] = {"logodds_raw": m, "p_raw": 1 / (1 + math.exp(-m)),
+        out[qid] = {"logodds_raw": m, "p_raw": _sigmoid(m),
                     "n_templates": len(lo),
                     "template_sd": statistics.stdev(lo) if len(lo) > 1 else 0.0}
     return out

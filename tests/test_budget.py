@@ -45,3 +45,20 @@ def test_api_and_manual():
     budget.record_manual("bill", "api", 0.75, "from invoice")
     assert budget.spent("api") == pytest.approx(2.0)
     assert budget.spent("gpu") == 0
+
+
+def test_scaledown_and_unclamped_overrun(monkeypatch):
+    c = Container("L40S", 4, 48)
+    times = iter([100.0, 125.0])  # 25s wall time on a 10s timeout -> must NOT clamp to 10s
+    monkeypatch.setattr(budget.time, "monotonic", lambda: next(times))
+    with budget.gpu_job("overrun", c, timeout_s=10, scaledown_s=15) as info:
+        assert info["worst_case_usd"] == pytest.approx(25 * c.usd_per_sec)
+    assert budget.spent("gpu") == pytest.approx((25 + 15) * c.usd_per_sec, abs=1e-6)
+
+
+def test_keyboard_interrupt_leaves_worst_case_reserved():
+    c = Container("L40S", 4, 48)
+    with pytest.raises(KeyboardInterrupt):
+        with budget.gpu_job("interrupted", c, timeout_s=600, scaledown_s=15):
+            raise KeyboardInterrupt
+    assert budget.spent("gpu") == pytest.approx(615 * c.usd_per_sec)

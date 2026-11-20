@@ -35,7 +35,7 @@ from typing import Protocol, Sequence
 import torch
 import torch.nn.functional as F
 
-from serve.tokenizer import EOT_ID, encode_text
+from serve.tokenizer import EOT_ID, chat_ids, encode_text
 
 HEAD_CHUNK = 2048  # rows of hidden state per lm-head call, to bound memory
 
@@ -159,14 +159,19 @@ class Engine:
         check_text(text)
         return encode_text(self.enc, text)
 
-    def build(self, prefix: str, continuation: str) -> tuple[list[int], int, bool]:
+    def build(self, prefix: str, continuation: str, *,
+              chat_user_prompt: str | None = None) -> tuple[list[int], int, bool]:
         """Returns (ids, index of first continuation token, boundary_ok)."""
         p = self.encode(prefix)
         c = self.encode(continuation)
         if not c:
             raise ValueError("empty continuation")
         boundary_ok = (p + c) == self.encode(prefix + continuation)
-        head = [EOT_ID] if self.prepend_eot else []
+        if chat_user_prompt is not None:
+            check_text(chat_user_prompt)
+            head = chat_ids(self.enc, [{"role": "user", "content": chat_user_prompt}])
+        else:
+            head = [EOT_ID] if self.prepend_eot else []
         ids = head + p + c
         start = len(head) + len(p)
         if start == 0:
@@ -177,15 +182,18 @@ class Engine:
 
     # -- scoring -----------------------------------------------------------
 
-    def score(self, prefix: str, continuations: Sequence[str]) -> list[ContinuationScore]:
-        return self.score_requests([(prefix, list(continuations))])[0]
+    def score(self, prefix: str, continuations: Sequence[str], *,
+              chat_user_prompt: str | None = None) -> list[ContinuationScore]:
+        return self.score_requests([(prefix, list(continuations))],
+                                   chat_user_prompt=chat_user_prompt)[0]
 
-    def score_requests(self, requests: Sequence[tuple[str, Sequence[str]]]
+    def score_requests(self, requests: Sequence[tuple[str, Sequence[str]]], *,
+                       chat_user_prompt: str | None = None
                        ) -> list[list[ContinuationScore]]:
         items, owners = [], []
         for ri, (prefix, conts) in enumerate(requests):
             for ci, cont in enumerate(conts):
-                ids, start, ok = self.build(prefix, cont)
+                ids, start, ok = self.build(prefix, cont, chat_user_prompt=chat_user_prompt)
                 items.append((ids, start, ok))
                 owners.append((ri, ci))
         lps = self.score_ids([(ids, start) for ids, start, _ in items])
@@ -200,6 +208,9 @@ class Engine:
     @torch.no_grad()
     def score_ids(self, items: Sequence[tuple[list[int], int]]) -> list[list[float]]:
         """Log-probs of ids[start:] for each (ids, start). Batched by length."""
+        for s, start in items:
+            if start < 1 or start >= len(s):
+                raise ValueError(f"start={start} must satisfy 1 <= start < len(seq)={len(s)}")
         order = sorted(range(len(items)), key=lambda i: len(items[i][0]))
         results: list[list[float] | None] = [None] * len(items)
         for batch in self._batches(order, items):
@@ -250,12 +261,15 @@ class Engine:
         h = self.adapter.hidden(t)[0]
         if positions is not None:
             h = h[torch.tensor(list(positions), device=h.device)]
-        return torch.cat([self.adapter.head(h[a: a + HEAD_CHUNK])
-                          for a in range(0, h.shape[0], HEAD_CHUNK)]).cpu()
+        return torch.cat([self.adapter.head(h[a: a + HEAD_CHUNK]).cpu()
+                          for a in range(0, h.shape[0], HEAD_CHUNK)])
 
     def text_logprobs(self, text: str) -> list[float]:
-        """Per-token log-probs of a whole text after <|endoftext|> (perplexity)."""
-        ids = [EOT_ID] + self.encode(text)
+        """Per-token log-probs of a whole text (after <|endoftext|> if prepend_eot=True)."""
+        head = [EOT_ID] if self.prepend_eot else []
+        ids = head + self.encode(text)
+        if len(ids) < 2:
+            raise ValueError("need at least 2 tokens to compute text log-probabilities")
         if len(ids) > self.max_seq_len:
             raise SequenceTooLong(f"{len(ids)} tokens > {self.max_seq_len}")
         return self.score_ids([(ids, 1)])[0]

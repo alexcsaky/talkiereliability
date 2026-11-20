@@ -18,11 +18,16 @@ terms:
   # Wars and international order
   - {text: "World War II", case: insensitive}
   - {text: "World War 2", case: insensitive}
+  - {text: "World War Two", case: insensitive}
   - {text: "WWII", case: insensitive}
+  - {text: "WW2", case: insensitive}
   - {text: "World War I", case: sensitive}        # numbering implies a second
+  - {text: "World War One", case: insensitive}
   - {text: "WWI", case: insensitive}
+  - {text: "WW1", case: insensitive}
   - {text: "Second World War", case: sensitive}   # capitalised as a name only
   - {text: "First World War", case: sensitive}    # name implies a second
+  - {text: "United Nations", case: sensitive}
   - {text: "United Nations Organization", case: insensitive}
   - {text: "UN Security Council", case: insensitive}
   - {text: "Security Council", case: sensitive}
@@ -31,6 +36,13 @@ terms:
   - {text: "Pearl Harbor attack", case: insensitive}
   - {text: "attack on Pearl Harbor", case: insensitive}
   - {text: "Nazi Germany", case: insensitive}
+  - {text: "Chancellor Hitler", case: insensitive}
+  - {text: "Chancellor Adolf Hitler", case: insensitive}
+  - {text: "Wehrmacht", case: insensitive}
+  - {text: "Luftwaffe", case: insensitive}
+  - {text: "Waffen-SS", case: insensitive}
+  - {text: "Vichy France", case: insensitive}
+  - {text: "D-Day", case: sensitive}
   - {text: "Gestapo", case: insensitive}
   - {text: "Kristallnacht", case: insensitive}
   - {text: "Munich Agreement", case: insensitive}
@@ -44,15 +56,17 @@ terms:
   - {text: "Manchukuo", case: insensitive}
   - {text: "Spanish Civil War", case: insensitive}
   - {text: "Italo-Ethiopian War", case: insensitive}
-  - {text: "Holocaust", case: sensitive}          # capitalised as a name only
+  - {text: "Auschwitz", case: insensitive}
   # American politics of the 1930s
   - {text: "New Deal", case: sensitive}
+  - {text: "President Franklin Roosevelt", case: insensitive}
+  - {text: "President Franklin D. Roosevelt", case: insensitive}
   - {text: "Social Security Act", case: insensitive}
   - {text: "Tennessee Valley Authority", case: insensitive}
   - {text: "Works Progress Administration", case: insensitive}
   - {text: "Civilian Conservation Corps", case: insensitive}
   - {text: "Dust Bowl", case: insensitive}
-  - {text: "the Great Depression", case: sensitive}
+  - {text: "Great Depression", case: sensitive}
   - {text: "FDR", case: sensitive}
   # Technology and later coinages
   - {text: "radar", case: insensitive}
@@ -71,7 +85,6 @@ terms:
   - {text: "Wikipedia", case: insensitive}
   - {text: "Wikidata", case: insensitive}
   - {text: "teenager", case: insensitive}
-  - {text: "Superman", case: sensitive}
   # Retrospective framings of the target decade
   - {text: "the 1930s", case: insensitive}
   - {text: "the thirties", case: insensitive}
