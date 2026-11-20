@@ -74,10 +74,17 @@ Verified this session, by reading code or the hub API or by measuring:
 ## Gate for stage 0 (from the brief)
 
 - Parity within the port's stated tolerance (max logit difference about 0.03).
-- Known-truth AUROC clearly above chance, **at least 0.65 (proposal)**.
+- Known-truth AUROC clearly above chance. **No fixed threshold** (Alex, 20 Nov):
+  the AUROC and its interval are reported and Alex decides.
 - Leak-flagged share of pilot questions reported. The pilot questions are built
   in stage 2, so stage 0 reports the provisional probes, and the closed-book
   probe of the pilot questions runs at the start of stage 2.
+
+## Settled by Alex on 20 Nov 2026
+
+- The repo stays public; pushing the plan and brief is fine.
+- Spend caps stay at $25 GPU and $50 API.
+- Known-truth gate: report only, no fixed threshold.
 
 ## In progress
 
@@ -85,22 +92,17 @@ Nothing is running.
 
 ## Waiting on Alex
 
-1. **Repo visibility.** `alexcsaky/talkiereliability` is public; the brief says
-   keep it private. Nothing is pushed until Alex makes it private or says
-   public is fine.
-2. **Modal credentials** as environment variables `MODAL_TOKEN_ID` and
+1. **Modal credentials** as environment variables `MODAL_TOKEN_ID` and
    `MODAL_TOKEN_SECRET` in this cloud environment's settings (a new session
    picks them up). A dedicated, revocable Modal token and a workspace spend
    limit in Modal's settings are a good backstop. Alternatively, Alex runs the
    three commands above on his own machine.
-3. **Spend caps** for GPU and API. Placeholders are $25 and $50.
-4. **Gate threshold:** confirm known-truth AUROC of at least 0.65.
-5. **Review, for period language and fair decoys** (these are controls, not
+2. **Review, for period language and fair decoys** (these are controls, not
    confirmatory prompts):
    - the known-truth headers in `questions/templates/known_truth.yaml`;
    - the leak probes in `controls/leak_probes.yaml`;
    - the firewall lexicon in `firewall_lexicon.yaml`.
-6. Still open from the brief, needed by stage 1:
+3. Still open from the brief, needed by stage 1:
    - which modern model builds the ledger;
    - who audits the 200 verdicts;
    - whether a failed persistence test ends the experiment.

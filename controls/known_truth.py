@@ -5,7 +5,8 @@ Closed book, 1900 to 1929 outcomes (``questions/known_truth.jsonl``, built by
 never sees outcomes. ``analysis/stage0_report.py`` scores them (AUROC) against
 the held-apart outcomes file.
 
-Gate (proposal, build brief section 8): AUROC of at least 0.65.
+Gate: no fixed threshold. The AUROC and its interval are reported and Alex
+decides (Alex, 20 Nov 2026; the brief had proposed at least 0.65).
 """
 
 from __future__ import annotations

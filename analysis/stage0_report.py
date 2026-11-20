@@ -19,7 +19,7 @@ REPO = Path(__file__).resolve().parents[1]
 RES = REPO / "results" / "stage0"
 OUT = REPO / "outcomes"
 
-AUROC_GATE_PROPOSAL = 0.65
+# No fixed AUROC threshold: Alex decides from the reported value and interval (20 Nov 2026).
 
 
 def _jsonl(path: Path) -> list[dict]:
@@ -53,7 +53,7 @@ def known_truth_section(kt: dict) -> list[str]:
         by_t.setdefault(r["template_id"], []).append(r)
     lines += ["", f"AUROC, all families: **{est:.3f}** (95% interval {lo:.3f} to {hi:.3f}, "
                   f"bootstrap over {len({x['cluster'] for x in items})} clusters). "
-                  f"Proposed gate: at least {AUROC_GATE_PROPOSAL}.", "",
+                  "No fixed threshold; Alex decides.", "",
               "Per template (AUROC): " + ", ".join(
                   f"{tid} {auroc([r['logodds'] for r in rs], [truth[r['question_id']] for r in rs]):.3f}"
                   for tid, rs in sorted(by_t.items())), ""]

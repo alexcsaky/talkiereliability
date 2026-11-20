@@ -6,10 +6,16 @@ call, open to Alex's review.
 
 ## 20 Nov 2026 (first build session, stage 0 code)
 
-**Repo.** The work lives in `alexcsaky/talkiereliability` (the brief's layout
-calls it `talkie-backtest/`; the layout is used at the repo root). The repo is
-**public** on GitHub, while the brief says to keep it private; nothing has
-been pushed until Alex decides (see STATUS).
+**Repo (Alex).** The work lives in `alexcsaky/talkiereliability` (the brief's
+layout calls it `talkie-backtest/`; the layout is used at the repo root). The
+repo is public; the brief said private, and Alex chose to keep it public,
+plan and brief included.
+
+**Spend caps (Alex).** $25 GPU and $50 API, the brief's placeholders, confirmed.
+
+**Known-truth gate (Alex).** No fixed AUROC threshold; the report gives the
+AUROC with its clustered bootstrap interval and Alex decides. Replaces the
+brief's proposal of at least 0.65.
 
 **Port code vendored instead of `trust_remote_code`.** The two model files of
 `xlr8harder/talkie-1930-13b-base-tf` (commit 7cf0207) were read in full and
