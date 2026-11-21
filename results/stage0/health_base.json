@@ -1,0 +1,10 @@
+{
+ "model": "talkie-1930-13b-base",
+ "repo": "xlr8harder/talkie-1930-13b-base-tf",
+ "revision": "7cf020702ef7fd68ac16c85aaea389206ded519e",
+ "dtype": "torch.bfloat16",
+ "device": "NVIDIA L40S",
+ "load_seconds": 21.3,
+ "prepend_eot": true,
+ "max_seq_len": 4096
+}
