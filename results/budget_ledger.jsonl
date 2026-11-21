@@ -1,2 +1,4 @@
 {"ts": "2026-11-21T18:47:26+00:00", "event": "reserve", "kind": "gpu", "job_id": "592ec4a7bc37", "name": "download-weights", "usd": 0.666576, "note": ""}
 {"ts": "2026-11-21T19:33:58+00:00", "event": "settle", "kind": "gpu", "job_id": "592ec4a7bc37", "usd": 0.172318, "seconds": 2791.9, "scaledown_s": 0.0, "gpu": null, "cpu_cores": 2, "memory_gib": 16}
+{"ts": "2026-11-21T19:37:09+00:00", "event": "reserve", "kind": "gpu", "job_id": "c6c09baa9c04", "name": "refresh-context-texts", "usd": 0.010524, "note": ""}
+{"ts": "2026-11-21T19:37:33+00:00", "event": "settle", "kind": "gpu", "job_id": "c6c09baa9c04", "usd": 0.000415, "seconds": 23.6, "scaledown_s": 0.0, "gpu": null, "cpu_cores": 1, "memory_gib": 2}

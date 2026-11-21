@@ -30,3 +30,4 @@
 {"id": "genuine-08", "expect": "pass", "pub_date": "1914", "text": "Mr. Wells writes of atomic bombs that will lay whole cities waste in some future war."}
 {"id": "genuine-09", "expect": "pass", "pub_date": "1930-03-01", "text": "Advocates of the Anschluss of Austria with Germany renewed their demand at Vienna."}
 {"id": "genuine-10", "expect": "pass", "pub_date": "1925-05-05", "text": "The Governor of New York, Mr. Smith, spoke at the dinner of the Democratic club."}
+{"id": "plant-editorial-01", "expect": "reject", "pub_date": "1920", "text": "At that, as if it had been the signal he waited for, Newland Archer got up slowly and walked back alone to his hotel.\n\nA Note on the Text\n\nThis authoritative text is reprinted from the Library of America edition of Novels by Edith Wharton."}

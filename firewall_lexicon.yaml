@@ -91,6 +91,8 @@ terms:
   - {text: "interwar", case: insensitive}
   - {text: "inter-war", case: insensitive}
   - {text: "postwar era", case: insensitive}
+  # Modern editorial apparatus in reprints (seen in a Gutenberg Wharton, 21 Nov)
+  - {text: "Library of America", case: sensitive}   # founded 1979
 
 # Modern matter: patterns removed by clean_text() before checks.
 # These are regexes; they are stripped, not rejected.
@@ -102,3 +104,6 @@ strip_patterns:
   - "(?i)Library of Congress,? Chronicling America"
   - "(?i)\\bISBN[\\s:-]*[\\dX-]{10,17}"
   - "(?i)\\bQ\\d{2,9}\\b"   # Wikidata ids
+  # Transcriber credits ("Produced by ... Online Distributed Proofreading Team"),
+  # up to the next blank line. Seen in a Gutenberg Main Street, 21 Nov.
+  - "(?ims)^(?:e-?text )?(?:produced|prepared|transcribed) by\\b.*?(?=\\n\\s*\\n|\\Z)"

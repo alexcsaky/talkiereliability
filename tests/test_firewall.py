@@ -60,6 +60,16 @@ def test_gutenberg_and_urls_stripped():
     assert "https" not in a.text and "dark night" in a.text
 
 
+def test_transcriber_credit_stripped():
+    raw = ("*** START OF THE PROJECT GUTENBERG EBOOK MAIN STREET ***\r\n"
+           "Produced by Charles Keller and the Online\r\n"
+           "Distributed Proofreading Team.\r\n\r\nMAIN STREET\r\n\r\n"
+           "By Sinclair Lewis\r\n\r\nThe play was produced by Mr. Belasco.")
+    a = admit(raw, kind="passage", origin="credit", pub_date="1920")
+    assert "Keller" not in a.text and "Proofreading" not in a.text
+    assert a.text.startswith("MAIN STREET") and "produced by Mr. Belasco" in a.text
+
+
 def test_future_years_rules():
     # 1930 is on or before the cutoff and must NOT be treated as a future year.
     assert firewall.future_years("Published in 1930.") == []

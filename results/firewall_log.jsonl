@@ -1,0 +1,2 @@
+{"ts": "2026-11-21T19:36:19+00:00", "decision": "pass", "kind": "passage", "origin": "t", "flags": [], "leak_probe": false, "sha256": "090dc0079283fdb945b5f01eb496e6c4aaf3084b44be7c8971ed5b7164669ade", "chars": 63}
+{"ts": "2026-11-21T19:36:19+00:00", "decision": "reject", "kind": "passage", "origin": "t", "reasons": ["anachronism: Library of America"], "flags": [], "sha256": "6e574367eb3017347217dff095f652aba8dac30c16e9ce563fb7398a512aa537"}

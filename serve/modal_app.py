@@ -278,6 +278,17 @@ def download(ports: str = "talkie-1930-13b-base,talkie-1930-13b-it,talkie-web-13
     _save("download.json", rep)
 
 
+@app.local_entrypoint()
+def refresh_context():
+    """Re-fetch and re-admit the Gutenberg context texts (after a firewall change)."""
+    import budget
+    cpu_box = budget.Container(gpu=None, cpu_cores=1, memory_gib=2)
+    with budget.gpu_job("refresh-context-texts", cpu_box, timeout_s=600):
+        texts = fetch_context_texts.remote(force_refresh=True)
+    _save("context_texts.json", [{k: v for k, v in t.items() if k != "text"}
+                                 | {"chars": len(t.get("text", ""))} for t in texts])
+
+
 def parity_prompts() -> list[str]:
     """A few dozen admitted prompts: question frames plus longer passages."""
     import firewall
