@@ -1,0 +1,105 @@
+{
+ "talkie-1930-13b-base": {
+  "dir": "/weights/ports/xlr8harder__talkie-1930-13b-base-tf/7cf020702ef7fd68ac16c85aaea389206ded519e",
+  "files": [
+   ".cache",
+   "config.json",
+   "generation_config.json",
+   "model-00001-of-00006.safetensors",
+   "model-00002-of-00006.safetensors",
+   "model-00003-of-00006.safetensors",
+   "model-00004-of-00006.safetensors",
+   "model-00005-of-00006.safetensors",
+   "model-00006-of-00006.safetensors",
+   "model.safetensors.index.json",
+   "special_tokens_map.json",
+   "tokenizer_config.json",
+   "vocab.txt"
+  ],
+  "vocab_sha1": "c3e00302c06ba088e28124c84a85c565ea31a3f5",
+  "vocab_sha1_ok": true
+ },
+ "talkie-1930-13b-it": {
+  "dir": "/weights/ports/xlr8harder__talkie-1930-13b-it-tf/f858792d565ab60b38516890553f64960ebef8a7",
+  "files": [
+   ".cache",
+   "config.json",
+   "generation_config.json",
+   "model-00001-of-00006.safetensors",
+   "model-00002-of-00006.safetensors",
+   "model-00003-of-00006.safetensors",
+   "model-00004-of-00006.safetensors",
+   "model-00005-of-00006.safetensors",
+   "model-00006-of-00006.safetensors",
+   "model.safetensors.index.json",
+   "special_tokens_map.json",
+   "tokenizer_config.json",
+   "vocab.txt"
+  ],
+  "vocab_sha1": "c3e00302c06ba088e28124c84a85c565ea31a3f5",
+  "vocab_sha1_ok": true
+ },
+ "talkie-web-13b-base": {
+  "dir": "/weights/ports/xlr8harder__talkie-web-13b-base-tf/963f2bba0c3fceacb69f57f671015ca3eb162808",
+  "files": [
+   ".cache",
+   "config.json",
+   "generation_config.json",
+   "model-00001-of-00006.safetensors",
+   "model-00002-of-00006.safetensors",
+   "model-00003-of-00006.safetensors",
+   "model-00004-of-00006.safetensors",
+   "model-00005-of-00006.safetensors",
+   "model-00006-of-00006.safetensors",
+   "model.safetensors.index.json",
+   "special_tokens_map.json",
+   "tokenizer_config.json",
+   "vocab.txt"
+  ],
+  "vocab_sha1": "880d814e96e90fe057798993433fde8a45f86b64",
+  "vocab_sha1_ok": true
+ },
+ "official:talkie-1930-13b-base": {
+  "path": "/weights/official/talkie-lm__talkie-1930-13b-base/b7c97680791f7fca4262c3c80b36ff7d666faab0/final.ckpt",
+  "sha256": "caa3c1691dd8cdd2cbae9167437aaa6630144f7303f75883658698f2061b6f9f",
+  "sha256_ok": true
+ },
+ "context_texts": [
+  {
+   "ebook": 15776,
+   "title": "The Economic Consequences of the Peace",
+   "ok": true,
+   "flags": [
+    "mentions years after 1930: 1936, 2016"
+   ]
+  },
+  {
+   "ebook": 543,
+   "title": "Main Street",
+   "ok": true,
+   "flags": [
+    "mentions years after 1930: 2000"
+   ]
+  },
+  {
+   "ebook": 541,
+   "title": "The Age of Innocence",
+   "ok": true,
+   "flags": []
+  },
+  {
+   "ebook": 1156,
+   "title": "Babbitt",
+   "ok": true,
+   "flags": [
+    "mentions years after 1930: 1935"
+   ]
+  },
+  {
+   "ebook": 64317,
+   "title": "The Great Gatsby",
+   "ok": true,
+   "flags": []
+  }
+ ]
+}

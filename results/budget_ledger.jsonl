@@ -1,1 +1,2 @@
 {"ts": "2026-11-21T18:47:26+00:00", "event": "reserve", "kind": "gpu", "job_id": "592ec4a7bc37", "name": "download-weights", "usd": 0.666576, "note": ""}
+{"ts": "2026-11-21T19:33:58+00:00", "event": "settle", "kind": "gpu", "job_id": "592ec4a7bc37", "usd": 0.172318, "seconds": 2791.9, "scaledown_s": 0.0, "gpu": null, "cpu_cores": 2, "memory_gib": 16}

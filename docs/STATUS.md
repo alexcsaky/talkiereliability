@@ -1,9 +1,9 @@
 # Status
 
-Last updated: 20 Nov 2026, after independent Stage 0 review and fixes (before first GPU run).
+Last updated: 21 Nov 2026, after the weights download (before first GPU run).
 
-**Stage 0 (model checks): code built, reviewed, hardened and tested on CPU. Not yet run on a GPU**,
-because there are no Modal credentials in this environment.
+**Stage 0 (model checks): code built, reviewed, hardened and tested on CPU. Modal credentials
+work and the weights are on the Modal volume. No GPU job has run yet**; waiting for Alex's go-ahead.
 
 ## Current facts
 
@@ -31,8 +31,19 @@ Verified by reading code or the hub API or by measuring:
 - A tiny random model on CPU agrees with the port at every position (both with
   and without `<|endoftext|>` and under batched right-padding). The real 13B
   check runs in stage 0.
-- Modal is reachable from this session with `modal[api-proxy-support]`; only
-  credentials are missing.
+- Modal works from this session with `modal[api-proxy-support]` (21 Nov). The
+  cloud environment holds the credentials as `MODAL_ID` and `MODAL_SECRET`, not
+  `MODAL_TOKEN_ID`/`MODAL_TOKEN_SECRET`, so map them per command:
+  `export MODAL_TOKEN_ID="$MODAL_ID" MODAL_TOKEN_SECRET="$MODAL_SECRET"`.
+  `modal token info` confirms token `talkieRel` in workspace `alexcsaky`.
+- Weights download (21 Nov, `results/stage0/download.json`): all three ports
+  match their pinned `vocab.txt` blob SHA-1 (`vocab_sha1_ok`), and the official
+  `final.ckpt` matches its pinned SHA-256 (`sha256_ok`). All five Gutenberg
+  context texts were fetched, admitted and cached on the volume. The firewall
+  flagged (but admitted) post-1930 year strings in three of them: Keynes
+  (1936, 2016), *Main Street* (2000) and *Babbitt* (1935). Not yet inspected;
+  probably debt schedules, page or line numbers, or leftover boilerplate
+  (hypothesis). The run took 46.5 min and settled at $0.17 (reserved $0.67).
 - Modal prices (pricing page, 20 Nov 2026):
   - L40S: $0.000542/s
   - CPU: $0.0000131 per core per second
@@ -41,7 +52,7 @@ Verified by reading code or the hub API or by measuring:
 
   A 48 GiB L40S container is about $2.52/h; the 96 GiB parity container is
   about $2.91/h.
-- Tests: 40 pass. They cover:
+- Tests: 40 pass (re-run 21 Nov). They cover:
   - firewall: 22 of 22 planted post-1930 passages rejected, 10 genuine passages
     kept, `1930` allowed in headers, bound-volume date ranges rejected,
     pre-strip URL anachronism detection, post-1930 copyright rejection,
@@ -112,17 +123,15 @@ Verified by reading code or the hub API or by measuring:
 
 ## Next session
 
-Alex added `MODAL_TOKEN_ID` and `MODAL_TOKEN_SECRET` to the cloud environment on
-21 Nov 2026 (Modal workspace/profile: `alexcsaky`). The session that was running
-then could not see them; a new session should:
+Done on 21 Nov: credentials checked, environment set up, 40 tests pass, and the
+weights download completed and verified (see above). Next:
 
-1. Check they are set (names only, never print values) and that
-   `modal[api-proxy-support]` is installed, then verify with a free call
-   (`modal token info` or `modal app list`).
-2. `./data/fetch_vocab.sh`, `python -m pytest`.
-3. `modal run serve/modal_app.py::download` (CPU only, about $0.10); check
-   `results/stage0/download.json` for `sha256_ok` and `vocab_sha1_ok`.
-4. Stop and report before any GPU job unless Alex has said to go ahead.
+1. Look at the flagged year strings in the cached context texts (a CPU-only
+   read of `/weights/context_texts.json`) and decide whether to strip or
+   replace those texts before they reach Talkie in the context test.
+2. With Alex's go-ahead, `modal run serve/modal_app.py::stage0 --what all`
+   (GPU; reserves up to about $14.50, expected $3 to $5), then
+   `python -m analysis.stage0_report` and stop at the gate.
 
 ## In progress
 
@@ -130,11 +139,9 @@ Nothing is running.
 
 ## Waiting on Alex
 
-1. **Modal credentials** as environment variables `MODAL_TOKEN_ID` and
-   `MODAL_TOKEN_SECRET` in this cloud environment's settings (a new session
-   picks them up). A dedicated, revocable Modal token and a workspace spend
-   limit in Modal's settings are a good backstop. Alternatively, Alex runs the
-   three commands above on his own machine.
+1. **Go-ahead for the stage 0 GPU run** (`stage0 --what all`). Optional: rename
+   the environment variables to `MODAL_TOKEN_ID`/`MODAL_TOKEN_SECRET` so no
+   mapping is needed, and set a workspace spend limit in Modal as a backstop.
 2. **Review, for period language and fair decoys** (these are controls, not
    confirmatory prompts):
    - the known-truth headers in `questions/templates/known_truth.yaml`;
