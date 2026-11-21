@@ -1,0 +1,2222 @@
+{
+ "loss_vs_context": {
+  "by_total": {
+   "1024": {
+    "mean_loss": 2.3382343513674853,
+    "ppl": 10.362923118902275,
+    "n_texts": 4
+   },
+   "2048": {
+    "mean_loss": 2.2921586459408028,
+    "ppl": 9.896277199259972,
+    "n_texts": 4
+   },
+   "3072": {
+    "mean_loss": 2.287118813445841,
+    "ppl": 9.846527091261434,
+    "n_texts": 4
+   },
+   "4096": {
+    "mean_loss": 2.2822914735814184,
+    "ppl": 9.79910910196526,
+    "n_texts": 4
+   }
+  },
+  "rows": [
+   {
+    "text": 0,
+    "total_tokens": 1024,
+    "context_tokens": 767,
+    "loss": 1.4288201153366344
+   },
+   {
+    "text": 0,
+    "total_tokens": 2048,
+    "context_tokens": 1791,
+    "loss": 1.4159813827262155
+   },
+   {
+    "text": 0,
+    "total_tokens": 3072,
+    "context_tokens": 2815,
+    "loss": 1.4210359011177047
+   },
+   {
+    "text": 0,
+    "total_tokens": 4096,
+    "context_tokens": 3839,
+    "loss": 1.4229559158651455
+   },
+   {
+    "text": 1,
+    "total_tokens": 1024,
+    "context_tokens": 767,
+    "loss": 2.84775265199346
+   },
+   {
+    "text": 1,
+    "total_tokens": 2048,
+    "context_tokens": 1791,
+    "loss": 2.7448115192476052
+   },
+   {
+    "text": 1,
+    "total_tokens": 3072,
+    "context_tokens": 2815,
+    "loss": 2.737129008499778
+   },
+   {
+    "text": 1,
+    "total_tokens": 4096,
+    "context_tokens": 3839,
+    "loss": 2.720210782678919
+   },
+   {
+    "text": 2,
+    "total_tokens": 1024,
+    "context_tokens": 767,
+    "loss": 2.6914333671596857
+   },
+   {
+    "text": 2,
+    "total_tokens": 2048,
+    "context_tokens": 1791,
+    "loss": 2.6567860500027827
+   },
+   {
+    "text": 2,
+    "total_tokens": 3072,
+    "context_tokens": 2815,
+    "loss": 2.653429983628488
+   },
+   {
+    "text": 2,
+    "total_tokens": 4096,
+    "context_tokens": 3839,
+    "loss": 2.647666739076463
+   },
+   {
+    "text": 3,
+    "total_tokens": 1024,
+    "context_tokens": 767,
+    "loss": 2.384931270980161
+   },
+   {
+    "text": 3,
+    "total_tokens": 2048,
+    "context_tokens": 1791,
+    "loss": 2.3510556317866076
+   },
+   {
+    "text": 3,
+    "total_tokens": 3072,
+    "context_tokens": 2815,
+    "loss": 2.3368803605373927
+   },
+   {
+    "text": 3,
+    "total_tokens": 4096,
+    "context_tokens": 3839,
+    "loss": 2.338332456705146
+   }
+  ]
+ },
+ "loss_by_position": {
+  "0-512": 2.847618250214318,
+  "512-1024": 2.7948290592971285,
+  "1024-1536": 2.852223116219826,
+  "1536-2048": 2.6407773264437626,
+  "2048-2560": 2.688392767603327,
+  "2560-3072": 2.5385777370201446,
+  "3072-3584": 2.540154200188697,
+  "3584-4096": 2.4019869985855853
+ },
+ "retrieval": {
+  "by_total": {
+   "1024": {
+    "accuracy": 0.9666666666666667,
+    "chose_distractor": 0.03333333333333333,
+    "n": 30,
+    "by_depth": {
+     "0.1": 1.0,
+     "0.5": 1.0,
+     "0.9": 0.9
+    }
+   },
+   "2048": {
+    "accuracy": 0.8666666666666667,
+    "chose_distractor": 0.13333333333333333,
+    "n": 30,
+    "by_depth": {
+     "0.1": 0.9,
+     "0.5": 0.9,
+     "0.9": 0.8
+    }
+   },
+   "3072": {
+    "accuracy": 0.8666666666666667,
+    "chose_distractor": 0.13333333333333333,
+    "n": 30,
+    "by_depth": {
+     "0.1": 0.6,
+     "0.5": 1.0,
+     "0.9": 1.0
+    }
+   },
+   "4096": {
+    "accuracy": 0.9333333333333333,
+    "chose_distractor": 0.06666666666666667,
+    "n": 30,
+    "by_depth": {
+     "0.1": 0.8,
+     "0.5": 1.0,
+     "0.9": 1.0
+    }
+   }
+  },
+  "chance": 0.25,
+  "seconds": 225.1,
+  "rows": [
+   {
+    "total_tokens": 1024,
+    "depth": 0.1,
+    "trial": 0,
+    "options": [
+     "Asa Haverill",
+     "Asa Kittredge",
+     "Josiah Pruett",
+     "Obadiah Dunmore"
+    ],
+    "answer": 2,
+    "decoy_in_context": 0,
+    "pred": 2,
+    "correct": true,
+    "chose_distractor": false,
+    "n_tokens": 1006
+   },
+   {
+    "total_tokens": 1024,
+    "depth": 0.1,
+    "trial": 1,
+    "options": [
+     "Ambrose Brantwood",
+     "Asa Ravenhill",
+     "Hiram Ockley",
+     "Lemuel Ravenhill"
+    ],
+    "answer": 3,
+    "decoy_in_context": 2,
+    "pred": 3,
+    "correct": true,
+    "chose_distractor": false,
+    "n_tokens": 1005
+   },
+   {
+    "total_tokens": 1024,
+    "depth": 0.1,
+    "trial": 2,
+    "options": [
+     "Elias Hollister",
+     "Enoch Dunmore",
+     "Josiah Ravenhill",
+     "Obadiah Ravenhill"
+    ],
+    "answer": 3,
+    "decoy_in_context": 1,
+    "pred": 3,
+    "correct": true,
+    "chose_distractor": false,
+    "n_tokens": 1006
+   },
+   {
+    "total_tokens": 1024,
+    "depth": 0.1,
+    "trial": 3,
+    "options": [
+     "Ambrose Fenwick",
+     "Elias Calloway",
+     "Ezra Brantwood",
+     "Ezra Gladstone"
+    ],
+    "answer": 1,
+    "decoy_in_context": 2,
+    "pred": 1,
+    "correct": true,
+    "chose_distractor": false,
+    "n_tokens": 1003
+   },
+   {
+    "total_tokens": 1024,
+    "depth": 0.1,
+    "trial": 4,
+    "options": [
+     "Cyrus Winslade",
+     "Jethro Dunmore",
+     "Jethro Ravenhill",
+     "Thaddeus Ockley"
+    ],
+    "answer": 1,
+    "decoy_in_context": 3,
+    "pred": 1,
+    "correct": true,
+    "chose_distractor": false,
+    "n_tokens": 1006
+   },
+   {
+    "total_tokens": 1024,
+    "depth": 0.1,
+    "trial": 5,
+    "options": [
+     "Barnabas Brantwood",
+     "Enoch Hollister",
+     "Ezra Ockley",
+     "Silas Fenwick"
+    ],
+    "answer": 1,
+    "decoy_in_context": 0,
+    "pred": 1,
+    "correct": true,
+    "chose_distractor": false,
+    "n_tokens": 1005
+   },
+   {
+    "total_tokens": 1024,
+    "depth": 0.1,
+    "trial": 6,
+    "options": [
+     "Ambrose Ravenhill",
+     "Asa Hollister",
+     "Barnabas Dunmore",
+     "Hiram Ashcombe"
+    ],
+    "answer": 1,
+    "decoy_in_context": 3,
+    "pred": 1,
+    "correct": true,
+    "chose_distractor": false,
+    "n_tokens": 1004
+   },
+   {
+    "total_tokens": 1024,
+    "depth": 0.1,
+    "trial": 7,
+    "options": [
+     "Asa Brantwood",
+     "Asa Kittredge",
+     "Gideon Pruett",
+     "Jethro Winslade"
+    ],
+    "answer": 2,
+    "decoy_in_context": 1,
+    "pred": 2,
+    "correct": true,
+    "chose_distractor": false,
+    "n_tokens": 1007
+   },
+   {
+    "total_tokens": 1024,
+    "depth": 0.1,
+    "trial": 8,
+    "options": [
+     "Ezra Kittredge",
+     "Ezra Pettigrew",
+     "Jethro Stockdale",
+     "Thaddeus Ashcombe"
+    ],
+    "answer": 0,
+    "decoy_in_context": 2,
+    "pred": 0,
+    "correct": true,
+    "chose_distractor": false,
+    "n_tokens": 1005
+   },
+   {
+    "total_tokens": 1024,
+    "depth": 0.1,
+    "trial": 9,
+    "options": [
+     "Amos Winslade",
+     "Elias Fenwick",
+     "Silas Winslade",
+     "Thaddeus Haverill"
+    ],
+    "answer": 3,
+    "decoy_in_context": 0,
+    "pred": 3,
+    "correct": true,
+    "chose_distractor": false,
+    "n_tokens": 1004
+   },
+   {
+    "total_tokens": 1024,
+    "depth": 0.5,
+    "trial": 0,
+    "options": [
+     "Cyrus Kittredge",
+     "Elias Ravenhill",
+     "Ezra Hollister",
+     "Thaddeus Pruett"
+    ],
+    "answer": 1,
+    "decoy_in_context": 3,
+    "pred": 1,
+    "correct": true,
+    "chose_distractor": false,
+    "n_tokens": 1004
+   },
+   {
+    "total_tokens": 1024,
+    "depth": 0.5,
+    "trial": 1,
+    "options": [
+     "Asa Marbury",
+     "Lemuel Kittredge",
+     "Obadiah Pettigrew",
+     "Thaddeus Haverill"
+    ],
+    "answer": 3,
+    "decoy_in_context": 1,
+    "pred": 3,
+    "correct": true,
+    "chose_distractor": false,
+    "n_tokens": 1007
+   },
+   {
+    "total_tokens": 1024,
+    "depth": 0.5,
+    "trial": 2,
+    "options": [
+     "Cyrus Kittredge",
+     "Gideon Dunmore",
+     "Silas Thornbury",
+     "Thaddeus Wetherby"
+    ],
+    "answer": 3,
+    "decoy_in_context": 2,
+    "pred": 3,
+    "correct": true,
+    "chose_distractor": false,
+    "n_tokens": 1005
+   },
+   {
+    "total_tokens": 1024,
+    "depth": 0.5,
+    "trial": 3,
+    "options": [
+     "Ambrose Brantwood",
+     "Elias Wetherby",
+     "Josiah Ravenhill",
+     "Lemuel Ashcombe"
+    ],
+    "answer": 1,
+    "decoy_in_context": 0,
+    "pred": 1,
+    "correct": true,
+    "chose_distractor": false,
+    "n_tokens": 1003
+   },
+   {
+    "total_tokens": 1024,
+    "depth": 0.5,
+    "trial": 4,
+    "options": [
+     "Cyrus Kittredge",
+     "Elias Fenwick",
+     "Gideon Hollister",
+     "Hiram Ockley"
+    ],
+    "answer": 0,
+    "decoy_in_context": 3,
+    "pred": 0,
+    "correct": true,
+    "chose_distractor": false,
+    "n_tokens": 1004
+   },
+   {
+    "total_tokens": 1024,
+    "depth": 0.5,
+    "trial": 5,
+    "options": [
+     "Ambrose Pruett",
+     "Barnabas Stockdale",
+     "Josiah Marbury",
+     "Silas Wetherby"
+    ],
+    "answer": 1,
+    "decoy_in_context": 2,
+    "pred": 1,
+    "correct": true,
+    "chose_distractor": false,
+    "n_tokens": 1002
+   },
+   {
+    "total_tokens": 1024,
+    "depth": 0.5,
+    "trial": 6,
+    "options": [
+     "Ambrose Ashcombe",
+     "Asa Brantwood",
+     "Enoch Pettigrew",
+     "Obadiah Ravenhill"
+    ],
+    "answer": 1,
+    "decoy_in_context": 2,
+    "pred": 1,
+    "correct": true,
+    "chose_distractor": false,
+    "n_tokens": 1006
+   },
+   {
+    "total_tokens": 1024,
+    "depth": 0.5,
+    "trial": 7,
+    "options": [
+     "Cyrus Pruett",
+     "Elias Dunmore",
+     "Elias Fenwick",
+     "Thaddeus Fenwick"
+    ],
+    "answer": 2,
+    "decoy_in_context": 1,
+    "pred": 2,
+    "correct": true,
+    "chose_distractor": false,
+    "n_tokens": 1004
+   },
+   {
+    "total_tokens": 1024,
+    "depth": 0.5,
+    "trial": 8,
+    "options": [
+     "Ambrose Thornbury",
+     "Amos Winslade",
+     "Enoch Winslade",
+     "Hiram Dunmore"
+    ],
+    "answer": 0,
+    "decoy_in_context": 2,
+    "pred": 0,
+    "correct": true,
+    "chose_distractor": false,
+    "n_tokens": 1005
+   },
+   {
+    "total_tokens": 1024,
+    "depth": 0.5,
+    "trial": 9,
+    "options": [
+     "Enoch Stockdale",
+     "Jethro Kittredge",
+     "Josiah Calloway",
+     "Obadiah Pruett"
+    ],
+    "answer": 3,
+    "decoy_in_context": 1,
+    "pred": 3,
+    "correct": true,
+    "chose_distractor": false,
+    "n_tokens": 1004
+   },
+   {
+    "total_tokens": 1024,
+    "depth": 0.9,
+    "trial": 0,
+    "options": [
+     "Ambrose Brantwood",
+     "Cyrus Thornbury",
+     "Hiram Pruett",
+     "Jethro Kittredge"
+    ],
+    "answer": 1,
+    "decoy_in_context": 2,
+    "pred": 1,
+    "correct": true,
+    "chose_distractor": false,
+    "n_tokens": 1006
+   },
+   {
+    "total_tokens": 1024,
+    "depth": 0.9,
+    "trial": 1,
+    "options": [
+     "Asa Gladstone",
+     "Cyrus Kittredge",
+     "Hiram Ockley",
+     "Josiah Ockley"
+    ],
+    "answer": 1,
+    "decoy_in_context": 2,
+    "pred": 1,
+    "correct": true,
+    "chose_distractor": false,
+    "n_tokens": 1005
+   },
+   {
+    "total_tokens": 1024,
+    "depth": 0.9,
+    "trial": 2,
+    "options": [
+     "Asa Calloway",
+     "Barnabas Brantwood",
+     "Gideon Winslade",
+     "Jethro Brantwood"
+    ],
+    "answer": 1,
+    "decoy_in_context": 2,
+    "pred": 1,
+    "correct": true,
+    "chose_distractor": false,
+    "n_tokens": 1006
+   },
+   {
+    "total_tokens": 1024,
+    "depth": 0.9,
+    "trial": 3,
+    "options": [
+     "Ambrose Hollister",
+     "Barnabas Hollister",
+     "Hiram Marbury",
+     "Josiah Ockley"
+    ],
+    "answer": 3,
+    "decoy_in_context": 2,
+    "pred": 3,
+    "correct": true,
+    "chose_distractor": false,
+    "n_tokens": 1004
+   },
+   {
+    "total_tokens": 1024,
+    "depth": 0.9,
+    "trial": 4,
+    "options": [
+     "Ambrose Kittredge",
+     "Cyrus Wetherby",
+     "Obadiah Stockdale",
+     "Thaddeus Haverill"
+    ],
+    "answer": 3,
+    "decoy_in_context": 1,
+    "pred": 3,
+    "correct": true,
+    "chose_distractor": false,
+    "n_tokens": 1006
+   },
+   {
+    "total_tokens": 1024,
+    "depth": 0.9,
+    "trial": 5,
+    "options": [
+     "Ambrose Thornbury",
+     "Enoch Fenwick",
+     "Obadiah Kittredge",
+     "Thaddeus Calloway"
+    ],
+    "answer": 2,
+    "decoy_in_context": 0,
+    "pred": 2,
+    "correct": true,
+    "chose_distractor": false,
+    "n_tokens": 1005
+   },
+   {
+    "total_tokens": 1024,
+    "depth": 0.9,
+    "trial": 6,
+    "options": [
+     "Asa Ashcombe",
+     "Barnabas Stockdale",
+     "Enoch Haverill",
+     "Hiram Winslade"
+    ],
+    "answer": 3,
+    "decoy_in_context": 2,
+    "pred": 3,
+    "correct": true,
+    "chose_distractor": false,
+    "n_tokens": 1005
+   },
+   {
+    "total_tokens": 1024,
+    "depth": 0.9,
+    "trial": 7,
+    "options": [
+     "Asa Fenwick",
+     "Ezra Thornbury",
+     "Jethro Brantwood",
+     "Josiah Dunmore"
+    ],
+    "answer": 0,
+    "decoy_in_context": 1,
+    "pred": 1,
+    "correct": false,
+    "chose_distractor": true,
+    "n_tokens": 1006
+   },
+   {
+    "total_tokens": 1024,
+    "depth": 0.9,
+    "trial": 8,
+    "options": [
+     "Ambrose Dunmore",
+     "Ambrose Gladstone",
+     "Cyrus Calloway",
+     "Hiram Pettigrew"
+    ],
+    "answer": 2,
+    "decoy_in_context": 0,
+    "pred": 2,
+    "correct": true,
+    "chose_distractor": false,
+    "n_tokens": 1004
+   },
+   {
+    "total_tokens": 1024,
+    "depth": 0.9,
+    "trial": 9,
+    "options": [
+     "Barnabas Dunmore",
+     "Enoch Kittredge",
+     "Josiah Hollister",
+     "Silas Ashcombe"
+    ],
+    "answer": 3,
+    "decoy_in_context": 1,
+    "pred": 3,
+    "correct": true,
+    "chose_distractor": false,
+    "n_tokens": 1002
+   },
+   {
+    "total_tokens": 2048,
+    "depth": 0.1,
+    "trial": 0,
+    "options": [
+     "Cyrus Dunmore",
+     "Elias Marbury",
+     "Ezra Thornbury",
+     "Gideon Calloway"
+    ],
+    "answer": 3,
+    "decoy_in_context": 2,
+    "pred": 3,
+    "correct": true,
+    "chose_distractor": false,
+    "n_tokens": 2028
+   },
+   {
+    "total_tokens": 2048,
+    "depth": 0.1,
+    "trial": 1,
+    "options": [
+     "Cyrus Brantwood",
+     "Gideon Haverill",
+     "Hiram Gladstone",
+     "Josiah Marbury"
+    ],
+    "answer": 1,
+    "decoy_in_context": 3,
+    "pred": 1,
+    "correct": true,
+    "chose_distractor": false,
+    "n_tokens": 2028
+   },
+   {
+    "total_tokens": 2048,
+    "depth": 0.1,
+    "trial": 2,
+    "options": [
+     "Ambrose Ashcombe",
+     "Enoch Haverill",
+     "Enoch Pettigrew",
+     "Gideon Pettigrew"
+    ],
+    "answer": 0,
+    "decoy_in_context": 3,
+    "pred": 0,
+    "correct": true,
+    "chose_distractor": false,
+    "n_tokens": 2029
+   },
+   {
+    "total_tokens": 2048,
+    "depth": 0.1,
+    "trial": 3,
+    "options": [
+     "Amos Fenwick",
+     "Asa Winslade",
+     "Hiram Brantwood",
+     "Josiah Wetherby"
+    ],
+    "answer": 2,
+    "decoy_in_context": 0,
+    "pred": 2,
+    "correct": true,
+    "chose_distractor": false,
+    "n_tokens": 2029
+   },
+   {
+    "total_tokens": 2048,
+    "depth": 0.1,
+    "trial": 4,
+    "options": [
+     "Barnabas Wetherby",
+     "Cyrus Ashcombe",
+     "Cyrus Winslade",
+     "Obadiah Pettigrew"
+    ],
+    "answer": 1,
+    "decoy_in_context": 2,
+    "pred": 1,
+    "correct": true,
+    "chose_distractor": false,
+    "n_tokens": 2030
+   },
+   {
+    "total_tokens": 2048,
+    "depth": 0.1,
+    "trial": 5,
+    "options": [
+     "Ambrose Dunmore",
+     "Josiah Pettigrew",
+     "Lemuel Thornbury",
+     "Obadiah Gladstone"
+    ],
+    "answer": 1,
+    "decoy_in_context": 2,
+    "pred": 1,
+    "correct": true,
+    "chose_distractor": false,
+    "n_tokens": 2028
+   },
+   {
+    "total_tokens": 2048,
+    "depth": 0.1,
+    "trial": 6,
+    "options": [
+     "Enoch Stockdale",
+     "Gideon Stockdale",
+     "Hiram Thornbury",
+     "Thaddeus Stockdale"
+    ],
+    "answer": 1,
+    "decoy_in_context": 3,
+    "pred": 1,
+    "correct": true,
+    "chose_distractor": false,
+    "n_tokens": 2027
+   },
+   {
+    "total_tokens": 2048,
+    "depth": 0.1,
+    "trial": 7,
+    "options": [
+     "Ambrose Kittredge",
+     "Amos Marbury",
+     "Elias Kittredge",
+     "Thaddeus Kittredge"
+    ],
+    "answer": 0,
+    "decoy_in_context": 3,
+    "pred": 0,
+    "correct": true,
+    "chose_distractor": false,
+    "n_tokens": 2029
+   },
+   {
+    "total_tokens": 2048,
+    "depth": 0.1,
+    "trial": 8,
+    "options": [
+     "Amos Thornbury",
+     "Elias Ockley",
+     "Hiram Fenwick",
+     "Obadiah Winslade"
+    ],
+    "answer": 2,
+    "decoy_in_context": 3,
+    "pred": 2,
+    "correct": true,
+    "chose_distractor": false,
+    "n_tokens": 2030
+   },
+   {
+    "total_tokens": 2048,
+    "depth": 0.1,
+    "trial": 9,
+    "options": [
+     "Asa Kittredge",
+     "Jethro Calloway",
+     "Lemuel Ashcombe",
+     "Obadiah Kittredge"
+    ],
+    "answer": 0,
+    "decoy_in_context": 2,
+    "pred": 2,
+    "correct": false,
+    "chose_distractor": true,
+    "n_tokens": 2030
+   },
+   {
+    "total_tokens": 2048,
+    "depth": 0.5,
+    "trial": 0,
+    "options": [
+     "Ambrose Winslade",
+     "Barnabas Ashcombe",
+     "Cyrus Marbury",
+     "Jethro Marbury"
+    ],
+    "answer": 3,
+    "decoy_in_context": 0,
+    "pred": 3,
+    "correct": true,
+    "chose_distractor": false,
+    "n_tokens": 2029
+   },
+   {
+    "total_tokens": 2048,
+    "depth": 0.5,
+    "trial": 1,
+    "options": [
+     "Amos Stockdale",
+     "Elias Haverill",
+     "Ezra Marbury",
+     "Josiah Ashcombe"
+    ],
+    "answer": 2,
+    "decoy_in_context": 0,
+    "pred": 0,
+    "correct": false,
+    "chose_distractor": true,
+    "n_tokens": 2027
+   },
+   {
+    "total_tokens": 2048,
+    "depth": 0.5,
+    "trial": 2,
+    "options": [
+     "Amos Hollister",
+     "Ezra Wetherby",
+     "Gideon Ashcombe",
+     "Gideon Ockley"
+    ],
+    "answer": 2,
+    "decoy_in_context": 3,
+    "pred": 2,
+    "correct": true,
+    "chose_distractor": false,
+    "n_tokens": 2028
+   },
+   {
+    "total_tokens": 2048,
+    "depth": 0.5,
+    "trial": 3,
+    "options": [
+     "Amos Ockley",
+     "Asa Hollister",
+     "Gideon Thornbury",
+     "Jethro Wetherby"
+    ],
+    "answer": 2,
+    "decoy_in_context": 3,
+    "pred": 2,
+    "correct": true,
+    "chose_distractor": false,
+    "n_tokens": 2030
+   },
+   {
+    "total_tokens": 2048,
+    "depth": 0.5,
+    "trial": 4,
+    "options": [
+     "Enoch Brantwood",
+     "Hiram Wetherby",
+     "Silas Gladstone",
+     "Silas Stockdale"
+    ],
+    "answer": 1,
+    "decoy_in_context": 3,
+    "pred": 1,
+    "correct": true,
+    "chose_distractor": false,
+    "n_tokens": 2027
+   },
+   {
+    "total_tokens": 2048,
+    "depth": 0.5,
+    "trial": 5,
+    "options": [
+     "Asa Fenwick",
+     "Elias Wetherby",
+     "Enoch Thornbury",
+     "Obadiah Ockley"
+    ],
+    "answer": 0,
+    "decoy_in_context": 1,
+    "pred": 0,
+    "correct": true,
+    "chose_distractor": false,
+    "n_tokens": 2031
+   },
+   {
+    "total_tokens": 2048,
+    "depth": 0.5,
+    "trial": 6,
+    "options": [
+     "Asa Gladstone",
+     "Barnabas Pruett",
+     "Elias Winslade",
+     "Gideon Calloway"
+    ],
+    "answer": 3,
+    "decoy_in_context": 0,
+    "pred": 3,
+    "correct": true,
+    "chose_distractor": false,
+    "n_tokens": 2029
+   },
+   {
+    "total_tokens": 2048,
+    "depth": 0.5,
+    "trial": 7,
+    "options": [
+     "Barnabas Wetherby",
+     "Josiah Hollister",
+     "Lemuel Kittredge",
+     "Obadiah Hollister"
+    ],
+    "answer": 0,
+    "decoy_in_context": 2,
+    "pred": 0,
+    "correct": true,
+    "chose_distractor": false,
+    "n_tokens": 2029
+   },
+   {
+    "total_tokens": 2048,
+    "depth": 0.5,
+    "trial": 8,
+    "options": [
+     "Ezra Marbury",
+     "Gideon Ockley",
+     "Hiram Dunmore",
+     "Obadiah Ravenhill"
+    ],
+    "answer": 0,
+    "decoy_in_context": 1,
+    "pred": 0,
+    "correct": true,
+    "chose_distractor": false,
+    "n_tokens": 2029
+   },
+   {
+    "total_tokens": 2048,
+    "depth": 0.5,
+    "trial": 9,
+    "options": [
+     "Amos Ashcombe",
+     "Barnabas Haverill",
+     "Lemuel Ockley",
+     "Thaddeus Winslade"
+    ],
+    "answer": 2,
+    "decoy_in_context": 0,
+    "pred": 2,
+    "correct": true,
+    "chose_distractor": false,
+    "n_tokens": 2028
+   },
+   {
+    "total_tokens": 2048,
+    "depth": 0.9,
+    "trial": 0,
+    "options": [
+     "Asa Calloway",
+     "Asa Stockdale",
+     "Jethro Calloway",
+     "Josiah Wetherby"
+    ],
+    "answer": 1,
+    "decoy_in_context": 0,
+    "pred": 1,
+    "correct": true,
+    "chose_distractor": false,
+    "n_tokens": 2030
+   },
+   {
+    "total_tokens": 2048,
+    "depth": 0.9,
+    "trial": 1,
+    "options": [
+     "Ambrose Hollister",
+     "Asa Haverill",
+     "Barnabas Thornbury",
+     "Obadiah Thornbury"
+    ],
+    "answer": 3,
+    "decoy_in_context": 1,
+    "pred": 3,
+    "correct": true,
+    "chose_distractor": false,
+    "n_tokens": 2029
+   },
+   {
+    "total_tokens": 2048,
+    "depth": 0.9,
+    "trial": 2,
+    "options": [
+     "Cyrus Fenwick",
+     "Cyrus Gladstone",
+     "Gideon Wetherby",
+     "Jethro Haverill"
+    ],
+    "answer": 1,
+    "decoy_in_context": 0,
+    "pred": 1,
+    "correct": true,
+    "chose_distractor": false,
+    "n_tokens": 2030
+   },
+   {
+    "total_tokens": 2048,
+    "depth": 0.9,
+    "trial": 3,
+    "options": [
+     "Hiram Dunmore",
+     "Hiram Fenwick",
+     "Hiram Wetherby",
+     "Silas Wetherby"
+    ],
+    "answer": 2,
+    "decoy_in_context": 0,
+    "pred": 0,
+    "correct": false,
+    "chose_distractor": true,
+    "n_tokens": 2028
+   },
+   {
+    "total_tokens": 2048,
+    "depth": 0.9,
+    "trial": 4,
+    "options": [
+     "Ambrose Marbury",
+     "Ezra Fenwick",
+     "Josiah Gladstone",
+     "Obadiah Pettigrew"
+    ],
+    "answer": 1,
+    "decoy_in_context": 3,
+    "pred": 1,
+    "correct": true,
+    "chose_distractor": false,
+    "n_tokens": 2031
+   },
+   {
+    "total_tokens": 2048,
+    "depth": 0.9,
+    "trial": 5,
+    "options": [
+     "Ambrose Dunmore",
+     "Amos Stockdale",
+     "Enoch Pettigrew",
+     "Ezra Ockley"
+    ],
+    "answer": 3,
+    "decoy_in_context": 0,
+    "pred": 3,
+    "correct": true,
+    "chose_distractor": false,
+    "n_tokens": 2029
+   },
+   {
+    "total_tokens": 2048,
+    "depth": 0.9,
+    "trial": 6,
+    "options": [
+     "Elias Ockley",
+     "Josiah Pettigrew",
+     "Obadiah Brantwood",
+     "Silas Kittredge"
+    ],
+    "answer": 2,
+    "decoy_in_context": 1,
+    "pred": 2,
+    "correct": true,
+    "chose_distractor": false,
+    "n_tokens": 2030
+   },
+   {
+    "total_tokens": 2048,
+    "depth": 0.9,
+    "trial": 7,
+    "options": [
+     "Ambrose Brantwood",
+     "Ezra Haverill",
+     "Ezra Wetherby",
+     "Jethro Winslade"
+    ],
+    "answer": 1,
+    "decoy_in_context": 2,
+    "pred": 1,
+    "correct": true,
+    "chose_distractor": false,
+    "n_tokens": 2030
+   },
+   {
+    "total_tokens": 2048,
+    "depth": 0.9,
+    "trial": 8,
+    "options": [
+     "Amos Fenwick",
+     "Elias Dunmore",
+     "Obadiah Dunmore",
+     "Obadiah Kittredge"
+    ],
+    "answer": 1,
+    "decoy_in_context": 3,
+    "pred": 3,
+    "correct": false,
+    "chose_distractor": true,
+    "n_tokens": 2029
+   },
+   {
+    "total_tokens": 2048,
+    "depth": 0.9,
+    "trial": 9,
+    "options": [
+     "Cyrus Dunmore",
+     "Cyrus Ravenhill",
+     "Ezra Pettigrew",
+     "Lemuel Calloway"
+    ],
+    "answer": 0,
+    "decoy_in_context": 3,
+    "pred": 0,
+    "correct": true,
+    "chose_distractor": false,
+    "n_tokens": 2028
+   },
+   {
+    "total_tokens": 3072,
+    "depth": 0.1,
+    "trial": 0,
+    "options": [
+     "Ambrose Hollister",
+     "Enoch Wetherby",
+     "Ezra Winslade",
+     "Josiah Stockdale"
+    ],
+    "answer": 3,
+    "decoy_in_context": 1,
+    "pred": 1,
+    "correct": false,
+    "chose_distractor": true,
+    "n_tokens": 3053
+   },
+   {
+    "total_tokens": 3072,
+    "depth": 0.1,
+    "trial": 1,
+    "options": [
+     "Ambrose Stockdale",
+     "Barnabas Pettigrew",
+     "Ezra Ashcombe",
+     "Ezra Calloway"
+    ],
+    "answer": 0,
+    "decoy_in_context": 1,
+    "pred": 0,
+    "correct": true,
+    "chose_distractor": false,
+    "n_tokens": 3052
+   },
+   {
+    "total_tokens": 3072,
+    "depth": 0.1,
+    "trial": 2,
+    "options": [
+     "Cyrus Ravenhill",
+     "Cyrus Wetherby",
+     "Enoch Ravenhill",
+     "Lemuel Pruett"
+    ],
+    "answer": 0,
+    "decoy_in_context": 1,
+    "pred": 0,
+    "correct": true,
+    "chose_distractor": false,
+    "n_tokens": 3052
+   },
+   {
+    "total_tokens": 3072,
+    "depth": 0.1,
+    "trial": 3,
+    "options": [
+     "Elias Ravenhill",
+     "Gideon Pettigrew",
+     "Obadiah Ockley",
+     "Silas Stockdale"
+    ],
+    "answer": 3,
+    "decoy_in_context": 2,
+    "pred": 3,
+    "correct": true,
+    "chose_distractor": false,
+    "n_tokens": 3055
+   },
+   {
+    "total_tokens": 3072,
+    "depth": 0.1,
+    "trial": 4,
+    "options": [
+     "Amos Gladstone",
+     "Cyrus Brantwood",
+     "Cyrus Gladstone",
+     "Ezra Hollister"
+    ],
+    "answer": 0,
+    "decoy_in_context": 2,
+    "pred": 0,
+    "correct": true,
+    "chose_distractor": false,
+    "n_tokens": 3051
+   },
+   {
+    "total_tokens": 3072,
+    "depth": 0.1,
+    "trial": 5,
+    "options": [
+     "Barnabas Ashcombe",
+     "Elias Ashcombe",
+     "Jethro Kittredge",
+     "Silas Ashcombe"
+    ],
+    "answer": 3,
+    "decoy_in_context": 2,
+    "pred": 2,
+    "correct": false,
+    "chose_distractor": true,
+    "n_tokens": 3053
+   },
+   {
+    "total_tokens": 3072,
+    "depth": 0.1,
+    "trial": 6,
+    "options": [
+     "Amos Ashcombe",
+     "Asa Fenwick",
+     "Asa Winslade",
+     "Hiram Gladstone"
+    ],
+    "answer": 1,
+    "decoy_in_context": 3,
+    "pred": 3,
+    "correct": false,
+    "chose_distractor": true,
+    "n_tokens": 3051
+   },
+   {
+    "total_tokens": 3072,
+    "depth": 0.1,
+    "trial": 7,
+    "options": [
+     "Asa Ravenhill",
+     "Cyrus Thornbury",
+     "Jethro Hollister",
+     "Silas Calloway"
+    ],
+    "answer": 1,
+    "decoy_in_context": 3,
+    "pred": 1,
+    "correct": true,
+    "chose_distractor": false,
+    "n_tokens": 3054
+   },
+   {
+    "total_tokens": 3072,
+    "depth": 0.1,
+    "trial": 8,
+    "options": [
+     "Jethro Gladstone",
+     "Jethro Ockley",
+     "Jethro Wetherby",
+     "Josiah Fenwick"
+    ],
+    "answer": 1,
+    "decoy_in_context": 3,
+    "pred": 3,
+    "correct": false,
+    "chose_distractor": true,
+    "n_tokens": 3055
+   },
+   {
+    "total_tokens": 3072,
+    "depth": 0.1,
+    "trial": 9,
+    "options": [
+     "Elias Calloway",
+     "Elias Kittredge",
+     "Josiah Ashcombe",
+     "Josiah Thornbury"
+    ],
+    "answer": 1,
+    "decoy_in_context": 2,
+    "pred": 1,
+    "correct": true,
+    "chose_distractor": false,
+    "n_tokens": 3051
+   },
+   {
+    "total_tokens": 3072,
+    "depth": 0.5,
+    "trial": 0,
+    "options": [
+     "Ambrose Pettigrew",
+     "Enoch Stockdale",
+     "Gideon Ashcombe",
+     "Hiram Kittredge"
+    ],
+    "answer": 0,
+    "decoy_in_context": 2,
+    "pred": 0,
+    "correct": true,
+    "chose_distractor": false,
+    "n_tokens": 3053
+   },
+   {
+    "total_tokens": 3072,
+    "depth": 0.5,
+    "trial": 1,
+    "options": [
+     "Barnabas Thornbury",
+     "Enoch Pettigrew",
+     "Lemuel Ravenhill",
+     "Thaddeus Stockdale"
+    ],
+    "answer": 0,
+    "decoy_in_context": 2,
+    "pred": 0,
+    "correct": true,
+    "chose_distractor": false,
+    "n_tokens": 3053
+   },
+   {
+    "total_tokens": 3072,
+    "depth": 0.5,
+    "trial": 2,
+    "options": [
+     "Elias Marbury",
+     "Ezra Marbury",
+     "Hiram Hollister",
+     "Silas Hollister"
+    ],
+    "answer": 2,
+    "decoy_in_context": 1,
+    "pred": 2,
+    "correct": true,
+    "chose_distractor": false,
+    "n_tokens": 3049
+   },
+   {
+    "total_tokens": 3072,
+    "depth": 0.5,
+    "trial": 3,
+    "options": [
+     "Barnabas Thornbury",
+     "Enoch Ashcombe",
+     "Josiah Calloway",
+     "Josiah Pruett"
+    ],
+    "answer": 1,
+    "decoy_in_context": 3,
+    "pred": 1,
+    "correct": true,
+    "chose_distractor": false,
+    "n_tokens": 3050
+   },
+   {
+    "total_tokens": 3072,
+    "depth": 0.5,
+    "trial": 4,
+    "options": [
+     "Barnabas Thornbury",
+     "Ezra Dunmore",
+     "Lemuel Calloway",
+     "Silas Haverill"
+    ],
+    "answer": 1,
+    "decoy_in_context": 3,
+    "pred": 1,
+    "correct": true,
+    "chose_distractor": false,
+    "n_tokens": 3050
+   },
+   {
+    "total_tokens": 3072,
+    "depth": 0.5,
+    "trial": 5,
+    "options": [
+     "Barnabas Kittredge",
+     "Barnabas Winslade",
+     "Josiah Ravenhill",
+     "Lemuel Pettigrew"
+    ],
+    "answer": 2,
+    "decoy_in_context": 3,
+    "pred": 2,
+    "correct": true,
+    "chose_distractor": false,
+    "n_tokens": 3053
+   },
+   {
+    "total_tokens": 3072,
+    "depth": 0.5,
+    "trial": 6,
+    "options": [
+     "Jethro Haverill",
+     "Lemuel Fenwick",
+     "Lemuel Ockley",
+     "Obadiah Dunmore"
+    ],
+    "answer": 2,
+    "decoy_in_context": 3,
+    "pred": 2,
+    "correct": true,
+    "chose_distractor": false,
+    "n_tokens": 3053
+   },
+   {
+    "total_tokens": 3072,
+    "depth": 0.5,
+    "trial": 7,
+    "options": [
+     "Amos Kittredge",
+     "Amos Marbury",
+     "Jethro Thornbury",
+     "Josiah Ashcombe"
+    ],
+    "answer": 1,
+    "decoy_in_context": 2,
+    "pred": 1,
+    "correct": true,
+    "chose_distractor": false,
+    "n_tokens": 3053
+   },
+   {
+    "total_tokens": 3072,
+    "depth": 0.5,
+    "trial": 8,
+    "options": [
+     "Elias Calloway",
+     "Gideon Marbury",
+     "Hiram Brantwood",
+     "Hiram Pettigrew"
+    ],
+    "answer": 1,
+    "decoy_in_context": 3,
+    "pred": 1,
+    "correct": true,
+    "chose_distractor": false,
+    "n_tokens": 3053
+   },
+   {
+    "total_tokens": 3072,
+    "depth": 0.5,
+    "trial": 9,
+    "options": [
+     "Barnabas Stockdale",
+     "Lemuel Marbury",
+     "Silas Hollister",
+     "Silas Winslade"
+    ],
+    "answer": 1,
+    "decoy_in_context": 2,
+    "pred": 1,
+    "correct": true,
+    "chose_distractor": false,
+    "n_tokens": 3053
+   },
+   {
+    "total_tokens": 3072,
+    "depth": 0.9,
+    "trial": 0,
+    "options": [
+     "Elias Dunmore",
+     "Gideon Ashcombe",
+     "Jethro Brantwood",
+     "Lemuel Ravenhill"
+    ],
+    "answer": 3,
+    "decoy_in_context": 2,
+    "pred": 3,
+    "correct": true,
+    "chose_distractor": false,
+    "n_tokens": 3054
+   },
+   {
+    "total_tokens": 3072,
+    "depth": 0.9,
+    "trial": 1,
+    "options": [
+     "Amos Dunmore",
+     "Amos Wetherby",
+     "Gideon Gladstone",
+     "Silas Fenwick"
+    ],
+    "answer": 1,
+    "decoy_in_context": 2,
+    "pred": 1,
+    "correct": true,
+    "chose_distractor": false,
+    "n_tokens": 3051
+   },
+   {
+    "total_tokens": 3072,
+    "depth": 0.9,
+    "trial": 2,
+    "options": [
+     "Enoch Dunmore",
+     "Enoch Gladstone",
+     "Ezra Pruett",
+     "Gideon Hollister"
+    ],
+    "answer": 2,
+    "decoy_in_context": 3,
+    "pred": 2,
+    "correct": true,
+    "chose_distractor": false,
+    "n_tokens": 3051
+   },
+   {
+    "total_tokens": 3072,
+    "depth": 0.9,
+    "trial": 3,
+    "options": [
+     "Barnabas Pruett",
+     "Cyrus Thornbury",
+     "Gideon Kittredge",
+     "Jethro Hollister"
+    ],
+    "answer": 0,
+    "decoy_in_context": 2,
+    "pred": 0,
+    "correct": true,
+    "chose_distractor": false,
+    "n_tokens": 3053
+   },
+   {
+    "total_tokens": 3072,
+    "depth": 0.9,
+    "trial": 4,
+    "options": [
+     "Barnabas Pettigrew",
+     "Barnabas Stockdale",
+     "Enoch Kittredge",
+     "Hiram Pruett"
+    ],
+    "answer": 1,
+    "decoy_in_context": 0,
+    "pred": 1,
+    "correct": true,
+    "chose_distractor": false,
+    "n_tokens": 3053
+   },
+   {
+    "total_tokens": 3072,
+    "depth": 0.9,
+    "trial": 5,
+    "options": [
+     "Ambrose Fenwick",
+     "Amos Kittredge",
+     "Josiah Hollister",
+     "Thaddeus Ravenhill"
+    ],
+    "answer": 2,
+    "decoy_in_context": 1,
+    "pred": 2,
+    "correct": true,
+    "chose_distractor": false,
+    "n_tokens": 3052
+   },
+   {
+    "total_tokens": 3072,
+    "depth": 0.9,
+    "trial": 6,
+    "options": [
+     "Barnabas Ashcombe",
+     "Barnabas Ockley",
+     "Hiram Ashcombe",
+     "Lemuel Stockdale"
+    ],
+    "answer": 0,
+    "decoy_in_context": 3,
+    "pred": 0,
+    "correct": true,
+    "chose_distractor": false,
+    "n_tokens": 3052
+   },
+   {
+    "total_tokens": 3072,
+    "depth": 0.9,
+    "trial": 7,
+    "options": [
+     "Ambrose Hollister",
+     "Barnabas Marbury",
+     "Josiah Dunmore",
+     "Silas Pruett"
+    ],
+    "answer": 2,
+    "decoy_in_context": 1,
+    "pred": 2,
+    "correct": true,
+    "chose_distractor": false,
+    "n_tokens": 3049
+   },
+   {
+    "total_tokens": 3072,
+    "depth": 0.9,
+    "trial": 8,
+    "options": [
+     "Hiram Pettigrew",
+     "Hiram Wetherby",
+     "Lemuel Dunmore",
+     "Silas Dunmore"
+    ],
+    "answer": 2,
+    "decoy_in_context": 1,
+    "pred": 2,
+    "correct": true,
+    "chose_distractor": false,
+    "n_tokens": 3051
+   },
+   {
+    "total_tokens": 3072,
+    "depth": 0.9,
+    "trial": 9,
+    "options": [
+     "Enoch Gladstone",
+     "Hiram Calloway",
+     "Josiah Ravenhill",
+     "Silas Brantwood"
+    ],
+    "answer": 0,
+    "decoy_in_context": 3,
+    "pred": 0,
+    "correct": true,
+    "chose_distractor": false,
+    "n_tokens": 3051
+   },
+   {
+    "total_tokens": 4096,
+    "depth": 0.1,
+    "trial": 0,
+    "options": [
+     "Amos Winslade",
+     "Enoch Brantwood",
+     "Gideon Kittredge",
+     "Hiram Brantwood"
+    ],
+    "answer": 2,
+    "decoy_in_context": 1,
+    "pred": 2,
+    "correct": true,
+    "chose_distractor": false,
+    "n_tokens": 4077
+   },
+   {
+    "total_tokens": 4096,
+    "depth": 0.1,
+    "trial": 1,
+    "options": [
+     "Amos Hollister",
+     "Josiah Marbury",
+     "Josiah Ockley",
+     "Obadiah Pettigrew"
+    ],
+    "answer": 3,
+    "decoy_in_context": 2,
+    "pred": 3,
+    "correct": true,
+    "chose_distractor": false,
+    "n_tokens": 4079
+   },
+   {
+    "total_tokens": 4096,
+    "depth": 0.1,
+    "trial": 2,
+    "options": [
+     "Elias Wetherby",
+     "Enoch Stockdale",
+     "Lemuel Fenwick",
+     "Lemuel Ockley"
+    ],
+    "answer": 3,
+    "decoy_in_context": 1,
+    "pred": 3,
+    "correct": true,
+    "chose_distractor": false,
+    "n_tokens": 4077
+   },
+   {
+    "total_tokens": 4096,
+    "depth": 0.1,
+    "trial": 3,
+    "options": [
+     "Amos Thornbury",
+     "Asa Calloway",
+     "Barnabas Thornbury",
+     "Enoch Ravenhill"
+    ],
+    "answer": 0,
+    "decoy_in_context": 2,
+    "pred": 2,
+    "correct": false,
+    "chose_distractor": true,
+    "n_tokens": 4076
+   },
+   {
+    "total_tokens": 4096,
+    "depth": 0.1,
+    "trial": 4,
+    "options": [
+     "Ambrose Brantwood",
+     "Elias Dunmore",
+     "Josiah Ashcombe",
+     "Thaddeus Calloway"
+    ],
+    "answer": 1,
+    "decoy_in_context": 0,
+    "pred": 1,
+    "correct": true,
+    "chose_distractor": false,
+    "n_tokens": 4075
+   },
+   {
+    "total_tokens": 4096,
+    "depth": 0.1,
+    "trial": 5,
+    "options": [
+     "Asa Haverill",
+     "Hiram Marbury",
+     "Jethro Thornbury",
+     "Silas Gladstone"
+    ],
+    "answer": 1,
+    "decoy_in_context": 3,
+    "pred": 1,
+    "correct": true,
+    "chose_distractor": false,
+    "n_tokens": 4078
+   },
+   {
+    "total_tokens": 4096,
+    "depth": 0.1,
+    "trial": 6,
+    "options": [
+     "Enoch Kittredge",
+     "Ezra Marbury",
+     "Hiram Haverill",
+     "Silas Gladstone"
+    ],
+    "answer": 3,
+    "decoy_in_context": 1,
+    "pred": 1,
+    "correct": false,
+    "chose_distractor": true,
+    "n_tokens": 4075
+   },
+   {
+    "total_tokens": 4096,
+    "depth": 0.1,
+    "trial": 7,
+    "options": [
+     "Barnabas Marbury",
+     "Elias Pettigrew",
+     "Elias Thornbury",
+     "Josiah Winslade"
+    ],
+    "answer": 0,
+    "decoy_in_context": 2,
+    "pred": 0,
+    "correct": true,
+    "chose_distractor": false,
+    "n_tokens": 4077
+   },
+   {
+    "total_tokens": 4096,
+    "depth": 0.1,
+    "trial": 8,
+    "options": [
+     "Amos Dunmore",
+     "Gideon Stockdale",
+     "Jethro Gladstone",
+     "Obadiah Ravenhill"
+    ],
+    "answer": 1,
+    "decoy_in_context": 2,
+    "pred": 1,
+    "correct": true,
+    "chose_distractor": false,
+    "n_tokens": 4077
+   },
+   {
+    "total_tokens": 4096,
+    "depth": 0.1,
+    "trial": 9,
+    "options": [
+     "Amos Winslade",
+     "Asa Haverill",
+     "Barnabas Gladstone",
+     "Gideon Gladstone"
+    ],
+    "answer": 0,
+    "decoy_in_context": 3,
+    "pred": 0,
+    "correct": true,
+    "chose_distractor": false,
+    "n_tokens": 4075
+   },
+   {
+    "total_tokens": 4096,
+    "depth": 0.5,
+    "trial": 0,
+    "options": [
+     "Elias Calloway",
+     "Jethro Haverill",
+     "Lemuel Pettigrew",
+     "Thaddeus Ravenhill"
+    ],
+    "answer": 0,
+    "decoy_in_context": 2,
+    "pred": 0,
+    "correct": true,
+    "chose_distractor": false,
+    "n_tokens": 4078
+   },
+   {
+    "total_tokens": 4096,
+    "depth": 0.5,
+    "trial": 1,
+    "options": [
+     "Asa Stockdale",
+     "Barnabas Stockdale",
+     "Enoch Wetherby",
+     "Silas Brantwood"
+    ],
+    "answer": 1,
+    "decoy_in_context": 2,
+    "pred": 1,
+    "correct": true,
+    "chose_distractor": false,
+    "n_tokens": 4076
+   },
+   {
+    "total_tokens": 4096,
+    "depth": 0.5,
+    "trial": 2,
+    "options": [
+     "Hiram Kittredge",
+     "Josiah Fenwick",
+     "Lemuel Marbury",
+     "Thaddeus Kittredge"
+    ],
+    "answer": 3,
+    "decoy_in_context": 0,
+    "pred": 3,
+    "correct": true,
+    "chose_distractor": false,
+    "n_tokens": 4076
+   },
+   {
+    "total_tokens": 4096,
+    "depth": 0.5,
+    "trial": 3,
+    "options": [
+     "Gideon Pettigrew",
+     "Gideon Pruett",
+     "Hiram Ashcombe",
+     "Obadiah Kittredge"
+    ],
+    "answer": 0,
+    "decoy_in_context": 1,
+    "pred": 0,
+    "correct": true,
+    "chose_distractor": false,
+    "n_tokens": 4078
+   },
+   {
+    "total_tokens": 4096,
+    "depth": 0.5,
+    "trial": 4,
+    "options": [
+     "Ambrose Stockdale",
+     "Barnabas Wetherby",
+     "Hiram Fenwick",
+     "Hiram Marbury"
+    ],
+    "answer": 1,
+    "decoy_in_context": 0,
+    "pred": 1,
+    "correct": true,
+    "chose_distractor": false,
+    "n_tokens": 4075
+   },
+   {
+    "total_tokens": 4096,
+    "depth": 0.5,
+    "trial": 5,
+    "options": [
+     "Amos Ockley",
+     "Jethro Dunmore",
+     "Jethro Winslade",
+     "Lemuel Marbury"
+    ],
+    "answer": 0,
+    "decoy_in_context": 2,
+    "pred": 0,
+    "correct": true,
+    "chose_distractor": false,
+    "n_tokens": 4079
+   },
+   {
+    "total_tokens": 4096,
+    "depth": 0.5,
+    "trial": 6,
+    "options": [
+     "Amos Haverill",
+     "Cyrus Gladstone",
+     "Cyrus Stockdale",
+     "Gideon Winslade"
+    ],
+    "answer": 1,
+    "decoy_in_context": 0,
+    "pred": 1,
+    "correct": true,
+    "chose_distractor": false,
+    "n_tokens": 4075
+   },
+   {
+    "total_tokens": 4096,
+    "depth": 0.5,
+    "trial": 7,
+    "options": [
+     "Ambrose Pettigrew",
+     "Silas Haverill",
+     "Thaddeus Fenwick",
+     "Thaddeus Pruett"
+    ],
+    "answer": 2,
+    "decoy_in_context": 3,
+    "pred": 2,
+    "correct": true,
+    "chose_distractor": false,
+    "n_tokens": 4076
+   },
+   {
+    "total_tokens": 4096,
+    "depth": 0.5,
+    "trial": 8,
+    "options": [
+     "Enoch Kittredge",
+     "Ezra Marbury",
+     "Jethro Winslade",
+     "Lemuel Calloway"
+    ],
+    "answer": 2,
+    "decoy_in_context": 0,
+    "pred": 2,
+    "correct": true,
+    "chose_distractor": false,
+    "n_tokens": 4079
+   },
+   {
+    "total_tokens": 4096,
+    "depth": 0.5,
+    "trial": 9,
+    "options": [
+     "Barnabas Pruett",
+     "Elias Ashcombe",
+     "Obadiah Wetherby",
+     "Silas Dunmore"
+    ],
+    "answer": 3,
+    "decoy_in_context": 2,
+    "pred": 3,
+    "correct": true,
+    "chose_distractor": false,
+    "n_tokens": 4078
+   },
+   {
+    "total_tokens": 4096,
+    "depth": 0.9,
+    "trial": 0,
+    "options": [
+     "Asa Winslade",
+     "Barnabas Brantwood",
+     "Barnabas Hollister",
+     "Enoch Pettigrew"
+    ],
+    "answer": 2,
+    "decoy_in_context": 1,
+    "pred": 2,
+    "correct": true,
+    "chose_distractor": false,
+    "n_tokens": 4077
+   },
+   {
+    "total_tokens": 4096,
+    "depth": 0.9,
+    "trial": 1,
+    "options": [
+     "Asa Pruett",
+     "Ezra Ravenhill",
+     "Hiram Wetherby",
+     "Silas Ockley"
+    ],
+    "answer": 0,
+    "decoy_in_context": 1,
+    "pred": 0,
+    "correct": true,
+    "chose_distractor": false,
+    "n_tokens": 4077
+   },
+   {
+    "total_tokens": 4096,
+    "depth": 0.9,
+    "trial": 2,
+    "options": [
+     "Ambrose Pruett",
+     "Ezra Winslade",
+     "Hiram Kittredge",
+     "Thaddeus Ashcombe"
+    ],
+    "answer": 0,
+    "decoy_in_context": 1,
+    "pred": 0,
+    "correct": true,
+    "chose_distractor": false,
+    "n_tokens": 4075
+   },
+   {
+    "total_tokens": 4096,
+    "depth": 0.9,
+    "trial": 3,
+    "options": [
+     "Amos Brantwood",
+     "Asa Winslade",
+     "Elias Pettigrew",
+     "Thaddeus Thornbury"
+    ],
+    "answer": 2,
+    "decoy_in_context": 1,
+    "pred": 2,
+    "correct": true,
+    "chose_distractor": false,
+    "n_tokens": 4077
+   },
+   {
+    "total_tokens": 4096,
+    "depth": 0.9,
+    "trial": 4,
+    "options": [
+     "Ambrose Hollister",
+     "Amos Dunmore",
+     "Cyrus Stockdale",
+     "Ezra Thornbury"
+    ],
+    "answer": 3,
+    "decoy_in_context": 1,
+    "pred": 3,
+    "correct": true,
+    "chose_distractor": false,
+    "n_tokens": 4076
+   },
+   {
+    "total_tokens": 4096,
+    "depth": 0.9,
+    "trial": 5,
+    "options": [
+     "Asa Kittredge",
+     "Barnabas Ashcombe",
+     "Ezra Ockley",
+     "Thaddeus Haverill"
+    ],
+    "answer": 2,
+    "decoy_in_context": 0,
+    "pred": 2,
+    "correct": true,
+    "chose_distractor": false,
+    "n_tokens": 4077
+   },
+   {
+    "total_tokens": 4096,
+    "depth": 0.9,
+    "trial": 6,
+    "options": [
+     "Amos Kittredge",
+     "Asa Ockley",
+     "Cyrus Winslade",
+     "Lemuel Kittredge"
+    ],
+    "answer": 0,
+    "decoy_in_context": 3,
+    "pred": 0,
+    "correct": true,
+    "chose_distractor": false,
+    "n_tokens": 4076
+   },
+   {
+    "total_tokens": 4096,
+    "depth": 0.9,
+    "trial": 7,
+    "options": [
+     "Enoch Dunmore",
+     "Enoch Gladstone",
+     "Jethro Calloway",
+     "Thaddeus Haverill"
+    ],
+    "answer": 2,
+    "decoy_in_context": 3,
+    "pred": 2,
+    "correct": true,
+    "chose_distractor": false,
+    "n_tokens": 4078
+   },
+   {
+    "total_tokens": 4096,
+    "depth": 0.9,
+    "trial": 8,
+    "options": [
+     "Elias Hollister",
+     "Gideon Pettigrew",
+     "Jethro Haverill",
+     "Josiah Stockdale"
+    ],
+    "answer": 0,
+    "decoy_in_context": 2,
+    "pred": 0,
+    "correct": true,
+    "chose_distractor": false,
+    "n_tokens": 4076
+   },
+   {
+    "total_tokens": 4096,
+    "depth": 0.9,
+    "trial": 9,
+    "options": [
+     "Amos Thornbury",
+     "Barnabas Ravenhill",
+     "Josiah Thornbury",
+     "Thaddeus Marbury"
+    ],
+    "answer": 3,
+    "decoy_in_context": 0,
+    "pred": 3,
+    "correct": true,
+    "chose_distractor": false,
+    "n_tokens": 4076
+   }
+  ]
+ }
+}

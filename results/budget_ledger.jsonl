@@ -7,3 +7,5 @@
 {"ts": "2026-11-21T19:38:01+00:00", "event": "reserve", "kind": "gpu", "job_id": "934c80d12d26", "name": "parity", "usd": 4.360608, "note": ""}
 {"ts": "2026-11-21T19:39:32+00:00", "event": "settle", "kind": "gpu", "job_id": "934c80d12d26", "usd": 0.073562, "seconds": 91.1, "scaledown_s": 0.0, "gpu": "L40S", "cpu_cores": 4.0, "memory_gib": 96}
 {"ts": "2026-11-21T19:39:32+00:00", "event": "reserve", "kind": "gpu", "job_id": "4eeaa914cdce", "name": "stage0-base", "usd": 7.580882, "note": ""}
+{"ts": "2026-11-21T19:48:06+00:00", "event": "settle", "kind": "gpu", "job_id": "4eeaa914cdce", "usd": 0.370668, "seconds": 513.8, "scaledown_s": 15, "gpu": "L40S", "cpu_cores": 4.0, "memory_gib": 48}
+{"ts": "2026-11-21T19:48:06+00:00", "event": "reserve", "kind": "gpu", "job_id": "c42723d88605", "name": "stage0-talkie-web-13b-base", "usd": 1.272242, "note": ""}
