@@ -32,7 +32,12 @@ def download_section(d: dict) -> list[str]:
     for k, v in d.items():
         if k == "context_texts" and isinstance(v, list):
             ok = sum(1 for t in v if t.get("ok"))
-            lines.append(f"- context_texts: {ok} of {len(v)} Gutenberg books admitted")
+            lines.append(f"- context_texts at download: {ok} of {len(v)} Gutenberg books admitted")
+            used = Path(__file__).resolve().parent.parent / "results" / "stage0" / "context_texts.json"
+            if used.exists():
+                u = [t for t in json.loads(used.read_text()) if t.get("ok")]
+                lines.append(f"- context_texts used in the run: {len(u)} "
+                             f"({', '.join(t['title'] for t in u)})")
         elif isinstance(v, dict):
             checks = [f"{ck}={v[ck]}" for ck in ("sha256_ok", "vocab_sha1_ok") if ck in v]
             lines.append(f"- `{k}`: " + (", ".join(checks) if checks else "downloaded"))
