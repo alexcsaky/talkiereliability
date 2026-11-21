@@ -1,9 +1,56 @@
 # Status
 
-Last updated: 21 Nov 2026, after the weights download (before first GPU run).
+Last updated: 21 Nov 2026, after the stage 0 GPU run. **Stopped at the stage 0 gate.**
 
-**Stage 0 (model checks): code built, reviewed, hardened and tested on CPU. Modal credentials
-work and the weights are on the Modal volume. No GPU job has run yet**; waiting for Alex's go-ahead.
+**Stage 0 (model checks): run on Modal on 21 Nov 2026 with Alex's go-ahead. All jobs completed;
+the numbers are below and in `results/stage0/report.md`. Waiting for Alex's gate decision.**
+
+## Stage 0 results (verified: measured 21 Nov 2026)
+
+Full tables: `results/stage0/report.md` (`python -m analysis.stage0_report`).
+Cost: $0.57 of GPU for the run (parity $0.07, base $0.37, web $0.08, chat $0.05);
+$0.75 project total against the $25 cap.
+
+1. **Parity: exact.** The official checkpoint and the vendored port give
+   bit-identical logits on all 41 prompts (max difference 0.0, with and
+   without `<|endoftext|>`; top-1 agreement 1.0). Both loaders read different
+   files through different code, and the log-probabilities are finite and
+   sensible (about 2.6 nats/token), so this looks genuine rather than a
+   self-comparison, but it is tighter than the 0.03 tolerance anticipated.
+   **Batched right-padded scoring differs from one-at-a-time scoring by up to
+   0.12 nats on a single token** (about one bf16 step at logit sizes of 16 to
+   32). Hypothesis: harmless if every arm is scored with identical batching,
+   which rule 6 needs anyway; worth fixing `max_batch_tokens` per run.
+2. **Context: usable to 4,096 tokens.** Loss on a fixed span falls from 2.34
+   to 2.28 nats/token as the context grows from 1k to 4k; needle retrieval
+   0.87 to 0.97 at every length (chance 0.25).
+3. **Throughput:** about 5,600 tokens/s on one L40S at all batch sizes tried,
+   26 to 29 GiB peak; 241 tokens per 1,000 characters of Gutenberg text.
+4. **Known truth: close to chance, and so is the ceiling.** Base model AUROC
+   (family-centred) 0.546, 95% interval 0.492 to 0.601; without the document
+   start token 0.549 (0.496 to 0.602). By family: baseball 0.70, census 0.60,
+   negation 0.55, Nobel 0.51. **The web twin, meant as a ceiling, scores 0.493
+   (0.431 to 0.553)**, with census 0.36 and negation 0.38. Negation statements
+   get log-odds of about +5 whether true or false. Hypothesis: the questions
+   are too fine-grained (Nobel decoys are real laureates of neighbouring
+   years; census pairs are close in size), so this set cannot show whether
+   elicitation works. A failing ceiling points at the instrument, not the
+   model.
+5. **Leak probes: the base model knows some post-1930 facts.** It ranks the
+   true answer first on 14 of 21 post-1930 probes (chance about 3.8) and on
+   6 of 6 pre-1931 controls; the web twin gets 20 of 21. Strongest: the 1932
+   election (0.99), Manchukuo (1.00), the New Deal (0.97), Gestapo (0.93),
+   Hitler as Chancellor (0.86), Rhineland (0.75), the United Nations (0.70),
+   war in 1939 (0.65), Hiroshima (0.61). Misses: Guernica, Molotov-Ribbentrop,
+   Munich, West German capital, Spanish Republic month, gold standard month.
+   Several hits have surface cues (Roosevelt and Hitler were well known by
+   1930; "Gestapo" and "Manchukuo" are the most word-like options; "new deal"
+   was an idiom), so some is plausibility rather than leakage (hypothesis),
+   but the year probe for war in 1939, the United Nations and Hiroshima are
+   hard to explain that way and match the leaks Talkie's authors report.
+   Year probes: the base model puts 3% to 19% of its mass on 1931 or later
+   when asked the present year (most likely year 1920 under every header).
+   Chat model: 12 of 21 (raw), 10 of 21 (chat template).
 
 ## Current facts
 
@@ -123,15 +170,10 @@ Verified by reading code or the hub API or by measuring:
 
 ## Next session
 
-Done on 21 Nov: credentials checked, environment set up, 40 tests pass, and the
-weights download completed and verified (see above). Next:
-
-1. Look at the flagged year strings in the cached context texts (a CPU-only
-   read of `/weights/context_texts.json`) and decide whether to strip or
-   replace those texts before they reach Talkie in the context test.
-2. With Alex's go-ahead, `modal run serve/modal_app.py::stage0 --what all`
-   (GPU; reserves up to about $14.50, expected $3 to $5), then
-   `python -m analysis.stage0_report` and stop at the gate.
+Stopped at the stage 0 gate. Nothing proceeds until Alex decides on the
+points under "Waiting on Alex". Earlier on 21 Nov: credentials checked,
+environment set up, the weights downloaded and verified, and the firewall
+tightened after checking the cached context texts (see `docs/DECISIONS.md`).
 
 ## In progress
 
@@ -139,9 +181,19 @@ Nothing is running.
 
 ## Waiting on Alex
 
-1. **Go-ahead for the stage 0 GPU run** (`stage0 --what all`). Optional: rename
-   the environment variables to `MODAL_TOKEN_ID`/`MODAL_TOKEN_SECRET` so no
-   mapping is needed, and set a workspace spend limit in Modal as a backstop.
+1. **Stage 0 gate decision** on the results above, in particular:
+   - whether the known-truth set needs rebuilding with coarser, more
+     knowable questions before it can serve as a control (the web-twin
+     ceiling is at chance);
+   - how to treat the leakage: the base model ranks the truth first on 14 of
+     21 post-1930 probes. Options include rebuilding the probes with decoys of
+     matched plausibility, so leakage can be told from guessing, and relying
+     on the stage 2 closed-book probe to drop leak-flagged questions;
+   - whether to fix the batch configuration per run given the 0.12-nat
+     batching difference.
+   Optional: rename the environment variables to `MODAL_TOKEN_ID` and
+   `MODAL_TOKEN_SECRET` so no mapping is needed, and set a workspace spend
+   limit in Modal as a backstop.
 2. **Review, for period language and fair decoys** (these are controls, not
    confirmatory prompts):
    - the known-truth headers in `questions/templates/known_truth.yaml`;

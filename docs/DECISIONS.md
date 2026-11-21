@@ -184,3 +184,37 @@ using Modal's bill. `budget.summary()` shows the count.
 Noted, not changed: the chat-probe instruction reads "Continue the following
 sentence…" while the sentence itself sits in the assistant turn, not after
 the instruction. Wording is for Alex to judge alongside the other probes.
+
+## 21 Nov 2026 (weights download and stage 0 run)
+
+**Modal credentials are mapped per command.** The cloud environment stores
+them as `MODAL_ID` and `MODAL_SECRET`; each `modal` command runs with
+`MODAL_TOKEN_ID="$MODAL_ID" MODAL_TOKEN_SECRET="$MODAL_SECRET"`.
+
+**Firewall tightened after the context texts were read in full.** The flagged
+post-1930 years were all genuine period text: Keynes projecting reparations to
+1936 and "2016 [kilometres] had been repaired"; *Main Street* imagining "the
+year 2000"; a *Babbitt* banner, "1,000,000 in 1935". The firewall did miss two
+modern insertions that carry no year:
+- the Gutenberg *Age of Innocence* ends with "A Note on the Text" citing the
+  Library of America edition (founded 1979);
+- *Main Street* opens with a "Produced by Charles Keller" transcriber credit.
+
+Both could reach Talkie: the context test reads from each book's start, and
+the retrieval filler is drawn from anywhere in the book. Changes:
+- "Library of America" is added to the lexicon, so any string containing it
+  is rejected;
+- a strip pattern removes "Produced/Prepared/Transcribed by ..." credit
+  paragraphs up to the next blank line;
+- a planted reject passage and a stripping test cover both (41 tests pass).
+
+The cache was rebuilt with the new `refresh_context` entrypoint (CPU, under
+the budget guard). *The Age of Innocence* is now rejected, so stage 0 used
+four texts (the retrieval and parity passages need three). Lesson for stage 1
+(hypothesis): modern editorial matter without a date (introductions, notes on
+the text, transcriber credits) is a leak path the date and year checks cannot
+see; Gutenberg and archive sources need a front- and back-matter check.
+
+**Stage 0 was run in one go with Alex's approval** ("check the flagged texts
+first, then run stage 0"). It was launched detached (`setsid nohup`) so the
+orchestrating client was not bound to the session's two-hour command limit.
