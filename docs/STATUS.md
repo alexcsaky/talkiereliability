@@ -110,6 +110,20 @@ Verified by reading code or the hub API or by measuring:
 - Spend caps stay at $25 GPU and $50 API.
 - Known-truth gate: report only, no fixed threshold.
 
+## Next session
+
+Alex added `MODAL_TOKEN_ID` and `MODAL_TOKEN_SECRET` to the cloud environment on
+21 Nov 2026 (Modal workspace/profile: `alexcsaky`). The session that was running
+then could not see them; a new session should:
+
+1. Check they are set (names only, never print values) and that
+   `modal[api-proxy-support]` is installed, then verify with a free call
+   (`modal token info` or `modal app list`).
+2. `./data/fetch_vocab.sh`, `python -m pytest`.
+3. `modal run serve/modal_app.py::download` (CPU only, about $0.10); check
+   `results/stage0/download.json` for `sha256_ok` and `vocab_sha1_ok`.
+4. Stop and report before any GPU job unless Alex has said to go ahead.
+
 ## In progress
 
 Nothing is running.
