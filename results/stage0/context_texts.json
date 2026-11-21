@@ -5,8 +5,7 @@
   "ok": true,
   "flags": [
    "mentions years after 1930: 1936, 2016"
-  ],
-  "chars": 418715
+  ]
  },
  {
   "ebook": 543,
@@ -14,17 +13,7 @@
   "ok": true,
   "flags": [
    "mentions years after 1930: 2000"
-  ],
-  "chars": 946817
- },
- {
-  "ebook": 541,
-  "title": "The Age of Innocence",
-  "ok": false,
-  "reasons": [
-   "anachronism: Library of America"
-  ],
-  "chars": 0
+  ]
  },
  {
   "ebook": 1156,
@@ -32,14 +21,12 @@
   "ok": true,
   "flags": [
    "mentions years after 1930: 1935"
-  ],
-  "chars": 700797
+  ]
  },
  {
   "ebook": 64317,
   "title": "The Great Gatsby",
   "ok": true,
-  "flags": [],
-  "chars": 269885
+  "flags": []
  }
 ]
