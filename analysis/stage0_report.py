@@ -113,15 +113,26 @@ def known_truth_section(kt: dict) -> list[str]:
               "family": f["family"], "cluster": qmeta[f["question_id"]]["cluster"]}
              for f in kt["forecasts"]]
     stat = lambda xs: auroc([x["lo"] for x in xs], [x["y"] for x in xs])  # noqa: E731
-    est, lo, hi = cluster_bootstrap(stat, items, "cluster")
+    # Families differ in a constant offset that has nothing to do with truth
+    # (negated statements are longer, so every "negation" item leans towards A).
+    # Pooling raw log-odds mixes those offsets into the ranking; the headline
+    # therefore centres log-odds within each family first (no outcomes used).
+    fam_mean: dict[str, float] = {}
+    for fam in {x["family"] for x in items}:
+        v = [x["lo"] for x in items if x["family"] == fam]
+        fam_mean[fam] = sum(v) / len(v)
+    for x in items:
+        x["lo_c"] = x["lo"] - fam_mean[x["family"]]
+    stat_c = lambda xs: auroc([x["lo_c"] for x in xs], [x["y"] for x in xs])  # noqa: E731
+    est, lo, hi = cluster_bootstrap(stat_c, items, "cluster")
     lines = [f"### Known-truth check ({kt['model']}{kt.get('label', '')})", "",
              f"{len(items)} questions, closed book, outcomes 1900 to 1929. "
              f"Firewall rejections: {len(kt['rejected_by_firewall'])}.", "",
              "| Family | n | AUROC | Brier (raw p) | Mean log-odds when A true | when A false |",
              "| --- | --- | --- | --- | --- | --- |"]
-    fams = sorted({x["family"] for x in items}) + ["all"]
+    fams = sorted({x["family"] for x in items}) + ["all (uncentred)"]
     for fam in fams:
-        sub = items if fam == "all" else [x for x in items if x["family"] == fam]
+        sub = items if fam.startswith("all") else [x for x in items if x["family"] == fam]
         t = [x["lo"] for x in sub if x["y"]]
         f = [x["lo"] for x in sub if not x["y"]]
         lines.append(f"| {fam} | {len(sub)} | {stat(sub):.3f} | "
@@ -130,7 +141,8 @@ def known_truth_section(kt: dict) -> list[str]:
     by_t: dict[str, list] = {}
     for r in kt["per_template"]:
         by_t.setdefault(r["template_id"], []).append(r)
-    lines += ["", f"AUROC, all families: **{est:.3f}** (95% interval {lo:.3f} to {hi:.3f}, "
+    lines += ["", f"AUROC, all families, log-odds centred within family: **{est:.3f}** "
+                  f"(95% interval {lo:.3f} to {hi:.3f}, "
                   f"bootstrap over {len({x['cluster'] for x in items})} clusters). "
                   "No fixed threshold; Alex decides.", "",
               "Per template (AUROC): " + ", ".join(

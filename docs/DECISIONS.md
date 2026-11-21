@@ -152,3 +152,35 @@ truncating JSON dumps in `analysis/stage0_report.py` with full Markdown tables
 for download, health, parity, context and throughput, plus log-space and
 length-normalised leak probe reporting.
 
+
+## 21 Nov 2026 (review of the Stage 0 fixes)
+
+Commit 6e1ee5f was reviewed against its handoff report: the reported fixes are
+present, the 38 tests pass, and the six bugs confirmed beforehand (1930
+treated as after 1930, ranges and malformed dates accepted, oversized
+clusters, "Superman" false positive, batch size leaking from the throughput
+test, answers read in `controls/`) are fixed. Four follow-ups:
+
+**Headline known-truth AUROC centres log-odds within each family.** The new
+negation family has a constant offset unrelated to truth (negated statements
+are longer, so every item leans towards A). Pooling raw log-odds across
+families mixes those offsets into the ranking and dilutes the number the gate
+decision rests on. The pooled row is kept, labelled "uncentred". Centring uses
+only the model's log-odds, not outcomes.
+
+**The chat-template instruction for the chat-model leak probe goes through the
+firewall.** It reaches the model like any other string; the backends now
+accept only an `Admitted` value.
+
+**The base-model Stage 0 container reserves its true worst case**: every
+sequential call can run to `METHOD_TIMEOUT`, so the reservation is
+calls x 1,800 s, not a 3,600 s ceiling. Total worst case for Stage 0 is
+about $14.50 against the $25 cap.
+
+**`budget.open_reservations()`** lists reservations left open by an
+interrupted job; close each with `budget.settle(job_id, kind, billed_usd)`
+using Modal's bill. `budget.summary()` shows the count.
+
+Noted, not changed: the chat-probe instruction reads "Continue the following
+sentence…" while the sentence itself sits in the assistant turn, not after
+the instruction. Wording is for Alex to judge alongside the other probes.

@@ -122,3 +122,12 @@ def test_stage0_report_builds_all_sections_without_truncation(client, probe_clie
     assert "4321" in text  # throughput rows preserved!
     assert "Needle retrieval" in text and "0.900" in text  # context retrieval not truncated!
     assert "sha256_ok=True" in text and "torch.bfloat16" in text
+
+
+def test_chat_prompt_must_be_admitted(models, enc):
+    from forecaster.client import EngineBackend, ModalBackend
+    _, port = models
+    with pytest.raises(NotAdmitted):
+        EngineBackend({"m": Engine(PortAdapter(port), enc)}, chat_user_prompt="raw text")
+    with pytest.raises(NotAdmitted):
+        ModalBackend({}, chat_user_prompt="raw text")

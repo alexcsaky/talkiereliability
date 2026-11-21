@@ -127,6 +127,16 @@ def spent(kind: Kind) -> float:
         return _spent_unlocked(p, kind)
 
 
+def open_reservations(kind: Kind | None = None) -> list[dict]:
+    """Reservations never settled, e.g. after Ctrl-C. Close each with ``settle``
+    using the amount Modal actually billed for it."""
+    with _locked_ledger() as p:
+        rows = _read_unlocked(p)
+    settled = {r["job_id"] for r in rows if r["event"] == "settle"}
+    return [r for r in rows if r["event"] == "reserve" and r["job_id"] not in settled
+            and (kind is None or r["kind"] == kind)]
+
+
 def remaining(kind: Kind) -> float:
     return load_caps()[kind] - spent(kind)
 
@@ -205,7 +215,8 @@ def api_job(name: str, worst_case_usd: float, note: str = "") -> Iterator[dict]:
 def summary() -> dict:
     caps = load_caps()
     return {k: {"cap": caps[k], "spent_or_reserved": round(spent(k), 4),
-                "remaining": round(caps[k] - spent(k), 4)} for k in caps}
+                "remaining": round(caps[k] - spent(k), 4),
+                "open_reservations": len(open_reservations(k))} for k in caps}
 
 
 if __name__ == "__main__":

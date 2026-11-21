@@ -318,6 +318,7 @@ def stage0(what: str = "all", limit: int = 0):
     """Run stage 0 jobs. ``what``: all, or a comma list of
     parity, context, throughput, known_truth, leak, knowledge_bench, web."""
     import budget
+    import firewall
     from controls import known_truth, leak_probes
     from forecaster.client import ModalBackend, TalkieClient
 
@@ -353,8 +354,9 @@ def stage0(what: str = "all", limit: int = 0):
             + (1 if "throughput" in jobs else 0)
             + (1 if "context" in jobs else 0)
         )
-        # Bound worst-case reservation realistically for the sequence of RPCs on one container.
-        base_timeout = min(3600, max(METHOD_TIMEOUT, 600 * n_base_steps))
+        # Worst case: every sequential RPC runs to METHOD_TIMEOUT. Reserving less
+        # would let the guard start a job whose worst case crosses the cap.
+        base_timeout = METHOD_TIMEOUT * n_base_steps
         with budget.gpu_job("stage0-base", server_box, timeout_s=base_timeout,
                             scaledown_s=SCALEDOWN_WINDOW):
             _save("health_base.json", base.health.remote())
@@ -394,7 +396,8 @@ def stage0(what: str = "all", limit: int = 0):
                                      model="talkie-1930-13b-it", allow_leak_probes=True)
             chat_probe = TalkieClient(
                 ModalBackend({"talkie-1930-13b-it": srv}, prepend_eot=False,
-                             chat_user_prompt=IT_CHAT_PROMPT),
+                             chat_user_prompt=firewall.admit(
+                                 IT_CHAT_PROMPT, kind="probe", origin="it-chat-probe")),
                 model="talkie-1930-13b-it", allow_leak_probes=True,
             )
             _save("leak_it.json", leak_probes.choice_and_year(raw_probe))

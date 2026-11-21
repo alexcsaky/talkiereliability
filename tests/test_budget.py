@@ -62,3 +62,15 @@ def test_keyboard_interrupt_leaves_worst_case_reserved():
         with budget.gpu_job("interrupted", c, timeout_s=600, scaledown_s=15):
             raise KeyboardInterrupt
     assert budget.spent("gpu") == pytest.approx(615 * c.usd_per_sec)
+
+
+def test_interrupted_job_leaves_open_reservation_that_can_be_closed():
+    c = Container("L40S", 4, 64)
+    with pytest.raises(KeyboardInterrupt):
+        with budget.gpu_job("ctrl-c", c, timeout_s=600):
+            raise KeyboardInterrupt
+    [res] = budget.open_reservations("gpu")
+    assert budget.spent("gpu") == pytest.approx(res["usd"])
+    budget.settle(res["job_id"], "gpu", 0.12, reconciled_from="modal bill")
+    assert budget.open_reservations("gpu") == []
+    assert budget.spent("gpu") == pytest.approx(0.12)

@@ -45,10 +45,19 @@ class TalkieClient:
         return out
 
 
+def _chat_prompt_text(prompt: Admitted | None) -> str | None:
+    """The chat-template user turn reaches the model too, so it must be admitted."""
+    if prompt is None:
+        return None
+    if not isinstance(prompt, Admitted):
+        raise NotAdmitted(f"chat prompt not admitted by the firewall: {str(prompt)[:60]!r}")
+    return prompt.text
+
+
 class EngineBackend:
-    def __init__(self, engines: dict, *, chat_user_prompt: str | None = None):
+    def __init__(self, engines: dict, *, chat_user_prompt: Admitted | None = None):
         self.engines = engines
-        self.chat_user_prompt = chat_user_prompt
+        self.chat_user_prompt = _chat_prompt_text(chat_user_prompt)
 
     def __call__(self, model: str, payload: list[dict]) -> list[list[dict]]:
         res = self.engines[model].score_requests(
@@ -66,10 +75,10 @@ class ModalBackend:
     """
 
     def __init__(self, servers: dict, prepend_eot: bool = True,
-                 chat_user_prompt: str | None = None):
+                 chat_user_prompt: Admitted | None = None):
         self.servers = servers
         self.prepend_eot = prepend_eot
-        self.chat_user_prompt = chat_user_prompt
+        self.chat_user_prompt = _chat_prompt_text(chat_user_prompt)
 
     def __call__(self, model: str, payload: list[dict]) -> list[list[dict]]:
         return self.servers[model].score_batch.remote(

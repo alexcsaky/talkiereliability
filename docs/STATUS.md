@@ -41,7 +41,7 @@ Verified by reading code or the hub API or by measuring:
 
   A 48 GiB L40S container is about $2.52/h; the 96 GiB parity container is
   about $2.91/h.
-- Tests: 38 pass. They cover:
+- Tests: 40 pass. They cover:
   - firewall: 22 of 22 planted post-1930 passages rejected, 10 genuine passages
     kept, `1930` allowed in headers, bound-volume date ranges rejected,
     pre-strip URL anachronism detection, post-1930 copyright rejection,
@@ -88,7 +88,9 @@ Verified by reading code or the hub API or by measuring:
    - leak probes on base, chat (both raw completion and chat template) and web;
    - known truth on the web twin as a ceiling.
 
-   The guard reserves at most about $10 (including `scaledown_window=15` s).
+   The guard reserves at most about $14.50 if every job ran to its timeout
+   (parity $4.37, base model $7.58, web and chat models $1.27 each); jobs settle
+   at actual wall time.
    Expected actual spend is $3 to $5.
 3. `python -m analysis.stage0_report`, then copy the numbers here and into
    `docs/LEAKAGE.md`, and stop at the gate.
