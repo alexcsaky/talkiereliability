@@ -14,3 +14,4 @@ results/scratch/
 .env.*
 .modal.toml
 *.egg-info/
+results/*.lock
