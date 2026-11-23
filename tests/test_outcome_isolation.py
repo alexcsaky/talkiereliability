@@ -5,7 +5,7 @@ from pathlib import Path
 
 REPO = Path(__file__).resolve().parents[1]
 FORBIDDEN_DIRS = ["forecaster", "librarian", "controls", "serve", "ledger", "archive"]
-ALLOWED = {"controls/build_known_truth.py"}  # writes outcomes once, from public data
+ALLOWED = {"controls/build_known_truth.py", "controls/archive/build_known_truth_v1.py"}  # writes outcomes once, from public data
 
 
 def test_only_analysis_reads_outcomes():

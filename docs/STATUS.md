@@ -170,10 +170,19 @@ Verified by reading code or the hub API or by measuring:
 
 ## Next session
 
-Stopped at the stage 0 gate. Nothing proceeds until Alex decides on the
-points under "Waiting on Alex". Earlier on 21 Nov: credentials checked,
-environment set up, the weights downloaded and verified, and the firewall
-tightened after checking the cached context texts (see `docs/DECISIONS.md`).
+Settled 23 Nov: known-truth set rebuilt (v2, 343 coarser items; see
+`docs/DECISIONS.md`); web twin kept as a modern-data comparison, not a
+ceiling; leaks flagged by signatures; batching measured before deciding.
+48 tests pass. Next, in order:
+
+1. Add the batching measurement (typical batched-against-single difference
+   and the cost of one-at-a-time scoring) to the stage 0 jobs.
+2. With Alex's go-ahead, re-run known truth (base with and without the
+   document-start token, web twin) on v2 plus the batching measurement:
+   `modal run serve/modal_app.py::stage0 --what known_truth,web`. Reserves
+   about $5; expected well under $1 (hypothesis, from the 21 Nov run).
+3. Write the leak-signature rule into `docs/EXPERIMENT_PLAN.md` and relabel the
+   web twin there, before the freeze.
 
 ## In progress
 
@@ -181,10 +190,12 @@ Nothing is running.
 
 ## Waiting on Alex
 
-1. **Settled 23 Nov** (see `docs/DECISIONS.md`): rebuild the known-truth set
-   with coarser questions; flag leaks by signatures, not closed-book
-   confidence; measure batching noise before choosing how to score.
-   **Still open: the role of the web twin.** Optional: rename the
+1. **Settled 23 Nov** (see `docs/DECISIONS.md`): known-truth set rebuilt
+   with coarser questions; leaks flagged by signatures, not closed-book
+   confidence; batching measured before choosing; web twin kept as a
+   modern-data comparison, not a ceiling. **Open: spot-check the hand-entered
+   office, election and event tables** (`controls/build_known_truth.py`), and
+   go-ahead for the v2 GPU re-run. Optional: rename the
    environment variables to `MODAL_TOKEN_ID`/`MODAL_TOKEN_SECRET` and set a
    Modal spend limit.
 2. **Review, for period language and fair decoys** (these are controls, not

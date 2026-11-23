@@ -1,0 +1,35 @@
+{
+  "seed": 19301231,
+  "sources": {
+    "census_1900.txt": {
+      "url": "https://www2.census.gov/library/working-papers/1998/demographics/pop-twps0027/tab13.txt",
+      "sha256": "e436fdf515b785335faabf8847ff9a31949d1bda9690ced3ac756706df932e91",
+      "bytes": 6251
+    },
+    "census_1910.txt": {
+      "url": "https://www2.census.gov/library/working-papers/1998/demographics/pop-twps0027/tab14.txt",
+      "sha256": "4dc4d074627a93988f5117b95046eb48699a03130bc64d5c6ab45a184e833427",
+      "bytes": 6775
+    },
+    "census_1920.txt": {
+      "url": "https://www2.census.gov/library/working-papers/1998/demographics/pop-twps0027/tab15.txt",
+      "sha256": "7e377eb267548882f67f68f3a4601619fb13c54c02842cfc08e6e86adf699d91",
+      "bytes": 6958
+    },
+    "nobel_1901_1929.json": {
+      "url": "https://api.nobelprize.org/2.1/nobelPrizes?nobelPrizeYear=1901&yearTo=1929&limit=500",
+      "sha256": "95eba3c886bd8f43f8bc3587ebbebe7a1b1e75713a3f2a287d0b86a03d0bbb4e",
+      "bytes": 140213
+    },
+    "lahman_SeriesPost.csv": {
+      "url": "https://raw.githubusercontent.com/cbwinslow/baseballdatabank/8a908d51833ee99b56fce165c93dc99ee8886d6f/core/SeriesPost.csv",
+      "sha256": "67d0b20569e8c3f4728568e4a7c1c2730179c8ae6417c71df0846fbc95c2c9b9",
+      "bytes": 10957
+    },
+    "lahman_Teams.csv": {
+      "url": "https://raw.githubusercontent.com/cbwinslow/baseballdatabank/8a908d51833ee99b56fce165c93dc99ee8886d6f/core/Teams.csv",
+      "sha256": "827bef5af12158eeb3d18a4a3f54ff846e395965b47c09b2564ad7bb29c5e545",
+      "bytes": 591322
+    }
+  }
+}

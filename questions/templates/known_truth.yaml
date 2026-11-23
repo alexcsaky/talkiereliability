@@ -1,8 +1,17 @@
 # Headers for the known-truth check (closed book, 1900 to 1929 outcomes).
-# Retrospective: each reads as a reference work published the year after the
-# event, so the statement that follows is a record, not a forecast.
-# Fields: {year} (the event year), {pub_year} (year + 1, never after 1930).
-# Drafted by Claude, 20 Nov 2026; to be reviewed by Alex for period language.
+#
+# "templates" (the dated set): each reads as a reference work published the
+# year after the event, so the statement that follows is a record, not a
+# forecast. Fields: {year} (the event year), {pub_year} (year + 1, never after
+# 1930). Used by every family whose two statements share the header's year.
+#
+# "retrospective_templates": for the events family, where the year IS the
+# asserted fact. A dated header would give the answer away ("RECORD OF THE
+# YEAR 1912" before "The Titanic sank in 1912"), so these read as a 1930
+# reference work looking back over the period and name no event year.
+#
+# Dated set drafted by Claude, 20 Nov 2026; retrospective set 23 Nov 2026. To
+# be reviewed by Alex for period language.
 templates:
   - id: kt-almanac
     header: "AN ALMANAC FOR THE YEAR {pub_year}\n\nRECORD OF NOTABLE EVENTS OF THE YEAR {year}\n\n"
@@ -12,3 +21,12 @@ templates:
     header: "A HANDBOOK OF USEFUL FACTS, CORRECTED TO DECEMBER {pub_year}\n\n"
   - id: kt-queries
     header: "NOTES AND QUERIES, {pub_year}.\n\nReply.—"
+retrospective_templates:
+  - id: kt-r-chronology
+    header: "A HANDBOOK OF USEFUL FACTS, CORRECTED TO DECEMBER 1930\n\nCHRONOLOGY OF NOTABLE EVENTS SINCE 1900\n\n"
+  - id: kt-r-history
+    header: "From a short history of the world since 1900, published in 1930.\n\n"
+  - id: kt-r-schoolbook
+    header: "QUESTIONS AND ANSWERS ON RECENT HISTORY, FOR THE USE OF SCHOOLS. 1930.\n\nAnswer.—"
+  - id: kt-r-queries
+    header: "NOTES AND QUERIES, 1930.\n\nReply.—"

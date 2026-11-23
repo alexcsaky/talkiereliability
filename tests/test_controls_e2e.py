@@ -37,11 +37,12 @@ def test_client_refuses_unadmitted_and_confirmatory_refuses_leak_probe(client):
 
 def test_all_known_truth_questions_pass_firewall(tmp_path, monkeypatch):
     monkeypatch.setenv("TALKIE_FIREWALL_LOG", str(tmp_path / "fw.jsonl"))
-    qs, ts = known_truth.load()
-    reqs, rejected = elicit.build_requests(qs, ts)
+    qs, sets, which = known_truth.load_sets()
+    reqs, rejected = known_truth.build_all(qs, sets, which)
     assert rejected == []
-    assert len(reqs) == len(qs) * len(ts)
-    assert {q.family for q in qs} == {"census", "nobel", "baseball", "negation"}
+    assert len(reqs) == sum(len(sets[which[q.id]]) for q in qs)
+    assert {q.family for q in qs} == {"census", "nobel", "baseball", "office", "election",
+                                      "events", "negation"}
 
 
 def test_build_requests_passage_rules_and_atomic_rejection(tmp_path, monkeypatch):

@@ -245,3 +245,35 @@ record. Settled:
    the cost of one-at-a-time scoring; the choice is made with those numbers.
 
 Open: the role of the web twin (Alex asked for more explanation).
+
+**Web twin (settled 23 Nov, Alex): kept, relabelled.** It is no longer called a
+ceiling. It is reported as a modern-data comparison, closed book, by stratum.
+On the famous-events stratum it does know the answers, so it shows what such
+knowledge buys there; elsewhere it is expected near chance. The ceiling that
+matters for the main claim is the plan's oracle run of mode C (sources
+weighted by actual 1931 to 1940 accuracy). A "knows the answer" ceiling inside
+Talkie is impossible for the target decade, since stating the outcome would
+mean post-1930 text reaching the model (rule 1). It stays the positive control
+for the leak probes (20 of 21 in stage 0).
+
+**Known-truth set v2 built (23 Nov).** `controls/build_known_truth.py`; v1 is
+archived as `controls/archive/build_known_truth_v1.py` with its `_v1` question
+and outcome files, and the stage 0 report picks the files by each result's
+`question_set` (old results reproduce exactly). 343 items, 65 clusters:
+
+| Family | n | What makes it coarse |
+| --- | --- | --- |
+| census | 60 | top-10 city against rank 30 to 40, at least 2.5 times smaller |
+| nobel | 60 | decoy laureate from a distant field (sciences against Literature or Peace) |
+| baseball | 26 | winner against the last-placed team of its league |
+| office | 60 | US President and British Prime Minister on 1 July, decoy at least 6 years out of office |
+| election | 8 | US presidential winner against runner-up |
+| events | 39 | year of a well-known event against a year 5 to 10 years off |
+| negation | 90 | office holders and clear-cut census top-10 membership, statement against negation |
+
+The events family asserts a year, so it uses four retrospective headers ("a
+handbook corrected to December 1930"); a dated header would name the answer.
+Office, election and event tables are hand-entered from the standard record
+and are listed in `questions/known_truth_sources.json` for Alex to spot-check.
+Ids, clusters and the order of events reveal nothing about which side is true
+(tested).

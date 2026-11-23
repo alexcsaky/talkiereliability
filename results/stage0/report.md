@@ -80,7 +80,7 @@ Tokens per 1,000 characters (Gutenberg): **241.2**
 
 ### Known-truth check (talkie-1930-13b-base)
 
-312 questions, closed book, outcomes 1900 to 1929. Firewall rejections: 0.
+312 questions (set v1), closed book, outcomes 1900 to 1929. Firewall rejections: 0.
 
 | Family | n | AUROC | Brier (raw p) | Mean log-odds when A true | when A false |
 | --- | --- | --- | --- | --- | --- |
@@ -96,7 +96,7 @@ Per template (AUROC): kt-almanac 0.529, kt-chronicle 0.523, kt-handbook 0.547, k
 
 ### Known-truth check (talkie-1930-13b-base, no <|endoftext|> at document start)
 
-312 questions, closed book, outcomes 1900 to 1929. Firewall rejections: 0.
+312 questions (set v1), closed book, outcomes 1900 to 1929. Firewall rejections: 0.
 
 | Family | n | AUROC | Brier (raw p) | Mean log-odds when A true | when A false |
 | --- | --- | --- | --- | --- | --- |
@@ -112,7 +112,7 @@ Per template (AUROC): kt-almanac 0.548, kt-chronicle 0.514, kt-handbook 0.542, k
 
 ### Known-truth check (talkie-web-13b-base)
 
-312 questions, closed book, outcomes 1900 to 1929. Firewall rejections: 0.
+312 questions (set v1), closed book, outcomes 1900 to 1929. Firewall rejections: 0.
 
 | Family | n | AUROC | Brier (raw p) | Mean log-odds when A true | when A false |
 | --- | --- | --- | --- | --- | --- |

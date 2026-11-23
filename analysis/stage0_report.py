@@ -110,9 +110,12 @@ def throughput_section(d: dict) -> list[str]:
 
 
 def known_truth_section(kt: dict) -> list[str]:
-    truth = {r["question_id"]: r["outcome"] for r in _jsonl(OUT / "known_truth.jsonl")}
+    # Results written before the v2 rebuild (23 Nov 2026) carry no question_set.
+    qset = kt.get("question_set", "v1")
+    suffix = "" if qset == "v2" else "_v1"
+    truth = {r["question_id"]: r["outcome"] for r in _jsonl(OUT / f"known_truth{suffix}.jsonl")}
     qmeta = {json.loads(line)["id"]: json.loads(line)
-             for line in (REPO / "questions" / "known_truth.jsonl").read_text().splitlines()
+             for line in (REPO / "questions" / f"known_truth{suffix}.jsonl").read_text().splitlines()
              if line.strip()}
     items = [{"lo": f["logodds_raw"], "p": f["p_raw"], "y": truth[f["question_id"]],
               "family": f["family"], "cluster": qmeta[f["question_id"]]["cluster"]}
@@ -131,7 +134,7 @@ def known_truth_section(kt: dict) -> list[str]:
     stat_c = lambda xs: auroc([x["lo_c"] for x in xs], [x["y"] for x in xs])  # noqa: E731
     est, lo, hi = cluster_bootstrap(stat_c, items, "cluster")
     lines = [f"### Known-truth check ({kt['model']}{kt.get('label', '')})", "",
-             f"{len(items)} questions, closed book, outcomes 1900 to 1929. "
+             f"{len(items)} questions (set {qset}), closed book, outcomes 1900 to 1929. "
              f"Firewall rejections: {len(kt['rejected_by_firewall'])}.", "",
              "| Family | n | AUROC | Brier (raw p) | Mean log-odds when A true | when A false |",
              "| --- | --- | --- | --- | --- | --- |"]

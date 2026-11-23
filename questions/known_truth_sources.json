@@ -1,4 +1,5 @@
 {
+  "question_set": "v2",
   "seed": 19301231,
   "sources": {
     "census_1900.txt": {
@@ -31,5 +32,299 @@
       "sha256": "827bef5af12158eeb3d18a4a3f54ff846e395965b47c09b2564ad7bb29c5e545",
       "bytes": 591322
     }
+  },
+  "hand_entered": {
+    "US_PRESIDENT": {
+      "William McKinley": [
+        1900,
+        1901
+      ],
+      "Theodore Roosevelt": [
+        1902,
+        1903,
+        1904,
+        1905,
+        1906,
+        1907,
+        1908
+      ],
+      "William H. Taft": [
+        1909,
+        1910,
+        1911,
+        1912
+      ],
+      "Woodrow Wilson": [
+        1913,
+        1914,
+        1915,
+        1916,
+        1917,
+        1918,
+        1919,
+        1920
+      ],
+      "Warren G. Harding": [
+        1921,
+        1922,
+        1923
+      ],
+      "Calvin Coolidge": [
+        1924,
+        1925,
+        1926,
+        1927,
+        1928
+      ],
+      "Herbert Hoover": [
+        1929
+      ]
+    },
+    "UK_PRIME_MINISTER": {
+      "Lord Salisbury": [
+        1900,
+        1901,
+        1902
+      ],
+      "A. J. Balfour": [
+        1903,
+        1904,
+        1905
+      ],
+      "Sir Henry Campbell-Bannerman": [
+        1906,
+        1907
+      ],
+      "H. H. Asquith": [
+        1908,
+        1909,
+        1910,
+        1911,
+        1912,
+        1913,
+        1914,
+        1915,
+        1916
+      ],
+      "David Lloyd George": [
+        1917,
+        1918,
+        1919,
+        1920,
+        1921,
+        1922
+      ],
+      "Stanley Baldwin": [
+        1923,
+        1925,
+        1926,
+        1927,
+        1928
+      ],
+      "J. Ramsay MacDonald": [
+        1924,
+        1929
+      ]
+    },
+    "US_ELECTIONS": [
+      [
+        1900,
+        "William McKinley",
+        "William J. Bryan"
+      ],
+      [
+        1904,
+        "Theodore Roosevelt",
+        "Alton B. Parker"
+      ],
+      [
+        1908,
+        "William H. Taft",
+        "William J. Bryan"
+      ],
+      [
+        1912,
+        "Woodrow Wilson",
+        "Theodore Roosevelt"
+      ],
+      [
+        1916,
+        "Woodrow Wilson",
+        "Charles E. Hughes"
+      ],
+      [
+        1920,
+        "Warren G. Harding",
+        "James M. Cox"
+      ],
+      [
+        1924,
+        "Calvin Coolidge",
+        "John W. Davis"
+      ],
+      [
+        1928,
+        "Herbert Hoover",
+        "Alfred E. Smith"
+      ]
+    ],
+    "EVENTS": [
+      [
+        1900,
+        "the foreign legations at Peking were besieged by the Boxers"
+      ],
+      [
+        1900,
+        "the town of Mafeking was relieved"
+      ],
+      [
+        1901,
+        "Queen Victoria died"
+      ],
+      [
+        1901,
+        "Marconi first sent a wireless signal across the Atlantic"
+      ],
+      [
+        1903,
+        "the Wright brothers made the first flight in a power-driven aeroplane"
+      ],
+      [
+        1903,
+        "Panama declared its independence of Colombia"
+      ],
+      [
+        1904,
+        "war broke out between Russia and Japan"
+      ],
+      [
+        1905,
+        "the Japanese fleet destroyed the Russian fleet at Tsushima"
+      ],
+      [
+        1906,
+        "an earthquake and fire destroyed much of San Francisco"
+      ],
+      [
+        1908,
+        "the Olympic Games were held in London"
+      ],
+      [
+        1908,
+        "the Ford Motor Company brought out its Model T car"
+      ],
+      [
+        1909,
+        "Commander Peary reached the North Pole"
+      ],
+      [
+        1910,
+        "King Edward VII died"
+      ],
+      [
+        1910,
+        "the Union of South Africa was formed"
+      ],
+      [
+        1911,
+        "King George V was crowned at Westminster"
+      ],
+      [
+        1911,
+        "Captain Amundsen reached the South Pole"
+      ],
+      [
+        1912,
+        "the steamship Titanic struck an iceberg and sank"
+      ],
+      [
+        1912,
+        "the Chinese Republic was proclaimed"
+      ],
+      [
+        1914,
+        "the Archduke Francis Ferdinand was assassinated at Sarajevo"
+      ],
+      [
+        1914,
+        "the Panama Canal was opened to traffic"
+      ],
+      [
+        1915,
+        "the Lusitania was sunk by a German submarine"
+      ],
+      [
+        1916,
+        "the rising took place in Dublin at Easter"
+      ],
+      [
+        1917,
+        "the Tsar of Russia abdicated"
+      ],
+      [
+        1917,
+        "the United States declared war upon Germany"
+      ],
+      [
+        1918,
+        "the armistice brought the fighting of the Great War to an end"
+      ],
+      [
+        1919,
+        "the Treaty of Versailles was signed"
+      ],
+      [
+        1919,
+        "Alcock and Brown made the first flight across the Atlantic without a stop"
+      ],
+      [
+        1920,
+        "the Eighteenth Amendment, which brought national prohibition, took effect"
+      ],
+      [
+        1920,
+        "the first Assembly of the League of Nations met at Geneva"
+      ],
+      [
+        1922,
+        "the Fascists marched on Rome and Mussolini became Prime Minister of Italy"
+      ],
+      [
+        1922,
+        "the tomb of Tutankhamen was discovered in the Valley of the Kings"
+      ],
+      [
+        1922,
+        "the Irish Free State was established"
+      ],
+      [
+        1923,
+        "an earthquake destroyed much of Tokyo and Yokohama"
+      ],
+      [
+        1924,
+        "Lenin died"
+      ],
+      [
+        1925,
+        "John T. Scopes was tried at Dayton, Tennessee, for teaching evolution"
+      ],
+      [
+        1926,
+        "a general strike took place in Great Britain"
+      ],
+      [
+        1927,
+        "Charles A. Lindbergh flew alone from New York to Paris"
+      ],
+      [
+        1928,
+        "the Kellogg Pact for the renunciation of war was signed at Paris"
+      ],
+      [
+        1929,
+        "prices on the New York Stock Exchange collapsed"
+      ]
+    ]
   }
 }
