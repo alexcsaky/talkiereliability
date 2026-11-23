@@ -145,3 +145,18 @@ def test_throughput_restores_max_batch_tokens(models, enc):
     text_ids = encode_text(enc, "The price of wheat rose in London yesterday. " * 40)
     rows = measure(eng, text_ids, seq_lens=(32,), batch_tokens=(64, 128), n_seqs=4)
     assert len(rows) == 2 and eng.max_batch_tokens == 16384
+
+
+def test_batching_check_restores_budget_and_reports(models, enc):
+    from serve.batching_check import measure
+
+    _, port = models
+    eng = Engine(PortAdapter(port), enc, max_batch_tokens=256)
+    reqs = [(f"Record of the year {1900 + i}.", [" It rained.", " It snowed.", " It did not rain."])
+            for i in range(8)]
+    out = measure(eng, reqs, [2] * 8, extra_budgets=(64,))
+    assert eng.max_batch_tokens == 256
+    assert out["n_sequences"] == 24 and out["single"]["n_requests"] == 8
+    assert out["neighbours"]["n_requests"] == 4
+    for k in ("single", "neighbours", "batch_64"):
+        assert out[k]["logodds_absdiff"]["max"] < 1e-3  # float32 tiny model: near-identical

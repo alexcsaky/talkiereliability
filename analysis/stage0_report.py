@@ -109,6 +109,25 @@ def throughput_section(d: dict) -> list[str]:
     return lines
 
 
+def batching_section(b: dict) -> list[str]:
+    lines = ["### Batching (does a score depend on what it is batched with?)", "",
+             f"{b['n_sequences']} sequences from {b['n_requests']} known-truth requests, "
+             f"{b['mean_tokens_per_sequence']:.0f} tokens on average; production "
+             f"max_batch_tokens {b['production_max_batch_tokens']}. Batched {b['seconds_batched']} s, "
+             f"one at a time {b['seconds_single']} s ({b['single_slowdown']}x).", "",
+             "| Comparison with production batching | Requests | Log-odds diff: mean | median | p99 | max "
+             "| Seq log-prob diff: mean | max | Identical seqs | Max token diff |",
+             "| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |"]
+    names = {"single": "one at a time", "neighbours": "half the prompts alone (other neighbours)"}
+    for k in ["single", "neighbours"] + sorted(x for x in b if x.startswith("batch_")):
+        c = b[k]
+        lo, sq = c["logodds_absdiff"], c["seq_logprob_absdiff"]
+        lines.append(f"| {names.get(k, k.replace('batch_', 'max_batch_tokens '))} | {c['n_requests']} | "
+                     f"{lo['mean']:.4f} | {lo['median']:.4f} | {lo['p99']:.4f} | {lo['max']:.4f} | "
+                     f"{sq['mean']:.4f} | {sq['max']:.4f} | {sq['share_zero']:.0%} | {c['max_token_diff']:.4f} |")
+    return lines + [""]
+
+
 def known_truth_section(kt: dict) -> list[str]:
     # Results written before the v2 rebuild (23 Nov 2026) carry no question_set.
     qset = kt.get("question_set", "v1")
@@ -277,6 +296,9 @@ def main() -> None:
             if label:
                 d["label"] = label
             parts += fn(d)
+    bt = RES / "batching.json"
+    if bt.exists():
+        parts += batching_section(json.loads(bt.read_text()))
     kb = RES / "knowledge_bench_base.json"
     if kb.exists():
         parts += knowledge_bench_section(json.loads(kb.read_text()))

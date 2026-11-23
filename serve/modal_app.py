@@ -35,7 +35,8 @@ SERVER_CPU, SERVER_MEM_GIB = 4.0, 48
 PARITY_MEM_GIB = 96   # the 53 GB official checkpoint is streamed through the page cache
 SCALEDOWN_WINDOW = 15  # short window for batch jobs so idle GPU burn stays minimal
 METHOD_TIMEOUT = 1800  # per-RPC timeout on TalkieServer
-VALID_JOBS = frozenset({"parity", "context", "throughput", "known_truth", "leak", "knowledge_bench", "web"})
+VALID_JOBS = frozenset({"parity", "context", "throughput", "known_truth", "leak", "knowledge_bench",
+                        "web", "batching"})
 IT_CHAT_PROMPT = "Continue the following sentence directly without extra commentary."
 
 app = modal.App(APP_NAME)
@@ -215,6 +216,13 @@ class TalkieServer:
         }
 
     @modal.method()
+    def batching(self, payload: list[dict]) -> dict:
+        """Batched against one-at-a-time and different-neighbour scoring (strings pre-admitted)."""
+        from serve.batching_check import measure
+        return measure(self.engine, [(p["prefix"], p["continuations"]) for p in payload],
+                       [p["n_yes"] for p in payload])
+
+    @modal.method()
     def context(self, texts: list[str]) -> dict:
         import firewall
         from serve import context_test
@@ -327,14 +335,14 @@ def _require_context_texts() -> list[dict]:
 @app.local_entrypoint()
 def stage0(what: str = "all", limit: int = 0):
     """Run stage 0 jobs. ``what``: all, or a comma list of
-    parity, context, throughput, known_truth, leak, knowledge_bench, web."""
+    parity, context, throughput, known_truth, leak, knowledge_bench, web, batching."""
     import budget
     import firewall
     from controls import known_truth, leak_probes
     from forecaster.client import ModalBackend, TalkieClient
 
     if what == "all":
-        jobs = {"parity", "context", "throughput", "known_truth", "leak", "web"}
+        jobs = {"parity", "context", "throughput", "known_truth", "leak", "web", "batching"}
     else:
         jobs = {j.strip() for j in what.split(",") if j.strip()}
         unknown = jobs - VALID_JOBS
@@ -356,7 +364,7 @@ def stage0(what: str = "all", limit: int = 0):
             _save("parity.json", parity.remote(prompts))
 
     base = TalkieServer(model="talkie-1930-13b-base")
-    if jobs & {"context", "throughput", "known_truth", "leak", "knowledge_bench"}:
+    if jobs & {"context", "throughput", "known_truth", "leak", "knowledge_bench", "batching"}:
         n_base_steps = (
             1  # health
             + (2 if "known_truth" in jobs else 0)
@@ -364,6 +372,7 @@ def stage0(what: str = "all", limit: int = 0):
             + (1 if "knowledge_bench" in jobs else 0)
             + (1 if "throughput" in jobs else 0)
             + (1 if "context" in jobs else 0)
+            + (1 if "batching" in jobs else 0)
         )
         # Worst case: every sequential RPC runs to METHOD_TIMEOUT. Reserving less
         # would let the guard start a job whose worst case crosses the cap.
@@ -387,6 +396,14 @@ def stage0(what: str = "all", limit: int = 0):
                 _save("throughput.json", base.throughput.remote([t["text"] for t in texts]))
             if "context" in jobs:
                 _save("context.json", base.context.remote([t["text"] for t in texts]))
+            if "batching" in jobs:
+                qs, sets, which = known_truth.load_sets()
+                reqs, rejected = known_truth.build_all(qs, sets, which)
+                if rejected:
+                    raise RuntimeError(f"batching payload rejected by firewall: {rejected}")
+                payload = [{"prefix": r.prefix.text, "n_yes": len(r.yes),
+                            "continuations": [c.text for c in r.yes + r.no]} for r in reqs]
+                _save("batching.json", base.batching.remote(payload))
 
     if "web" in jobs:
         srv = TalkieServer(model="talkie-web-13b-base")
