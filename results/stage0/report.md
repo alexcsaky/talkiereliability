@@ -99,19 +99,22 @@ Per template (AUROC): kt-almanac 0.785, kt-chronicle 0.780, kt-handbook 0.808, k
 
 ### Known-truth check (talkie-1930-13b-base, no <|endoftext|> at document start)
 
-312 questions (set v1), closed book, outcomes 1900 to 1929. Firewall rejections: 0.
+343 questions (set v2), closed book, outcomes 1900 to 1929. Firewall rejections: 0.
 
 | Family | n | AUROC | Brier (raw p) | Mean log-odds when A true | when A false |
 | --- | --- | --- | --- | --- | --- |
-| baseball | 26 | 0.667 | 0.228 | +0.56 | -0.75 |
-| census | 75 | 0.587 | 0.265 | +0.33 | -0.07 |
-| negation | 86 | 0.606 | 0.448 | +5.40 | +5.22 |
-| nobel | 125 | 0.500 | 0.410 | +0.72 | +1.15 |
-| all (uncentred) | 312 | 0.544 | 0.370 | +2.00 | +1.70 |
+| baseball | 26 | 1.000 | 0.012 | +4.79 | -5.70 |
+| census | 60 | 0.269 | 0.416 | -0.33 | +0.81 |
+| election | 8 | 1.000 | 0.001 | +4.91 | -3.81 |
+| events | 39 | 0.997 | 0.029 | +3.29 | -2.97 |
+| negation | 90 | 0.790 | 0.451 | +6.65 | +5.57 |
+| nobel | 60 | 0.985 | 0.038 | +8.20 | -11.35 |
+| office | 60 | 0.994 | 0.029 | +4.52 | -5.25 |
+| all (uncentred) | 343 | 0.811 | 0.207 | +4.73 | -2.23 |
 
-AUROC, all families, log-odds centred within family: **0.549** (95% interval 0.496 to 0.602, bootstrap over 36 clusters). No fixed threshold; Alex decides.
+AUROC, all families, log-odds centred within family: **0.892** (95% interval 0.827 to 0.940, bootstrap over 65 clusters). No fixed threshold; Alex decides.
 
-Per template (AUROC): kt-almanac 0.548, kt-chronicle 0.514, kt-handbook 0.542, kt-queries 0.545
+Per template (AUROC): kt-almanac 0.811, kt-chronicle 0.746, kt-handbook 0.796, kt-queries 0.795, kt-r-chronology 0.981, kt-r-history 0.987, kt-r-queries 1.000, kt-r-schoolbook 0.989
 
 ### Known-truth check (talkie-web-13b-base)
 
@@ -308,3 +311,14 @@ Year probes: probability mass on each year as 'the present year'
 | yr-diary | 1944 | 0.77 | 1937.8 |
 | yr-newspaper | 1942 | 0.76 | 1936.7 |
 | yr-almanac | 1933 | 0.64 | 1934.1 |
+
+### Batching (does a score depend on what it is batched with?)
+
+8232 sequences from 1372 known-truth requests, 37 tokens on average; production max_batch_tokens 16384. Batched 57.37 s, one at a time 384.84 s (6.7x).
+
+| Comparison with production batching | Requests | Log-odds diff: mean | median | p99 | max | Seq log-prob diff: mean | max | Identical seqs | Max token diff |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| one at a time | 1372 | 0.0001 | 0.0000 | 0.0000 | 0.0453 | 0.0003 | 0.2411 | 100% | 0.1171 |
+| half the prompts alone (other neighbours) | 686 | 0.0000 | 0.0000 | 0.0000 | 0.0000 | 0.0000 | 0.0000 | 100% | 0.0000 |
+| max_batch_tokens 32768 | 1372 | 0.0000 | 0.0000 | 0.0000 | 0.0000 | 0.0000 | 0.0000 | 100% | 0.0000 |
+| max_batch_tokens 8192 | 1372 | 0.0000 | 0.0000 | 0.0000 | 0.0000 | 0.0000 | 0.0000 | 100% | 0.0000 |

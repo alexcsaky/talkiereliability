@@ -1,0 +1,95 @@
+{
+ "production_max_batch_tokens": 16384,
+ "n_sequences": 8232,
+ "n_requests": 1372,
+ "mean_tokens_per_sequence": 37.278425655976676,
+ "seconds_batched": 57.37,
+ "seconds_single": 384.84,
+ "single_slowdown": 6.7,
+ "single": {
+  "n_sequences": 8232,
+  "n_requests": 1372,
+  "max_token_diff": 0.11708760261535645,
+  "seq_logprob_absdiff": {
+   "mean": 0.0003384374680513004,
+   "median": 0.0,
+   "p95": 0.0,
+   "p99": 0.0,
+   "max": 0.241099551320076,
+   "share_zero": 0.9968415937803693
+  },
+  "logodds_absdiff": {
+   "mean": 5.351588832418382e-05,
+   "median": 0.0,
+   "p95": 0.0,
+   "p99": 0.0,
+   "max": 0.045277721686503014,
+   "share_zero": 0.9927113702623906
+  }
+ },
+ "neighbours": {
+  "n_sequences": 4116,
+  "n_requests": 686,
+  "max_token_diff": 0.0,
+  "seq_logprob_absdiff": {
+   "mean": 0.0,
+   "median": 0.0,
+   "p95": 0.0,
+   "p99": 0.0,
+   "max": 0.0,
+   "share_zero": 1.0
+  },
+  "logodds_absdiff": {
+   "mean": 0.0,
+   "median": 0.0,
+   "p95": 0.0,
+   "p99": 0.0,
+   "max": 0.0,
+   "share_zero": 1.0
+  }
+ },
+ "batch_8192": {
+  "n_sequences": 8232,
+  "n_requests": 1372,
+  "max_token_diff": 0.0,
+  "seq_logprob_absdiff": {
+   "mean": 0.0,
+   "median": 0.0,
+   "p95": 0.0,
+   "p99": 0.0,
+   "max": 0.0,
+   "share_zero": 1.0
+  },
+  "logodds_absdiff": {
+   "mean": 0.0,
+   "median": 0.0,
+   "p95": 0.0,
+   "p99": 0.0,
+   "max": 0.0,
+   "share_zero": 1.0
+  },
+  "seconds": 55.55
+ },
+ "batch_32768": {
+  "n_sequences": 8232,
+  "n_requests": 1372,
+  "max_token_diff": 0.0,
+  "seq_logprob_absdiff": {
+   "mean": 0.0,
+   "median": 0.0,
+   "p95": 0.0,
+   "p99": 0.0,
+   "max": 0.0,
+   "share_zero": 1.0
+  },
+  "logodds_absdiff": {
+   "mean": 0.0,
+   "median": 0.0,
+   "p95": 0.0,
+   "p99": 0.0,
+   "max": 0.0,
+   "share_zero": 1.0
+  },
+  "seconds": 57.6
+ }
+}
