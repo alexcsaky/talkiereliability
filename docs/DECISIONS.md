@@ -277,3 +277,22 @@ Office, election and event tables are hand-entered from the standard record
 and are listed in `questions/known_truth_sources.json` for Alex to spot-check.
 Ids, clusters and the order of events reveal nothing about which side is true
 (tested).
+
+## 23 Nov 2026 (after the known-truth v2 re-run)
+
+Alex's answers to the three questions asked after the run:
+
+1. **Census comparisons reworded and re-run (v2.1).** v2 asked "X had a
+   larger population than Y" against the same sentence with the names swapped,
+   and scored 0.245; the model favours the order with the big city last,
+   whatever the truth. v2.1 keeps the names in place and varies only the
+   comparative ("larger"/"smaller", "more"/"less populous", "above"/"below").
+   Ids and outcomes are unchanged. The v2 results are kept in
+   `results/stage0/v2_2026-11-23/`.
+2. **Batched scoring kept**, at the production budget of 16,384 tokens, which
+   is recorded with each run. Scores were bit-identical across batch
+   neighbours and budgets; one at a time is 6.7 times slower for no gain.
+3. **Known-truth gate passes once the census question is settled.** The
+   reading method is treated as validated (0.889 with v2 census, 0.963
+   without). Stage 0 then waits only on Alex's review of the probe and header
+   wording and on the stage 1 open questions.

@@ -9,7 +9,8 @@ whether the reading method works. Families (each a matched pair: A and not-A
 differ only in the asserted fact):
 
 * ``census``    a top-10 city against a city ranked 30 to 40, at least 2.5
-  times smaller (U.S. Census Bureau, POP-twps0027, tables 13 to 15).
+  times smaller; "larger" against "smaller" with the names fixed in place
+  (v2.1, 23 Nov) (U.S. Census Bureau, POP-twps0027, tables 13 to 15).
 * ``nobel``     a prize's laureate against a laureate of a distant prize
   (sciences against Literature or Peace) within four years who never won
   this one, e.g. a physicist named for Literature (Nobel Prize API v2.1).
@@ -51,7 +52,7 @@ from pathlib import Path
 REPO = Path(__file__).resolve().parents[1]
 RAW = REPO / "data" / "raw" / "known_truth"
 SEED = 19301231
-QUESTION_SET = "v2"
+QUESTION_SET = "v2.1"
 
 CENSUS = {1900: "tab13", 1910: "tab14", 1920: "tab15"}
 CENSUS_URL = "https://www2.census.gov/library/working-papers/1998/demographics/pop-twps0027/{}.txt"
@@ -218,12 +219,18 @@ def census_items(rng: random.Random) -> list[tuple[dict, bool]]:
             x, y = label[(b[1], b[2])], label[(s[1], s[2])]
             a_true = rng.random() < 0.5
             A, B = (x, y) if a_true else (y, x)
-            stmt = lambda P, Q: [  # noqa: E731
-                f"At the census of {year}, {P} had a larger population than {Q}.",
-                f"The census of {year} showed {P} to be more populous than {Q}.",
-                f"By the census of {year}, {P} stood above {Q} in population."]
+            # Both statements keep the names in the same places and differ only
+            # in the comparative. v2 swapped the names instead and scored 0.245
+            # (big cities are the usual yardstick, so "than Chicago" read as
+            # likely whatever the truth); see docs/DECISIONS.md, 23 Nov.
+            more = [f"At the census of {year}, {A} had a larger population than {B}.",
+                    f"The census of {year} showed {A} to be more populous than {B}.",
+                    f"By the census of {year}, {A} stood above {B} in population."]
+            less = [f"At the census of {year}, {A} had a smaller population than {B}.",
+                    f"The census of {year} showed {A} to be less populous than {B}.",
+                    f"By the census of {year}, {A} stood below {B} in population."]
             items.append(_item(f"kt2-census-{year}-{k:02d}", "census", f"census-{year}-{k // 5}",
-                               stmt(A, B), stmt(B, A), {"year": year, "pub_year": year + 1}, a_true))
+                               more, less, {"year": year, "pub_year": year + 1}, a_true))
     return items
 
 

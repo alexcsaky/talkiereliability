@@ -131,7 +131,7 @@ def batching_section(b: dict) -> list[str]:
 def known_truth_section(kt: dict) -> list[str]:
     # Results written before the v2 rebuild (23 Nov 2026) carry no question_set.
     qset = kt.get("question_set", "v1")
-    suffix = "" if qset == "v2" else "_v1"
+    suffix = "_v1" if qset == "v1" else ""
     truth = {r["question_id"]: r["outcome"] for r in _jsonl(OUT / f"known_truth{suffix}.jsonl")}
     qmeta = {json.loads(line)["id"]: json.loads(line)
              for line in (REPO / "questions" / f"known_truth{suffix}.jsonl").read_text().splitlines()
