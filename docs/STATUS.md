@@ -197,9 +197,12 @@ are kept in `results/stage0/v1_2026-11-21/`.
 
 ## Next session
 
-Waiting for Alex on the census wording, batching and the known-truth gate.
-Then: write the leak-signature rule into `docs/EXPERIMENT_PLAN.md` and relabel
-the web twin there, before the freeze.
+23 Nov, later: census comparisons reworded (v2.1) and re-run; still below
+chance (0.128), so the wording is not the cause; see `docs/DECISIONS.md`.
+Headline 0.888. Batched scoring kept. Waiting for Alex on what to do with the
+census comparisons; the known-truth gate passes once that is settled. Then:
+write the leak-signature rule into `docs/EXPERIMENT_PLAN.md` and relabel the
+web twin there, before the freeze.
 
 ## In progress
 

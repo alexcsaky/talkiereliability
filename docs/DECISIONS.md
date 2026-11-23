@@ -296,3 +296,15 @@ Alex's answers to the three questions asked after the run:
    reading method is treated as validated (0.889 with v2 census, 0.963
    without). Stage 0 then waits only on Alex's review of the probe and header
    wording and on the stage 1 open questions.
+
+**v2.1 census result (measured 23 Nov): rewording did not fix it.** With the
+names held in place and only the comparative varied, census comparisons
+scored 0.128 (base), 0.211 (base, no document-start token) and 0.225 (web
+twin). Both models favour "larger" most when it is false (mean log-odds +3.14
+when A is false, +1.86 when true). Hypothesis: prose states "X has a larger
+population than Y" mostly when it is surprising or boastful, so a small city
+in the subject slot predicts "larger". The headline is unchanged (0.888;
+0.899 without the token; web twin 0.851); this run cost $0.21. Lesson for
+stage 2 (hypothesis): comparative question families ("will X exceed Y") may
+carry the same reversed prior, and need a check of this kind before use.
+Census comparisons: decision back with Alex.

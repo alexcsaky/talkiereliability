@@ -16,3 +16,7 @@
 {"ts": "2026-11-23T04:11:20+00:00", "event": "settle", "kind": "gpu", "job_id": "b0a3528247d7", "usd": 0.535723, "seconds": 749.3, "scaledown_s": 15, "gpu": "L40S", "cpu_cores": 4.0, "memory_gib": 48}
 {"ts": "2026-11-23T04:11:20+00:00", "event": "reserve", "kind": "gpu", "job_id": "22a5481fcc25", "name": "stage0-talkie-web-13b-base", "usd": 1.272242, "note": ""}
 {"ts": "2026-11-23T04:13:03+00:00", "event": "settle", "kind": "gpu", "job_id": "22a5481fcc25", "usd": 0.082468, "seconds": 102.6, "scaledown_s": 15, "gpu": "L40S", "cpu_cores": 4.0, "memory_gib": 48}
+{"ts": "2026-11-23T04:15:47+00:00", "event": "reserve", "kind": "gpu", "job_id": "adb013ab5a6a", "name": "stage0-base", "usd": 3.795698, "note": ""}
+{"ts": "2026-11-23T04:18:24+00:00", "event": "settle", "kind": "gpu", "job_id": "adb013ab5a6a", "usd": 0.120077, "seconds": 156.3, "scaledown_s": 15, "gpu": "L40S", "cpu_cores": 4.0, "memory_gib": 48}
+{"ts": "2026-11-23T04:18:24+00:00", "event": "reserve", "kind": "gpu", "job_id": "ba5588ea6e53", "name": "stage0-talkie-web-13b-base", "usd": 1.272242, "note": ""}
+{"ts": "2026-11-23T04:20:10+00:00", "event": "settle", "kind": "gpu", "job_id": "ba5588ea6e53", "usd": 0.084811, "seconds": 106.0, "scaledown_s": 15, "gpu": "L40S", "cpu_cores": 4.0, "memory_gib": 48}
