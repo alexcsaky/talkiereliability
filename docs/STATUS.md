@@ -181,19 +181,12 @@ Nothing is running.
 
 ## Waiting on Alex
 
-1. **Stage 0 gate decision** on the results above, in particular:
-   - whether the known-truth set needs rebuilding with coarser, more
-     knowable questions before it can serve as a control (the web-twin
-     ceiling is at chance);
-   - how to treat the leakage: the base model ranks the truth first on 14 of
-     21 post-1930 probes. Options include rebuilding the probes with decoys of
-     matched plausibility, so leakage can be told from guessing, and relying
-     on the stage 2 closed-book probe to drop leak-flagged questions;
-   - whether to fix the batch configuration per run given the 0.12-nat
-     batching difference.
-   Optional: rename the environment variables to `MODAL_TOKEN_ID` and
-   `MODAL_TOKEN_SECRET` so no mapping is needed, and set a workspace spend
-   limit in Modal as a backstop.
+1. **Settled 23 Nov** (see `docs/DECISIONS.md`): rebuild the known-truth set
+   with coarser questions; flag leaks by signatures, not closed-book
+   confidence; measure batching noise before choosing how to score.
+   **Still open: the role of the web twin.** Optional: rename the
+   environment variables to `MODAL_TOKEN_ID`/`MODAL_TOKEN_SECRET` and set a
+   Modal spend limit.
 2. **Review, for period language and fair decoys** (these are controls, not
    confirmatory prompts):
    - the known-truth headers in `questions/templates/known_truth.yaml`;

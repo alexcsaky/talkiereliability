@@ -218,3 +218,30 @@ see; Gutenberg and archive sources need a front- and back-matter check.
 **Stage 0 was run in one go with Alex's approval** ("check the flagged texts
 first, then run stage 0"). It was launched detached (`setsid nohup`) so the
 orchestrating client was not bound to the session's two-hour command limit.
+
+## 23 Nov 2026 (Alex's stage 0 gate decisions)
+
+Asked after the stage 0 run; options and recommendations are in the session
+record. Settled:
+
+1. **Known-truth set: rebuild with coarser questions.** Facts a 1930 corpus
+   discusses often and with clear margins (for example a city twice the size,
+   a laureate against a non-laureate), so that a pass or a fail says whether
+   the reading method works. The current set came out at AUROC 0.546 because
+   its decoys are near-misses (Nobel laureates of neighbouring years, cities
+   of similar size).
+2. **Leak rule: flag by leak signatures, not by closed-book confidence.** This
+   replaces the plan's rule that every question the closed-book probe flags
+   leaves the primary analysis. That rule cannot tell memory from a good
+   forecast, so it would remove the predictable questions. A question is
+   flagged only on evidence a forecast cannot explain: knowing later coinages
+   or exact unforecastable details, confidence well above contemporary
+   forecasters, or family-level skill close to the 1921 to 1930 mirror. The
+   primary analysis keeps all questions, and results without the flagged ones
+   are reported alongside. Method change to `docs/EXPERIMENT_PLAN.md`, to be
+   written up in full before the freeze (rule 9).
+3. **Batching: measure, then decide.** The next GPU run measures the typical
+   batched-against-single difference (not only the 0.12-nat worst case) and
+   the cost of one-at-a-time scoring; the choice is made with those numbers.
+
+Open: the role of the web twin (Alex asked for more explanation).
