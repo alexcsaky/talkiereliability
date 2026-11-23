@@ -118,19 +118,22 @@ Per template (AUROC): kt-almanac 0.811, kt-chronicle 0.746, kt-handbook 0.796, k
 
 ### Known-truth check (talkie-web-13b-base)
 
-312 questions (set v1), closed book, outcomes 1900 to 1929. Firewall rejections: 0.
+343 questions (set v2), closed book, outcomes 1900 to 1929. Firewall rejections: 0.
 
 | Family | n | AUROC | Brier (raw p) | Mean log-odds when A true | when A false |
 | --- | --- | --- | --- | --- | --- |
-| baseball | 26 | 0.824 | 0.187 | +1.46 | -0.87 |
-| census | 75 | 0.358 | 0.382 | -0.78 | -0.10 |
-| negation | 86 | 0.381 | 0.418 | +2.96 | +3.23 |
-| nobel | 125 | 0.530 | 0.396 | +0.09 | -0.13 |
-| all (uncentred) | 312 | 0.512 | 0.381 | +0.83 | +0.66 |
+| baseball | 26 | 0.988 | 0.053 | +2.33 | -3.20 |
+| census | 60 | 0.138 | 0.587 | -1.23 | +1.44 |
+| election | 8 | 1.000 | 0.002 | +3.83 | -4.19 |
+| events | 39 | 1.000 | 0.030 | +2.83 | -2.94 |
+| negation | 90 | 0.676 | 0.436 | +5.16 | +4.32 |
+| nobel | 60 | 0.955 | 0.105 | +7.23 | -6.97 |
+| office | 60 | 0.986 | 0.046 | +3.07 | -3.99 |
+| all (uncentred) | 343 | 0.765 | 0.251 | +3.51 | -1.28 |
 
-AUROC, all families, log-odds centred within family: **0.493** (95% interval 0.431 to 0.553, bootstrap over 36 clusters). No fixed threshold; Alex decides.
+AUROC, all families, log-odds centred within family: **0.812** (95% interval 0.725 to 0.886, bootstrap over 65 clusters). No fixed threshold; Alex decides.
 
-Per template (AUROC): kt-almanac 0.507, kt-chronicle 0.495, kt-handbook 0.525, kt-queries 0.518
+Per template (AUROC): kt-almanac 0.704, kt-chronicle 0.718, kt-handbook 0.767, kt-queries 0.769, kt-r-chronology 0.966, kt-r-history 0.974, kt-r-queries 1.000, kt-r-schoolbook 1.000
 
 ### Leak probes (talkie-1930-13b-base)
 

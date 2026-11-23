@@ -168,21 +168,38 @@ Verified by reading code or the hub API or by measuring:
 - Spend caps stay at $25 GPU and $50 API.
 - Known-truth gate: report only, no fixed threshold.
 
+## Known truth v2 and batching (verified: measured 23 Nov 2026)
+
+Re-run with Alex's go-ahead: `stage0 --what known_truth,web,batching`, $0.62
+($1.36 project total). Tables in `results/stage0/report.md`; the v1 results
+are kept in `results/stage0/v1_2026-11-21/`.
+
+1. **Known truth v2: the reading method works.** Base model AUROC
+   (family-centred) **0.889** (95% interval 0.823 to 0.938, 65 clusters), up
+   from 0.546 on v1; without the document-start token 0.892. By family:
+   baseball 1.00, elections 1.00, events 0.997, offices 0.996, Nobel 0.986,
+   negation 0.80 (offices 0.84, census top-10 0.79). The web twin scores 0.812.
+2. **Except the census comparisons: 0.245, well below chance** (web twin
+   0.138). Labels checked and correct. The model rates "New Haven had a larger
+   population than Chicago" as true. Hypothesis: big cities are the usual
+   yardstick in prose ("larger than Chicago"), so the false order, with the
+   big city last, reads as more likely. The same facts asked as top-10
+   membership score 0.79, so Talkie knows them; the wording is the problem.
+   Without census, the base model scores 0.963. Proposed fix: keep the names
+   in the same places and vary only the comparative ("X had a larger / a
+   smaller population than Y").
+3. **Batching: scores do not depend on batch neighbours or budget.** On 8,232
+   sequences, production batching gives bit-identical scores to batching half
+   the prompts alone, and to budgets of 8,192 and 32,768 tokens. Against one
+   at a time, 99.7% of sequences are identical and the largest log-odds
+   difference is 0.045; one at a time is 6.7 times slower. Recommendation:
+   keep batched scoring at the production budget.
+
 ## Next session
 
-Settled 23 Nov: known-truth set rebuilt (v2, 343 coarser items; see
-`docs/DECISIONS.md`); web twin kept as a modern-data comparison, not a
-ceiling; leaks flagged by signatures; batching measured before deciding.
-48 tests pass. Next, in order:
-
-1. Add the batching measurement (typical batched-against-single difference
-   and the cost of one-at-a-time scoring) to the stage 0 jobs.
-2. With Alex's go-ahead, re-run known truth (base with and without the
-   document-start token, web twin) on v2 plus the batching measurement:
-   `modal run serve/modal_app.py::stage0 --what known_truth,web`. Reserves
-   about $5; expected well under $1 (hypothesis, from the 21 Nov run).
-3. Write the leak-signature rule into `docs/EXPERIMENT_PLAN.md` and relabel the
-   web twin there, before the freeze.
+Waiting for Alex on the census wording, batching and the known-truth gate.
+Then: write the leak-signature rule into `docs/EXPERIMENT_PLAN.md` and relabel
+the web twin there, before the freeze.
 
 ## In progress
 
