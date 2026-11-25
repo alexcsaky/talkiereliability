@@ -41,8 +41,8 @@ def test_all_known_truth_questions_pass_firewall(tmp_path, monkeypatch):
     reqs, rejected = known_truth.build_all(qs, sets, which)
     assert rejected == []
     assert len(reqs) == sum(len(sets[which[q.id]]) for q in qs)
-    assert {q.family for q in qs} == {"census", "nobel", "baseball", "office", "election",
-                                      "events", "negation"}
+    assert {q.family for q in qs} == {"nobel", "baseball", "office", "election",
+                                      "events", "negation"}  # census dropped in v2.2
 
 
 def test_build_requests_passage_rules_and_atomic_rejection(tmp_path, monkeypatch):

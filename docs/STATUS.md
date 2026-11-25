@@ -1,6 +1,6 @@
 # Status
 
-Last updated: 21 Nov 2026, after the stage 0 GPU run. **Stopped at the stage 0 gate.**
+Last updated: 25 Nov 2026. **Known-truth gate passed; stage 0 waits on Alex's wording review and the stage 1 open questions.**
 
 **Stage 0 (model checks): run on Modal on 21 Nov 2026 with Alex's go-ahead. All jobs completed;
 the numbers are below and in `results/stage0/report.md`. Waiting for Alex's gate decision.**
@@ -197,12 +197,16 @@ are kept in `results/stage0/v1_2026-11-21/`.
 
 ## Next session
 
-23 Nov, later: census comparisons reworded (v2.1) and re-run; still below
-chance (0.128), so the wording is not the cause; see `docs/DECISIONS.md`.
-Headline 0.888. Batched scoring kept. Waiting for Alex on what to do with the
-census comparisons; the known-truth gate passes once that is settled. Then:
-write the leak-signature rule into `docs/EXPERIMENT_PLAN.md` and relabel the
-web twin there, before the freeze.
+25 Nov: census comparisons dropped (known truth v2.2); base-model AUROC 0.963
+(0.934 to 0.985) from the 23 Nov run, no new spend; known-truth gate passed.
+Stage 2 warning on comparative wording added to `docs/EXPERIMENT_PLAN.md`
+(step 8, rule a proposal). 49 tests pass; GPU spend to date $1.57 of $25.
+
+Next (CPU only, no spend):
+1. Write the leak-signature rule into `docs/EXPERIMENT_PLAN.md` (replacing
+   "Questions flagged by the leak probes are excluded from the primary
+   analysis") and relabel the web twin there as a modern-data comparison.
+2. Then stage 0 is closed apart from Alex's items below.
 
 ## In progress
 
@@ -210,14 +214,11 @@ Nothing is running.
 
 ## Waiting on Alex
 
-1. **Settled 23 Nov** (see `docs/DECISIONS.md`): known-truth set rebuilt
-   with coarser questions; leaks flagged by signatures, not closed-book
-   confidence; batching measured before choosing; web twin kept as a
-   modern-data comparison, not a ceiling. **Open: spot-check the hand-entered
-   office, election and event tables** (`controls/build_known_truth.py`), and
-   go-ahead for the v2 GPU re-run. Optional: rename the
-   environment variables to `MODAL_TOKEN_ID`/`MODAL_TOKEN_SECRET` and set a
-   Modal spend limit.
+1. **Confirm the stage 2 format-check rule** (`docs/EXPERIMENT_PLAN.md`, step 8
+   of "How questions are made"): chance as the bar, 1900 to 1929 outcomes as
+   the source. Spot-check the hand-entered office, election and event tables
+   in `controls/build_known_truth.py`. Optional: rename the Modal environment
+   variables and set a Modal spend limit.
 2. **Review, for period language and fair decoys** (these are controls, not
    confirmatory prompts):
    - the known-truth headers in `questions/templates/known_truth.yaml`;

@@ -308,3 +308,21 @@ in the subject slot predicts "larger". The headline is unchanged (0.888;
 stage 2 (hypothesis): comparative question families ("will X exceed Y") may
 carry the same reversed prior, and need a check of this kind before use.
 Census comparisons: decision back with Alex.
+
+## 25 Nov 2026 (census comparisons dropped)
+
+**Census comparisons dropped from the known-truth set (v2.2), kept as a stage 2
+warning (Alex).** The builder still generates them, so every other item is
+byte-identical to v2.1 and the 23 Nov results stay valid for them; the stage 0
+report leaves out forecasts for dropped families and says how many. Known
+truth on v2.2 (from the 23 Nov run, no new GPU spend): base model **0.963**
+(95% interval 0.934 to 0.985, 53 clusters), without the document-start token
+0.961, web twin 0.912. The known-truth gate passes (Alex, 23 Nov: pass once
+census was settled).
+
+**Stage 2 warning written into the plan** as step 8 of "How questions are
+made": each family is first asked in its exact wording about 1900 to 1929
+outcomes, and a family whose format scores at or below chance is reworded or
+dropped; comparative families first. The plan's census example ("Will Los
+Angeles outrank Detroit in 1940?") is of that shape. The exact rule (chance as
+the bar, 1900 to 1929 as the source) is a proposal for Alex.

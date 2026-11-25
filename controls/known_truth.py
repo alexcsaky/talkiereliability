@@ -26,7 +26,7 @@ from forecaster.client import TalkieClient
 REPO = Path(__file__).resolve().parents[1]
 QUESTIONS = REPO / "questions" / "known_truth.jsonl"
 TEMPLATES = REPO / "questions" / "templates" / "known_truth.yaml"
-QUESTION_SET = "v2.1"
+QUESTION_SET = "v2.2"
 _SET_KEYS = {"dated": "templates", "retrospective": "retrospective_templates"}
 
 

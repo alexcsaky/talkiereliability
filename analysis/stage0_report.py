@@ -136,9 +136,13 @@ def known_truth_section(kt: dict) -> list[str]:
     qmeta = {json.loads(line)["id"]: json.loads(line)
              for line in (REPO / "questions" / f"known_truth{suffix}.jsonl").read_text().splitlines()
              if line.strip()}
+    # Forecasts for questions since dropped from the set (e.g. the census
+    # comparisons, dropped in v2.2) are left out and counted in the header.
+    dropped = sorted({f["family"] for f in kt["forecasts"] if f["question_id"] not in qmeta})
+    n_dropped = sum(f["question_id"] not in qmeta for f in kt["forecasts"])
     items = [{"lo": f["logodds_raw"], "p": f["p_raw"], "y": truth[f["question_id"]],
               "family": f["family"], "cluster": qmeta[f["question_id"]]["cluster"]}
-             for f in kt["forecasts"]]
+             for f in kt["forecasts"] if f["question_id"] in qmeta]
     stat = lambda xs: auroc([x["lo"] for x in xs], [x["y"] for x in xs])  # noqa: E731
     # Families differ in a constant offset that has nothing to do with truth
     # (negated statements are longer, so every "negation" item leans towards A).
@@ -154,7 +158,9 @@ def known_truth_section(kt: dict) -> list[str]:
     est, lo, hi = cluster_bootstrap(stat_c, items, "cluster")
     lines = [f"### Known-truth check ({kt['model']}{kt.get('label', '')})", "",
              f"{len(items)} questions (set {qset}), closed book, outcomes 1900 to 1929. "
-             f"Firewall rejections: {len(kt['rejected_by_firewall'])}.", "",
+             f"Firewall rejections: {len(kt['rejected_by_firewall'])}."
+             + (f" Left out: {n_dropped} forecasts in families dropped from the current set "
+                f"({', '.join(dropped)})." if n_dropped else ""), "",
              "| Family | n | AUROC | Brier (raw p) | Mean log-odds when A true | when A false |",
              "| --- | --- | --- | --- | --- | --- |"]
     fams = sorted({x["family"] for x in items}) + ["all (uncentred)"]
@@ -167,7 +173,8 @@ def known_truth_section(kt: dict) -> list[str]:
                      f"{sum(t) / max(1, len(t)):+.2f} | {sum(f) / max(1, len(f)):+.2f} |")
     by_t: dict[str, list] = {}
     for r in kt["per_template"]:
-        by_t.setdefault(r["template_id"], []).append(r)
+        if r["question_id"] in qmeta:
+            by_t.setdefault(r["template_id"], []).append(r)
     lines += ["", f"AUROC, all families, log-odds centred within family: **{est:.3f}** "
                   f"(95% interval {lo:.3f} to {hi:.3f}, "
                   f"bootstrap over {len({x['cluster'] for x in items})} clusters). "

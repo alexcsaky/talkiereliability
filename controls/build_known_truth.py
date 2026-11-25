@@ -8,9 +8,10 @@ corpus discusses often, with clear margins, so that a pass or a fail says
 whether the reading method works. Families (each a matched pair: A and not-A
 differ only in the asserted fact):
 
-* ``census``    a top-10 city against a city ranked 30 to 40, at least 2.5
-  times smaller; "larger" against "smaller" with the names fixed in place
-  (v2.1, 23 Nov) (U.S. Census Bureau, POP-twps0027, tables 13 to 15).
+* ``census``    DROPPED in v2.2 (25 Nov; see ``DROPPED_FAMILIES``): a top-10
+  city against a city ranked 30 to 40, at least 2.5 times smaller (U.S.
+  Census Bureau, POP-twps0027, tables 13 to 15). Still generated so the
+  other families' draws are unchanged.
 * ``nobel``     a prize's laureate against a laureate of a distant prize
   (sciences against Literature or Peace) within four years who never won
   this one, e.g. a physicist named for Literature (Nobel Prize API v2.1).
@@ -52,7 +53,7 @@ from pathlib import Path
 REPO = Path(__file__).resolve().parents[1]
 RAW = REPO / "data" / "raw" / "known_truth"
 SEED = 19301231
-QUESTION_SET = "v2.1"
+QUESTION_SET = "v2.2"
 
 CENSUS = {1900: "tab13", 1910: "tab14", 1920: "tab15"}
 CENSUS_URL = "https://www2.census.gov/library/working-papers/1998/demographics/pop-twps0027/{}.txt"
@@ -458,9 +459,19 @@ def negation_items(rng: random.Random) -> list[tuple[dict, bool]]:
     return items
 
 
+# Families generated (so the seeded draws for the others stay the same) but left
+# out of the set. Census comparisons scored below chance in both wordings tried
+# (0.245 swapping names, 0.128 varying "larger"/"smaller") in the base model
+# and the web twin: a habit of what gets written, not missing knowledge.
+# Dropped by Alex on 25 Nov 2026 and kept as a stage 2 warning; census stays
+# covered by the top-10 membership items in the negation family.
+DROPPED_FAMILIES = {"census"}
+
+
 def build(rng: random.Random) -> list[tuple[dict, bool]]:
-    return (census_items(rng) + nobel_items(rng) + baseball_items(rng) + office_items(rng)
-            + election_items(rng) + event_items(rng) + negation_items(rng))
+    items = (census_items(rng) + nobel_items(rng) + baseball_items(rng) + office_items(rng)
+             + election_items(rng) + event_items(rng) + negation_items(rng))
+    return [(q, a) for q, a in items if q["family"] not in DROPPED_FAMILIES]
 
 
 def main() -> None:
